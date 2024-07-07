@@ -1,20 +1,52 @@
-import type { Config } from "tailwindcss";
+import type { Config } from "tailwindcss"
 
-const config: Config = {
+const config = {
+  darkMode: ["class"],
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+	],
+  prefix: "",
   theme: {
-    extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
       },
     },
+    extend: {
+      screens: {
+        '3xl': '2250px',
+      },
+      dropShadow: {
+        default: '0px 0px 8px rgba(0, 0, 0, 0.10)'
+      },
+      fontFamily: {
+        inter: ['var(--font-inter)'],
+        ubuntu: ['var(--font-ubuntu)'],
+      },
+      customGreen: {
+        100: '#A3CF6B',
+        200: '#4F9572',
+        300: '#128C55',
+        400: '#2A7144',
+        500: '#052617',
+      },
+      customWhite: {
+        100: '#F5F9FC',
+        200: '#FFFFFF',
+      },
+      customBlack: {
+        100: '#adb5bd',
+        200: '#495057',
+        300: '#212529',
+      }
+    },
   },
-  plugins: [],
-};
-export default config;
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config
+
+export default config
