@@ -28,21 +28,34 @@ const config = {
         inter: ['var(--font-inter)'],
         ubuntu: ['var(--font-ubuntu)'],
       },
-      customGreen: {
-        100: '#A3CF6B',
-        200: '#4F9572',
-        300: '#128C55',
-        400: '#2A7144',
-        500: '#052617',
+
+      maxWidth: {
+        'details-custom': 'calc((100vh - 136px) * 0.7)'
       },
-      customWhite: {
-        100: '#F5F9FC',
-        200: '#FFFFFF',
+      maxHeight: {
+        'details-custom': 'calc(100vh - 136px)'
       },
-      customBlack: {
-        100: '#adb5bd',
-        200: '#495057',
-        300: '#212529',
+      height: {
+        'details-custom': 'calc(100vh - 136px)'
+      },
+      
+      colors: {
+        customGreen: {
+          100: '#A3CF6B',
+          200: '#4F9572',
+          300: '#128C55',
+          400: '#2A7144',
+          500: '#052617',
+        },
+        customWhite: {
+          100: '#F5F9FC',
+          200: '#FFFFFF',
+        },
+        customBlack: {
+          100: '#adb5bd',
+          200: '#495057',
+          300: '#212529',
+        }
       }
     },
   },

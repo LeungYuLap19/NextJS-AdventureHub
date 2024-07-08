@@ -11,3 +11,40 @@
 *::-webkit-scrollbar {
   display: none;
 }
+
+@layer utilities {
+	.root {
+		@apply flex w-screen font-ubuntu bg-customWhite-100
+	}
+
+  /* graident */
+  .green-gradient {
+    @apply bg-gradient-to-r from-customGreen-500 to-customGreen-300
+  }
+
+  /* auth */
+  .auth-container {
+    @apply flex justify-center items-start h-full overflow-auto w-1/2 max-lg:w-full
+  }
+
+  .auth-section {
+    @apply flex flex-col w-full gap-3 px-5
+  }
+
+  /* details */
+  .details-tab {
+    @apply border-b border-customBlack-100 rounded-none text-customBlack-100 text-base max-2xl:text-sm
+  }
+
+  .details-tab-active {
+    @apply border-customGreen-400 text-customGreen-400
+  }
+
+  .details-content {
+    @apply w-full pt-14 md:h-details-custom md:overflow-auto mt-0
+  }
+
+  .content-details {
+    @apply flex flex-col gap-7 text-customBlack-300 w-full
+  }
+}

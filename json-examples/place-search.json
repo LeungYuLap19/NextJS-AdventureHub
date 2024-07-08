@@ -1,0 +1,131 @@
+{
+  "request": "https://api.foursquare.com/v3/places/search?ll=22.302711%2C114.177216&radius=100000&categories=13065&exclude_all_chains=true&fields=fsq_id%2Cname%2Ccategories%2Crating&sort=RELEVANCE&limit=5",
+  "results": [
+    {
+      "fsq_id": "4b0588cbf964a5203cda22e3",
+      "categories": [
+        {
+          "id": 13263,
+          "name": "Japanese Restaurant",
+          "short_name": "Japanese",
+          "plural_name": "Japanese Restaurants",
+          "icon": {
+            "prefix": "https://ss3.4sqi.net/img/categories_v2/food/japanese_",
+            "suffix": ".png"
+          }
+        },
+        {
+          "id": 13383,
+          "name": "Steakhouse",
+          "short_name": "Steakhouse",
+          "plural_name": "Steakhouses",
+          "icon": {
+            "prefix": "https://ss3.4sqi.net/img/categories_v2/food/steakhouse_",
+            "suffix": ".png"
+          }
+        }
+      ],
+      "name": "Grand Hyatt Hong Kong (香港君悅酒店)",
+      "rating": 9
+    },
+    {
+      "fsq_id": "4b0fbed6f964a520896423e3",
+      "categories": [
+        {
+          "id": 13137,
+          "name": "Dumpling Restaurant",
+          "short_name": "Dumplings",
+          "plural_name": "Dumpling Restaurants",
+          "icon": {
+            "prefix": "https://ss3.4sqi.net/img/categories_v2/food/dumplings_",
+            "suffix": ".png"
+          }
+        }
+      ],
+      "name": "Din Tai Fung (鼎泰豐)",
+      "rating": 8.9
+    },
+    {
+      "fsq_id": "5a37bf6b67a9fe7d94f0cfb5",
+      "categories": [
+        {
+          "id": 13263,
+          "name": "Japanese Restaurant",
+          "short_name": "Japanese",
+          "plural_name": "Japanese Restaurants",
+          "icon": {
+            "prefix": "https://ss3.4sqi.net/img/categories_v2/food/japanese_",
+            "suffix": ".png"
+          }
+        }
+      ],
+      "name": "Yardbird",
+      "rating": 8.8
+    },
+    {
+      "fsq_id": "5c124249db2aeb002b757ffd",
+      "categories": [
+        {
+          "id": 13035,
+          "name": "Coffee Shop",
+          "short_name": "Coffee Shop",
+          "plural_name": "Coffee Shops",
+          "icon": {
+            "prefix": "https://ss3.4sqi.net/img/categories_v2/food/coffeeshop_",
+            "suffix": ".png"
+          }
+        },
+        {
+          "id": 13065,
+          "name": "Restaurant",
+          "short_name": "Restaurant",
+          "plural_name": "Restaurants",
+          "icon": {
+            "prefix": "https://ss3.4sqi.net/img/categories_v2/food/default_",
+            "suffix": ".png"
+          }
+        }
+      ],
+      "name": "Fineprint",
+      "rating": 8.8
+    },
+    {
+      "fsq_id": "563b4943cd10392ea00d5f31",
+      "categories": [
+        {
+          "id": 13021,
+          "name": "Speakeasy",
+          "short_name": "Speakeasy",
+          "plural_name": "Speakeasies",
+          "icon": {
+            "prefix": "https://ss3.4sqi.net/img/categories_v2/nightlife/secretbar_",
+            "suffix": ".png"
+          }
+        },
+        {
+          "id": 13099,
+          "name": "Chinese Restaurant",
+          "short_name": "Chinese",
+          "plural_name": "Chinese Restaurants",
+          "icon": {
+            "prefix": "https://ss3.4sqi.net/img/categories_v2/food/asian_",
+            "suffix": ".png"
+          }
+        }
+      ],
+      "name": "Foxglove",
+      "rating": 8.7
+    }
+  ],
+  "context": {
+    "geo_bounds": {
+      "circle": {
+        "center": {
+          "latitude": 22.302711,
+          "longitude": 114.177216
+        },
+        "radius": 100000
+      }
+    }
+  }
+}

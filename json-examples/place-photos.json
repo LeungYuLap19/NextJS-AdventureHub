@@ -1,0 +1,11 @@
+[
+  {"request": "https://api.foursquare.com/v3/places/4b0588cbf964a5203cda22e3/photos?limit=1"},
+  {
+    "id": "667f93e30952733825c44131",
+    "created_at": "2024-06-29T04:56:03.000Z",
+    "prefix": "https://fastly.4sqi.net/img/general/",
+    "suffix": "/3154456_ZUl_5HouuHLCd0nVmgQrv6v86fgv4MMGw0TYtGQ5qE4.jpg",
+    "width": 1920,
+    "height": 1440
+  }
+]

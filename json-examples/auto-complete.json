@@ -1,0 +1,45 @@
+{
+  "request": "https://api.foursquare.com/v3/autocomplete?query=ma%20on%20shan&types=geo&limit=5",
+  "results": [
+    {
+      "type": "geo",
+      "text": {
+        "primary": "Ma On Shan Tsuen, Sha Tin, Hong Kong",
+        "secondary": "Search for Ma On Shan Tsuen, Sha Tin, Hong Kong",
+        "highlight": [
+          {
+            "start": 0,
+            "length": 2
+          },
+          {
+            "start": 3,
+            "length": 2
+          },
+          {
+            "start": 6,
+            "length": 4
+          }
+        ]
+      },
+      "geo": {
+        "name": "Ma On Shan Tsuen, Sha Tin, Hong Kong",
+        "center": {
+          "latitude": 22.40613,
+          "longitude": 114.24079
+        },
+        "bounds": {
+          "ne": {
+            "latitude": 22.438166,
+            "longitude": 114.246307
+          },
+          "sw": {
+            "latitude": 22.404364,
+            "longitude": 114.213501
+          }
+        },
+        "cc": "HK",
+        "type": "locality"
+      }
+    }
+  ]
+}
