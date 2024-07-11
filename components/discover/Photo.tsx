@@ -7,8 +7,11 @@ export default function Photo({ displayName, imgUrl, morePhoto=false }: PhotoPro
       className={`${morePhoto && 'brightness-50'}`}
       src={imgUrl}
       alt={displayName}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
       fill={true}
       style={{objectFit: 'cover', objectPosition: 'center'}}
+      placeholder='empty'
+      priority={true}
     />
   )
 }

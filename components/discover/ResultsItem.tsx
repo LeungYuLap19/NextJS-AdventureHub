@@ -6,14 +6,14 @@ import Photo from './Photo'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { formUrlQuery } from '@/lib/utils'
 
-export default function ResultsItem({ item }: any) {
+export default function ResultsItem({ item }: ResultsItemProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const handleOnClick = () => {
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
       query: {
-        id: 'itemId',
+        id: item.fsq_id,
       },
       extraRoute: '/details'
     });
@@ -27,10 +27,10 @@ export default function ResultsItem({ item }: any) {
     >
       <div className='w-full aspect-square bg-customBlack-100 relative'>
         {
-          item.imgUrl &&
+          item.photo &&
           <Photo 
-            displayName={item.displayName} 
-            imgUrl={item.imgUrl} 
+            displayName={item.name} 
+            imgUrl={item.photo} 
             morePhoto={false}     
           />
         }
@@ -38,14 +38,21 @@ export default function ResultsItem({ item }: any) {
 
       <div className='flex w-full items-center justify-between pl-2 pr-4 pt-1 pb-2'>
         <div className='flex flex-col justify-between w-[80%]'>
-          <p className='truncate'>{item.displayName}</p>
+          <p className='truncate'>{item.name}</p>
           <p className='text-xs text-customBlack-100 truncate'>
-            {item.types}
+            {
+              item.categories.map((category: Category, index: number) => (
+                <React.Fragment key={category.id}>
+                  {index > 0 && ', '}
+                  {category.short_name}
+                </React.Fragment>
+              ))
+            }
           </p>
           <Rating
             className='mt-2' 
             name="half-rating-read" 
-            defaultValue={item.rating} 
+            defaultValue={item.rating / 2} 
             precision={0.1} 
             size="small" readOnly 
           />

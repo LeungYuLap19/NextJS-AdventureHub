@@ -1,0 +1,287 @@
+{
+  "fsq_id": "4b058761f964a520188f22e3",
+  "description": "The Royal Botanic Garden, Sydney, is a place of natural beauty, where people come for peace, relaxation, education, and to learn more about plants and horticulture. The surrounding parkland of the Domain is a place for sport, entertainment and recreation.",
+  "email": "feedback@rbgsyd.nsw.gov.au",
+  "features": {
+    "payment": {
+      "credit_cards": {
+        "accepts_credit_cards": false,
+        "amex": false,
+        "discover": false,
+        "visa": false,
+        "diners_club": false,
+        "master_card": false,
+        "union_pay": false
+      },
+      "digital_wallet": {
+        "accepts_nfc": false
+      }
+    },
+    "amenities": {
+      "wifi": "n"
+    }
+  },
+  "featuresFull": {
+    "payment": {
+      "credit_cards": {
+        "accepts_credit_cards": {},
+        "amex": {},
+        "discover": {},
+        "visa": {},
+        "diners_club": {},
+        "master_card": {},
+        "union_pay": {}
+      },
+      "digital_wallet": {
+        "accepts_nfc": {}
+      }
+    },
+    "food_and_drink": {
+      "alcohol": {
+        "bar_service": {},
+        "beer": {},
+        "byo": {},
+        "cocktails": {},
+        "full_bar": {},
+        "wine": {}
+      },
+      "meals": {
+        "bar_snacks": {},
+        "breakfast": {},
+        "brunch": {},
+        "lunch": {},
+        "happy_hour": {},
+        "dessert": {},
+        "dinner": {},
+        "tasting_menu": {}
+      }
+    },
+    "services": {
+      "delivery": {},
+      "takeout": {},
+      "drive_through": {},
+      "dine_in": {
+        "reservations": {},
+        "online_reservations": {},
+        "groups_only_reservations": {},
+        "essential_reservations": {}
+      }
+    },
+    "amenities": {
+      "restroom": {},
+      "smoking": {},
+      "jukebox": {},
+      "music": {},
+      "live_music": {},
+      "private_room": {},
+      "outdoor_seating": {},
+      "tvs": {},
+      "atm": {},
+      "coat_check": {},
+      "wheelchair_accessible": {},
+      "parking": {
+        "parking": {},
+        "street_parking": {},
+        "valet_parking": {},
+        "public_lot": {},
+        "private_lot": {}
+      },
+      "sit_down_dining": {},
+      "wifi": "string"
+    },
+    "attributes": {
+      "business_meeting": "string",
+      "clean": "string",
+      "crowded": "string",
+      "dates_popular": "string",
+      "dressy": "string",
+      "families_popular": "string",
+      "gluten_free_diet": "string",
+      "good_for_dogs": "string",
+      "groups_popular": "string",
+      "healthy_diet": "string",
+      "late_night": "string",
+      "noisy": "string",
+      "quick_bite": "string",
+      "romantic": "string",
+      "service_quality": "string",
+      "singles_popular": "string",
+      "special_occasion": "string",
+      "trendy": "string",
+      "value_for_money": "string",
+      "vegan_diet": "string",
+      "vegetarian_diet": "string"
+    }
+  },
+  "geocodes": {
+    "main": {
+      "latitude": -33.86918,
+      "longitude": 151.215727
+    },
+    "roof": {
+      "latitude": -33.864836,
+      "longitude": 151.216768
+    }
+  },
+  "hours": {
+    "display": "Open Daily 7:00-17:00",
+    "is_local_holiday": false,
+    "open_now": false,
+    "regular": [
+      {
+        "close": "1700",
+        "day": 1,
+        "open": "0700"
+      },
+      {
+        "close": "1700",
+        "day": 2,
+        "open": "0700"
+      },
+      {
+        "close": "1700",
+        "day": 3,
+        "open": "0700"
+      },
+      {
+        "close": "1700",
+        "day": 4,
+        "open": "0700"
+      },
+      {
+        "close": "1700",
+        "day": 5,
+        "open": "0700"
+      },
+      {
+        "close": "1700",
+        "day": 6,
+        "open": "0700"
+      },
+      {
+        "close": "1700",
+        "day": 7,
+        "open": "0700"
+      }
+    ]
+  },
+  "hours_popular": [
+    {
+      "close": "1900",
+      "day": 1,
+      "open": "1100"
+    },
+    {
+      "close": "1900",
+      "day": 2,
+      "open": "1100"
+    },
+    {
+      "close": "1900",
+      "day": 3,
+      "open": "1100"
+    },
+    {
+      "close": "1800",
+      "day": 4,
+      "open": "1100"
+    },
+    {
+      "close": "1900",
+      "day": 5,
+      "open": "1100"
+    },
+    {
+      "close": "1900",
+      "day": 6,
+      "open": "1000"
+    },
+    {
+      "close": "1800",
+      "day": 7,
+      "open": "1000"
+    }
+  ],
+  "location": {
+    "address": "Mrs Macquaries Rd",
+    "country": "AU",
+    "cross_street": "Cahill Express Way",
+    "formatted_address": "Mrs Macquaries Rd (Cahill Express Way), Sydney NSW 2000",
+    "locality": "Sydney",
+    "postcode": "2000",
+    "region": "NSW"
+  },
+  "photos": [
+    {
+      "id": "56cd14ba498e7c490ce53cf1",
+      "created_at": "2016-02-24T02:26:02.000Z",
+      "prefix": "https://fastly.4sqi.net/img/general/",
+      "suffix": "/496312_uHMfosVbYoea6uRb1wyrKqykrqtwpqBG0IlgYiEZb7s.jpg",
+      "width": 1440,
+      "height": 1920
+    },
+    {
+      "id": "5a24293c6adbf5191d5657e3",
+      "created_at": "2017-12-03T16:41:32.000Z",
+      "prefix": "https://fastly.4sqi.net/img/general/",
+      "suffix": "/13793387_eOiUonv3rtCaebeXFImuAp2oW9scKDNOPz2WfVPsUlY.jpg",
+      "width": 1920,
+      "height": 1440
+    },
+    {
+      "id": "570dfd37498eddb7336cb411",
+      "created_at": "2016-04-13T08:03:03.000Z",
+      "prefix": "https://fastly.4sqi.net/img/general/",
+      "suffix": "/15312105_vrTGWgHIAkbutMv5GzZYk556SJdcPQ4LywmKAMDgUnk.jpg",
+      "width": 1080,
+      "height": 1349
+    },
+    {
+      "id": "667cf87e1bfd633affa3cced",
+      "created_at": "2024-06-27T05:28:30.000Z",
+      "prefix": "https://fastly.4sqi.net/img/general/",
+      "suffix": "/12712873_gvC4mt_iGl79bV_jctfa0H4blfsieNAMzUMqYAVa4Ko.jpg",
+      "width": 1920,
+      "height": 1440
+    },
+    {
+      "id": "667cf2bf3bd43b7e9773135d",
+      "created_at": "2024-06-27T05:03:59.000Z",
+      "prefix": "https://fastly.4sqi.net/img/general/",
+      "suffix": "/12712873_YT2aYKiZ7wF4YEfS4Hg1CxJbUdl5xGMnsxNUfnjAn9k.jpg",
+      "width": 1440,
+      "height": 1920
+    }
+  ],
+  "popularity": 0.9997921116932653,
+  "price": 1,
+  "social_media": {
+    "facebook_id": "194410837243318",
+    "instagram": "rbgsydney",
+    "twitter": "rbgsydney"
+  },
+  "tel": "(02) 9231 8111",
+  "tips": [
+    {
+      "created_at": "2024-01-20T06:21:42.000Z",
+      "text": "공원 부지가 광활하므로 입장 전 생수 휴대 권장"
+    },
+    {
+      "created_at": "2024-01-08T16:31:41.000Z",
+      "text": "Super nice setting. Perfect for walks, picnics or just generally hanging out. Free entrance."
+    },
+    {
+      "created_at": "2023-07-16T05:52:06.000Z",
+      "text": "Stunning place clearly laid out and maintained with flora and fauna thought. Leads to some wonderful historical places too which are worth a visit."
+    },
+    {
+      "created_at": "2023-02-05T21:26:56.000Z",
+      "text": "Perfect place for some me time in the heart of the city with over 100 types of plants in here!"
+    },
+    {
+      "created_at": "2022-10-07T07:19:58.000Z",
+      "text": "Free entry. Always opens at 07:00 every day of the week, however closes anywhere between 17:00 and 20:00 depending on the time of year, unless its New Years Eve."
+    }
+  ],
+  "website": "http://www.rbgsyd.nsw.gov.au"
+}

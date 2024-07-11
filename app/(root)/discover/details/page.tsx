@@ -1,62 +1,83 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useSearchParams } from 'next/navigation'
 import { cn } from '@/lib/utils';
 import PhotosCard from '@/components/discover/PhotosCard';
 import Details from '@/components/details/Details';
 import Reviews from '@/components/details/Reviews';
+import { getResultsItemById } from '@/lib/actions/localStorage.actions';
+import { placeDetails } from '@/lib/actions/fourSquareAPI';
+import { placeDetailsFields } from '@/constants';
 
 export default function page() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const [type, setType] = useState<'details' | 'reviews'>('details');
+  const [resultsItem, setResultsItem] = useState<ResultsItem | null>(null);
+  const [itemDetails, setItemDetails] = useState<PlaceDetails | null>(null);
 
-  const tempItem = {
-    displayName: 'Place Name',
-    types: 'place types',
-    rating: 5.0, 
+  const getPlaceDetails = async () => {
+    const data = await placeDetails({ fsq_id: id!, fields: placeDetailsFields });
+    setItemDetails(data);
   }
+
+  // do fetch reviews from google place
+  useEffect(() => {
+    const fromDefault = getResultsItemById('defaultItems', id!);
+    const fromResults = getResultsItemById('resultsItems', id!);
+    setResultsItem(fromDefault || fromResults);
+
+    getPlaceDetails();
+  }, [id]);
 
   return (
     <div className='flex 3xl:justify-center gap-8 w-full max-lg:pb-28 max-md:flex-col pt-5'>
-      <PhotosCard item={tempItem} />
+      {
+        resultsItem &&
+        <>
+          <PhotosCard item={resultsItem} photos={itemDetails?.photos || []}/>
 
-      <div className='w-full'>
-        <Tabs 
-          defaultValue='details' 
-          className='flex flex-col items-start max-md:items-center w-full relative'
-        >
-          <TabsList className='absolute top-0 left-0 md:justify-start w-full p-0 mb-7 bg-customWhite-100 z-40 rounded-none'>
-            <TabsTrigger 
-              value='details'
-              className={cn('details-tab', {
-                'details-tab-active': type === 'details'
-              })}
-              onClick={() => setType('details')}
+          <div className='w-full'>
+            <Tabs 
+              defaultValue='details' 
+              className='flex flex-col items-start max-md:items-center w-full relative'
             >
-              Details
-            </TabsTrigger>
+              <TabsList className='absolute top-0 left-0 md:justify-start w-full p-0 mb-7 bg-customWhite-100 z-40 rounded-none'>
+                <TabsTrigger 
+                  value='details'
+                  className={cn('details-tab', {
+                    'details-tab-active': type === 'details'
+                  })}
+                  onClick={() => setType('details')}
+                >
+                  Details
+                </TabsTrigger>
 
-            <TabsTrigger 
-              value='reviews'
-              className={cn('details-tab', {
-                'details-tab-active': type === 'reviews'
-              })}
-              onClick={() => setType('reviews')}
-            >
-              Reviews
-            </TabsTrigger>
-          </TabsList>
+                <TabsTrigger 
+                  value='reviews'
+                  className={cn('details-tab', {
+                    'details-tab-active': type === 'reviews'
+                  })}
+                  onClick={() => setType('reviews')}
+                >
+                  Reviews
+                </TabsTrigger>
+              </TabsList>
 
-          <TabsContent value="details" className='details-content'>
-            <Details />
-          </TabsContent>
-          <TabsContent value="reviews" className='details-content'>
-            <Reviews />
-          </TabsContent>
-        </Tabs>
-      </div>
+              <TabsContent value="details" className='details-content'>
+                {
+                  itemDetails &&
+                  <Details itemDetails={itemDetails} />
+                }
+              </TabsContent>
+              <TabsContent value="reviews" className='details-content'>
+                <Reviews />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </>
+      }
     </div>
   )
 }

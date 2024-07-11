@@ -5,10 +5,25 @@ import SearchInput from '@/components/discover/SearchInput'
 import SearchTab from '@/components/discover/SearchTab'
 import Subtitle from '@/components/discover/Subtitle'
 import { searchTabs } from '@/constants'
-import React, { useState } from 'react'
+import { getFromLocalstorage } from '@/lib/actions/localStorage.actions'
+import { useSearchParams } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 
 export default function page() {
-  const [activeTab, setActiveTab] = useState<string>('All');
+  const [activeTab, setActiveTab] = useState<SearchTabParams>(searchTabs[0]);
+  const [subtitle, setSubtitle] = useState<string>('Popular places around you');
+  const searchParams = useSearchParams();
+  const type = searchParams.get('type');
+
+  useEffect(() => {
+    if (type === 'results') {
+      const subtitle = getFromLocalstorage<string>('resultsSubtitle');
+      setSubtitle(subtitle[0]);
+    }
+    else {
+      setSubtitle('Popular places around you');
+    }
+  }, [type]);
 
   return (
     <div className='flex flex-col gap-7 pt-[60px] max-sm:pt-[30px] max-lg:pb-28'>
@@ -17,19 +32,17 @@ export default function page() {
       />
 
       <div className='flex gap-[20px] max-md:flex-col md:mb-12'>
-        <SearchInput />
+        <SearchInput activeTab={activeTab} setSubtitle={setSubtitle} />
         <Subtitle
           title={<>Categories</>}
           style={'md:hidden'}
         />
         <div className='flex items-center h-[50px] max-md:h-10 overflow-auto'>
           {
-            searchTabs.map(tab => (
-                // search types
+            searchTabs.map((tab: SearchTabParams) => (
                 <SearchTab 
                   key={tab.label}
-                  label={tab.label}
-                  imgUrl={tab.imgUrl}
+                  tab={tab}
                   activeTab={activeTab}
                   setActiveTab={setActiveTab}
                 />
@@ -39,8 +52,7 @@ export default function page() {
       </div>
 
       <div className='flex flex-col w-full gap-12'>
-        <Results />
-        <Results />
+        <Results subtitle={subtitle} />
       </div>
       
     </div>

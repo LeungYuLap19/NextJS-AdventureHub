@@ -47,4 +47,8 @@
   .content-details {
     @apply flex flex-col gap-7 text-customBlack-300 w-full
   }
+
+  .content-details-section {
+    @apply flex flex-col gap-5
+  }
 }
