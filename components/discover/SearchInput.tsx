@@ -90,7 +90,7 @@ export default function SearchInput({ activeTab, setSubtitle }: { activeTab: Sea
       <Button 
         onClick={handleSearch}
         disabled={disable}
-        className='absolute right-0 top-0 p-[4px] flex justify-center items-center h-[50px] max-md:h-10 aspect-square'
+        className='absolute right-0 top-0 p-[4px] flex justify-center items-center h-[50px] w-[50px] max-md:h-10 max-md:w-10'
       >
         <Image 
           src={'/root/search.png'}
