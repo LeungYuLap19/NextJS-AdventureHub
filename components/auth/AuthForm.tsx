@@ -11,6 +11,8 @@ import { useRouter } from 'next/navigation'
 import Logo from '../logo/Logo'
 import { authFormSchema } from '@/lib/utils'
 import CustomInput from './CustomInput'
+import { createAccount, createUser, getUserByUID, signInAccount } from '@/lib/actions/firebaseAuth'
+import { storeToCookies } from '@/lib/actions/cookies.action'
 
 export default function AuthForm({ type }: AuthFormProps) {
   const router = useRouter();
@@ -25,8 +27,19 @@ export default function AuthForm({ type }: AuthFormProps) {
         password: "",
     },
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    router.push('/discover');
+	
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+		const uid = type === 'sign-in' ? await signInAccount({email: values.email, password: values.password}) : 
+		await createAccount({email: values.email, password: values.password});
+		
+		if (uid) {
+			const userData = type === 'sign-in' ? await getUserByUID(uid) : 
+			await createUser({ uid: uid, username: values.username!, city: values.city!, email: values.email });
+			if (userData) {
+				await storeToCookies<UserData>('userData', userData);
+				router.push('/discover');
+			}
+		}
   }
 
   return (

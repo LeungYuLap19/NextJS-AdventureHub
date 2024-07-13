@@ -350,6 +350,22 @@ declare interface TextSearchParams {
   formatted_address: string;
 }
 
+// firebase api functions params
+declare interface AccountParams {
+  email: string;
+  password: string;
+}
+
+declare interface CreateUserParams {
+  uid: string;
+  username: string;
+  city: string;
+  email: string;
+}
+
+// firebase api responses 
+declare interface UserData extends CreateUserParams{};
+
 // functions interfaces ----------
 declare interface HandleKeyDownParams {
   event: React.KeyboardEvent<HTMLInputElement>;
