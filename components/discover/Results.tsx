@@ -2,34 +2,50 @@ import React, { useEffect, useState } from 'react'
 import Subtitle from './Subtitle'
 import ResultsItem from './ResultsItem';
 import { getFromLocalstorage, storeToLocalstorage } from '@/lib/actions/localStorage.actions';
-import { nearbySearch } from '@/lib/actions/fourSquareAPI';
-import { placeSearchFields } from '@/constants';
+import { nearbySearch, placeSearch } from '@/lib/actions/fourSquareAPI';
+import { placeSearchFields, searchTabs } from '@/constants';
 import { useSearchParams } from 'next/navigation';
 
 export default function Results({ subtitle }: { subtitle: string }) {
   const [results, setResults] = useState<ResultsItem[]>([]);
   const searchParams = useSearchParams();
   const type = searchParams.get('type');
+
+  const handleResultsUpdated = () => {
+    const resultsItems = getFromLocalstorage<ResultsItem>('resultsItems');
+    setResults(resultsItems);
+  };
   
   useEffect(() => {
-    const handleResultsUpdated = () => {
-      const resultsItems = getFromLocalstorage<ResultsItem>('resultsItems');
-      setResults(resultsItems);
-    };
-
     window.addEventListener('resultsUpdated', handleResultsUpdated);
     return () => {
       window.removeEventListener('resultsUpdated', handleResultsUpdated);
     };
   }, []);
 
-  useEffect(() => {
-    const getDefaultItems = async () => {
-      const data = await nearbySearch({fields: placeSearchFields, limit: 24});
+  const getDefaultItems = async (latitude: number, longitude: number, noLocation: boolean) => {
+    if (noLocation) {
+      const data = await nearbySearch({ fields: placeSearchFields, limit: 24 });
       storeToLocalstorage('defaultItems', data);
       setResults(data);
     }
+    else {
+      const data = await placeSearch({
+        latitude: latitude,
+        longitude: longitude,
+        radius: 5000,
+        categories: searchTabs[0].categories,
+        fields: placeSearchFields,
+        sort: 'RELEVANCE',
+        limit: 24
+      });
+      storeToLocalstorage('defaultItems', data);
+      setResults(data);
+    }
+    
+  }
 
+  useEffect(() => {
     const defaultItems = getFromLocalstorage<ResultsItem>('defaultItems');
     const preivousItems = getFromLocalstorage<ResultsItem>('resultsItems');
 
@@ -37,7 +53,14 @@ export default function Results({ subtitle }: { subtitle: string }) {
       setResults(preivousItems);
     }
     else if (defaultItems.length === 0) {
-      getDefaultItems();
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const { latitude, longitude } = position.coords;
+          getDefaultItems(latitude, longitude, false);
+        }, (error) => {
+          getDefaultItems(0, 0, true);
+        });
+      }
     }
     else {
       setResults(defaultItems);
