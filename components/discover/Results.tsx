@@ -5,6 +5,7 @@ import { getFromLocalstorage, storeToLocalstorage } from '@/lib/actions/localSto
 import { nearbySearch, placeSearch } from '@/lib/actions/fourSquareAPI';
 import { placeSearchFields, searchTabs } from '@/constants';
 import { useSearchParams } from 'next/navigation';
+import { getLatLong } from '@/lib/actions/ipifyAPI';
 
 export default function Results({ subtitle }: { subtitle: string }) {
   const [results, setResults] = useState<ResultsItem[]>([]);
@@ -25,24 +26,37 @@ export default function Results({ subtitle }: { subtitle: string }) {
 
   const getDefaultItems = async (latitude: number, longitude: number, noLocation: boolean) => {
     if (noLocation) {
-      const data = await nearbySearch({ fields: placeSearchFields, limit: 24 });
-      storeToLocalstorage('defaultItems', data);
-      setResults(data);
+      const location = await getLocation();
+      if (location) {
+        const { latitude, longitude } = location;
+        const data = await placeSearch({
+          latitude: latitude, longitude: longitude,
+          radius: 30000, categories: searchTabs[0].categories,
+          fields: placeSearchFields, sort: 'RELEVANCE', limit: 24
+        });
+        storeToLocalstorage('defaultItems', data);
+        setResults(data);
+      }
+      else {
+        const data = await nearbySearch({ fields: placeSearchFields, limit: 24 });
+        storeToLocalstorage('defaultItems', data);
+        setResults(data);
+      }
     }
     else {
       const data = await placeSearch({
-        latitude: latitude,
-        longitude: longitude,
-        radius: 5000,
-        categories: searchTabs[0].categories,
-        fields: placeSearchFields,
-        sort: 'RELEVANCE',
-        limit: 24
+        latitude: latitude, longitude: longitude,
+        radius: 5000, categories: searchTabs[0].categories,
+        fields: placeSearchFields, sort: 'RELEVANCE', limit: 24
       });
       storeToLocalstorage('defaultItems', data);
       setResults(data);
     }
-    
+  }
+
+  const getLocation = async (): Promise<LatLong | null> => {
+    const data = await getLatLong();
+    return data;
   }
 
   useEffect(() => {

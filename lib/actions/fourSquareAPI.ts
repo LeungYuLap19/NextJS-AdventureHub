@@ -50,7 +50,7 @@ Promise<PlacePhoto[]> {
 
 export async function nearbySearch({ fields, limit }: NearbySearchParams): Promise<ResultsItem[]> {
   try {
-    const response = await axios.get(`${baseUrl}places/nearby?fields=${fields.join(',')}&limit=${limit}`, {
+    const response = await axios.get(`${baseUrl}places/nearby?fields=${fields.join(',')}&limit=${limit}&hacc=`, {
       headers
     });
     // console.log(response.data.results);
