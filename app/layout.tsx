@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Ubuntu } from "next/font/google";
 import "./globals.css";
+import { register } from 'swiper/element/bundle';
+import "swiper/swiper-bundle.css";
+import 'swiper/css/navigation';
 
 const inter = Inter({ 
   subsets: ["latin"], 
@@ -21,6 +24,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
+  register();
   return (
     <html lang="en">
       <body className={`${inter.variable} ${ubuntu.variable}`}>{children}</body>

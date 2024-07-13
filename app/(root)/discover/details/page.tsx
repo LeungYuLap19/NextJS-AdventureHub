@@ -9,6 +9,7 @@ import Reviews from '@/components/details/Reviews';
 import { getResultsItemById } from '@/lib/actions/localStorage.actions';
 import { placeDetails } from '@/lib/actions/fourSquareAPI';
 import { placeDetailsFields } from '@/constants';
+import { textSearch } from '@/lib/actions/googleAPI';
 
 export default function page() {
   const searchParams = useSearchParams();
@@ -16,10 +17,23 @@ export default function page() {
   const [type, setType] = useState<'details' | 'reviews'>('details');
   const [resultsItem, setResultsItem] = useState<ResultsItem | null>(null);
   const [itemDetails, setItemDetails] = useState<PlaceDetails | null>(null);
+  const [extraData, setExtraData] = useState<ExtraData | null>(null);
 
   const getPlaceDetails = async () => {
     const data = await placeDetails({ fsq_id: id!, fields: placeDetailsFields });
     setItemDetails(data);
+  }
+
+  const getExtraData = async () => {
+    if (resultsItem && itemDetails) {
+      const data = await textSearch({ 
+        name: resultsItem?.name, 
+        latitude: itemDetails?.geocodes.main.latitude, 
+        longitude: itemDetails?.geocodes.main.longitude, 
+        formatted_address: itemDetails?.location.formatted_address 
+      });
+      setExtraData(data);
+    }
   }
 
   // do fetch reviews from google place
@@ -30,6 +44,12 @@ export default function page() {
 
     getPlaceDetails();
   }, [id]);
+
+  useEffect(() => {
+    if (resultsItem && itemDetails) {
+      getExtraData();
+    }
+  }, [resultsItem, itemDetails]);
 
   return (
     <div className='flex 3xl:justify-center gap-8 w-full max-lg:pb-28 max-md:flex-col pt-5'>
@@ -68,11 +88,15 @@ export default function page() {
               <TabsContent value="details" className='details-content'>
                 {
                   itemDetails &&
-                  <Details itemDetails={itemDetails} />
+                  <Details itemDetails={itemDetails} extraData={extraData} />
                 }
               </TabsContent>
               <TabsContent value="reviews" className='details-content'>
-                <Reviews />
+                {
+                  extraData?.reviews ?
+                  <Reviews reviews={extraData?.reviews} /> :
+                  'No Reviews'
+                }
               </TabsContent>
             </Tabs>
           </div>

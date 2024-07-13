@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Photo from './Photo'
 import { Rating } from '@mui/material'
 import Image from 'next/image'
+import PhotosSwiper from './PhotosSwiper';
 
 export default function PhotosCard({ item, photos=[] }: PhotosCardProps) {
   const morePhotos = photos.length - 1;
+  const [open, setOpen] = useState<boolean>(false);
   return (
     <div className='md:w-[60%] md:h-fit md:max-w-details-custom aspect-[7/10] flex flex-col rounded-lg overflow-hidden bg-customWhite-200 flex-shrink-0'>
       <div className='w-full bg-customBlack-100 relative flex-grow'>
@@ -18,7 +20,9 @@ export default function PhotosCard({ item, photos=[] }: PhotosCardProps) {
         }
         {
           morePhotos > 0 &&
-          <div className='absolute md:left-7 left-5 md:bottom-7 bottom-5 md:w-16 w-12 aspect-square rounded-lg border-2 border-customWhite-200 overflow-hidden cursor-pointer'>
+          <div 
+            onClick={() => setOpen(true)}
+            className='absolute md:left-7 left-5 md:bottom-7 bottom-5 md:w-16 w-12 aspect-square rounded-lg border-2 border-customWhite-200 overflow-hidden cursor-pointer'>
             <div className='relative w-full h-full'>
               <Photo 
                 displayName={''}
@@ -46,7 +50,7 @@ export default function PhotosCard({ item, photos=[] }: PhotosCardProps) {
           <Rating
             className='mt-2' 
             name="half-rating-read" 
-            defaultValue={item.rating}
+            defaultValue={item.rating / 2}
             precision={0.1} 
             size="small" readOnly 
           />
@@ -59,6 +63,11 @@ export default function PhotosCard({ item, photos=[] }: PhotosCardProps) {
           width={25} height={25}
         />
       </div>
+
+      {
+        open && 
+        <PhotosSwiper photos={photos} setOpen={setOpen} />
+      }
     </div>
   )
 }

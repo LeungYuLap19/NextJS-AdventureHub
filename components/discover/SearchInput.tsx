@@ -59,7 +59,7 @@ export default function SearchInput({ activeTab, setSubtitle }: { activeTab: Sea
       const data = await placeSearch({ latitude, longitude, radius, categories, fields, sort, limit });
       storeToLocalstorage<ResultsItem>('resultsItems', data);
 
-      const subtitle = `${activeTab.label === 'All' ? 'Popular Places at ' : activeTab.label + ' at '} ${selected.text.primary.split(',')[0].trim()}`;
+      const subtitle = `${activeTab.label === 'All' ? 'Popular Places in ' : activeTab.label + ' in '} ${selected.text.primary.split(',')[0].trim()}`;
       storeToLocalstorage<string>('resultsSubtitle', [subtitle]);
       setSubtitle(subtitle);
       

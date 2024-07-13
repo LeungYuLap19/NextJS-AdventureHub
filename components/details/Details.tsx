@@ -8,7 +8,7 @@ import Map from './Map';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 
-export default function Details({ itemDetails }: { itemDetails: PlaceDetails }) {
+export default function Details({ itemDetails, extraData }: { itemDetails: PlaceDetails, extraData: ExtraData | null}) {
   const {
     // fsq_id, 
     description, tips, // Overview
@@ -19,139 +19,115 @@ export default function Details({ itemDetails }: { itemDetails: PlaceDetails }) 
     price, popularity, // indicators
   } = itemDetails;
 
-  const showCreditCards = features.payment?.credit_cards?.accepts_credit_cards || false;
-  const showDigitalWallet = features.payment?.digital_wallet?.accepts_nfc || false;
-  const showServices = features.services || false;
-  const showDineIn = features.services?.dine_in || false;
-  const showFoodNDrink = features.food_and_drink || false;
-  const showAlcohol = features.food_and_drink?.alcohol || false;
-  const showMeals = features.food_and_drink?.meals || false;
   const isOpening = hours.open_now ? 'Opening Now' : 'Not Opening Now';
   const isLocalHoliday = hours.is_local_holiday ? 'Local Holiday' : '';
-  const formattedHours = convertOpeningHours(hours.regular);
+  const formattedHours = hours.regular ? convertOpeningHours(hours.regular) : null;
+  const hasOverviewContent = description || features?.payment?.credit_cards || features?.payment?.digital_wallet?.accepts_nfc || features?.services || features?.food_and_drink;
+  
+  const paymentBadges = features?.payment?.credit_cards
+  ? Object.entries(features.payment.credit_cards).map(([card, value], index) => value && <Badge key={index} text={capitalizeWords(card.replaceAll('_', ' '))} />).filter(Boolean)
+  : [];
+
+  const serviceBadges = features?.services
+    ? Object.entries(features.services).map(([service, value], index) => service !== 'dine_in' && value && <Badge key={index} text={capitalizeWords(service.replaceAll('_', ' '))} />).filter(Boolean)
+    : [];
+
+  const dineInBadges = features?.services?.dine_in
+    ? Object.entries(features.services.dine_in).map(([reserve, value], index) => value && <Badge key={index} text={capitalizeWords(reserve.replaceAll('_', ' '))} />).filter(Boolean)
+    : [];
+
+  const drinkBadges = features?.food_and_drink?.alcohol
+    ? Object.entries(features.food_and_drink.alcohol).map(([drink, value], index) => value && <Badge key={index} text={capitalizeWords(drink.replaceAll('_', ' '))} />).filter(Boolean)
+    : [];
+  
+  const foodBadges = features?.food_and_drink?.meals
+    ? Object.entries(features.food_and_drink.meals).map(([food, value], index) => value && <Badge key={index} text={capitalizeWords(food.replaceAll('_', ' '))} />).filter(Boolean)
+    : [];
+
+  const socialMediaLinks = social_media
+    ? Object.entries(social_media).map(([type, name], index) => name && <SocialMediaLink key={index} type={type} name={name} />).filter(Boolean)
+    : [];
 
   return (
     <div className='content-details'>
-      {
-        description &&
+      {hasOverviewContent && (
         <div className='content-details-section'>
           <Subtitle title={'Overview'} />
-          <p className='max-2xl:text-sm w-fit'>
-            {description}
-          </p>
-          {/* {
-            tips &&
-            tips.map((tip: Tip, index) => (
-              <Badge key={index} text={tip.text} />
-            ))
-          } */}
+          {description && <p className='max-2xl:text-sm w-fit'>{description}</p>}
 
-          {
-            showCreditCards &&
+          {paymentBadges.length > 0 && (
             <div className='flex gap-2 flex-wrap'>
               <Badge text='Payments:' lead={true} />
-              {
-                Object.entries(features.payment.credit_cards).map(([card, value], index) => {
-                  if (value) {
-                    return <Badge key={index} text={capitalizeWords(card.replaceAll('_', ' '))} />;
-                  }
-                })
-              }
-              {
-                showDigitalWallet &&
-                <Badge text='Accepts NFC' />
-              }
+              {paymentBadges}
+              {features?.payment?.digital_wallet?.accepts_nfc && <Badge text='Accepts NFC' />}
             </div>
-          }
+          )}
 
-          {
-            showServices &&
+          {(serviceBadges.length > 0 || dineInBadges.length > 0) && (
             <div className='flex gap-2 flex-wrap'>
               <Badge text='Services:' lead={true} />
-              {
-                Object.entries(features.services).map(([service, value], index) => {
-                  if (service !== 'dine_in' && value) {
-                    return <Badge key={index} text={capitalizeWords(service.replaceAll('_', ' '))} />
-                  }
-                })
-              }
-              {
-                showDineIn &&
-                Object.entries(features.services.dine_in).map(([reserve, value], index) => {
-                  if (value) {
-                    return <Badge key={index} text={capitalizeWords(reserve.replaceAll('_', ' '))} />
-                  }
-                })
-              }
+              {serviceBadges}
+              {dineInBadges}
             </div>
-          }
+          )}
 
-          {
-            showFoodNDrink &&
+          {(foodBadges.length > 0 || drinkBadges.length > 0) && (
             <div className='flex gap-2 flex-wrap'>
               <Badge text='Food & Drink:' lead={true} />
-              {
-                showAlcohol &&
-                Object.entries(features.food_and_drink.alcohol).map(([drink, value], index) => {
-                  if (value) {
-                    return <Badge key={index} text={capitalizeWords(drink.replaceAll('_', ' '))} />
-                  }
-                })
-              }
-              {
-                showMeals &&
-                Object.entries(features.food_and_drink.meals).map(([food, value], index) => {
-                  if (value) {
-                    return <Badge key={index} text={capitalizeWords(food.replaceAll('_', ' '))} />
-                  }
-                })
-              }
+              {drinkBadges} 
+              {foodBadges}
             </div>
-          }
+          )}
         </div>
-      }
+      )}
 
-      <div className='content-details-section'>
-        <Subtitle title={'Opening Hours'} />
-        <div className='flex flex-col gap-5'>
-          <p className='max-2xl:text-sm font-semibold'>{isOpening + ' ∙ '}
-            { hours.is_local_holiday && <span className='font-normal'>{isLocalHoliday + ' ∙ '}</span> }
-            <span className='font-normal'>{hours.display.toLowerCase()}</span>
-          </p>
+      {hours && (hours.open_now !== undefined || hours.is_local_holiday !== undefined || hours.display || formattedHours) && (
+        <div className='content-details-section'>
+          <Subtitle title={'Opening Hours'} />
+          <div className='flex flex-col gap-5'>
+            {(hours.open_now !== undefined || hours.is_local_holiday !== undefined || hours.display) && (
+              <p className='max-2xl:text-sm font-semibold'>
+                {hours.open_now !== undefined && `${isOpening}`}
+                {hours.is_local_holiday && <span className='font-normal'> ∙ {isLocalHoliday} ∙ </span>}
+                {hours.display && <span className='font-normal'> ∙ {hours.display.toLowerCase()}</span>}
+              </p>
+            )}
+            {formattedHours && (
+              <div className='flex flex-col'>
+                {formattedHours.map((formattedHour, index) => (
+                  <DetailsTable key={index} label={formattedHour.weekday} data={formattedHour.hours} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {(location || tel || email || website || social_media || geocodes) && (
+        <div className='content-details-section'>
+          <Subtitle title={'Basic Information'} />
           <div className='flex flex-col'>
-            {
-              formattedHours.map((formattedHour, index) => (
-                <DetailsTable key={index} label={formattedHour.weekday} data={formattedHour.hours} />
-              ))
-            }
+            {website && <DetailsTable label='Website' data={website} />}
+            {location?.formatted_address && <DetailsTable label="Address" data={location.formatted_address} />}
+            {tel && <DetailsTable label='Phone' data={tel} />}
+            {email && <DetailsTable label='Email' data={email} />}
           </div>
+          {socialMediaLinks.length > 0 && (
+            <div className='flex gap-2 flex-wrap items-center'>
+              <p className='max-2xl:text-sm mr-3'>Social Media</p>
+              {socialMediaLinks}
+            </div>
+          )}
+          {geocodes?.main && (
+            <>
+              <Map latitude={geocodes.main.latitude} longitude={geocodes.main.longitude} />
+              <Link href={extraData ? extraData.googleMapsUri : `https://www.google.com/maps/search/?api=1&query=${geocodes.main.latitude},${geocodes.main.longitude}`} target='_blank'>
+                <Button className='w-fit bg-customWhite-200 cursor-pointer'>Open In Google Map</Button>
+              </Link>
+            </>
+          )}
         </div>
-      </div>
-
-      <div className='content-details-section'>
-        <Subtitle title={'Basic Information'} />
-        <div className='flex flex-col'>
-          { website && <DetailsTable label='Website' data={website} /> }
-          { location && <DetailsTable label="Address" data={location.formatted_address} /> }
-          { tel && <DetailsTable label='Phone' data={tel} /> }
-          { email && <DetailsTable label='Email' data={email} /> }
-        </div>
-        {
-          social_media &&
-          <div className='flex gap-2 flex-wrap items-center'>
-            <p className='max-2xl:text-sm mr-3'>Social Media</p>
-            {
-              Object.entries(social_media).map(([type, name], index) => (
-                <SocialMediaLink key={index} type={type} name={name} />
-              ))
-            }
-          </div>
-        }
-        <Map latitude={geocodes.main.latitude} longitude={geocodes.main.longitude}/>
-        <Link href={`https://www.google.com/maps/search/?api=1&query=${geocodes.main.latitude},${geocodes.main.longitude}`} target='_blank'>
-          <Button className='w-fit bg-customWhite-200'>Open In Google Map</Button>
-        </Link>
-      </div>
+      )}
     </div>
-  )
+  );
 }

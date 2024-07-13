@@ -282,6 +282,34 @@ declare interface Tip {
   text: string;
 }
 
+// google api response 
+declare interface ExtraData {
+  id: string;
+  googleMapsUri: string;
+  reviews: Review[];
+}
+
+declare type Review = {
+  name: string;
+  relativePublishTimeDescription: string;
+  rating: number;
+  text: LocalizedText;
+  originalText: LocalizedText;
+  authorAttribution: AuthorAttribution;
+  publishTime: string;
+}
+
+declare type LocalizedText = {
+  text: string;
+  languageCode: string;
+}
+
+declare type AuthorAttribution = {
+  displayName: string;
+  uri: string;
+  photoUri: string;
+}
+
 // api functions params ----------
 declare interface AutoCompleteParams {
   name: string; // user inputs
@@ -312,6 +340,14 @@ declare interface NearbySearchParams {
 declare interface PlaceDetailsParams {
   fsq_id: string;
   fields: string[];
+}
+
+// google api functions params 
+declare interface TextSearchParams {
+  name: string;
+  latitude: number;
+  longitude: number;
+  formatted_address: string;
 }
 
 // functions interfaces ----------
