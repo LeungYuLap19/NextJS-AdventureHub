@@ -3,27 +3,27 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } f
 import { getFirestore, collection, addDoc, where, query, getDocs } from "firebase/firestore";
 import { app } from "../firebase"; 
 
-export async function createAccount({ email, password }: AccountParams): Promise<string | null> {
+export async function createAccount({ email, password }: AccountParams): Promise<string | AuthError> {
   const auth = getAuth(app);
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     // console.log(userCredential.user.uid);
-    return userCredential.user.uid || null;
+    return userCredential.user.uid;
   } catch (error: any) {
     console.error('Create Account Error:', error.code, error.message);
-    return null;
+    return getError(error.code);
   }
 }
 
-export async function signInAccount({ email, password }: AccountParams): Promise<string | null> {
+export async function signInAccount({ email, password }: AccountParams): Promise<string | AuthError> {
   const auth = getAuth(app);
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     // console.log(userCredential.user);
-    return userCredential.user.uid || null;
+    return userCredential.user.uid;
   } catch (error: any) {
     console.error('Sign In Account Error:', error.code, error.message);
-    return null;
+    return getError(error.code);
   }
 }
 
@@ -63,5 +63,16 @@ export async function getUserByUID(uid: string): Promise<UserData | null> {
   } catch (error: any) {
     console.error('Get User By UID Error:', error.code, error.message);
     return null;
+  }
+}
+
+function getError(errorCode: string): AuthError {
+  switch(errorCode) {
+    case 'auth/invalid-credential':
+      return {errorCode: errorCode, message: 'Incorrect email or password.'};
+    case 'auth/email-already-in-use':
+      return {errorCode: errorCode, message: 'Email already in use.'};
+    default:
+      return {errorCode: errorCode, message: 'No network or server error'};
   }
 }

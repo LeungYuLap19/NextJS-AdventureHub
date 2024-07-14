@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { z } from "zod"
@@ -16,6 +16,7 @@ import { storeToCookies } from '@/lib/actions/cookies.action'
 
 export default function AuthForm({ type }: AuthFormProps) {
   const router = useRouter();
+	const [loading, setLoading] = useState<boolean>(false);
 
   const formSchema = authFormSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -29,15 +30,23 @@ export default function AuthForm({ type }: AuthFormProps) {
   });
 	
   async function onSubmit(values: z.infer<typeof formSchema>) {
-		const uid = type === 'sign-in' ? await signInAccount({email: values.email, password: values.password}) : 
+		setLoading(true);
+		const uid: any = type === 'sign-in' ? await signInAccount({email: values.email, password: values.password}) : 
 		await createAccount({email: values.email, password: values.password});
 		
 		if (uid) {
-			const userData = type === 'sign-in' ? await getUserByUID(uid) : 
-			await createUser({ uid: uid, username: values.username!, city: values.city!, email: values.email });
-			if (userData) {
-				await storeToCookies<UserData>('userData', userData);
-				router.push('/discover');
+			if (uid.errorCode) {
+				alert(uid.message);
+				setLoading(false);
+			}
+			else  {
+				const userData = type === 'sign-in' ? await getUserByUID(uid) : 
+				await createUser({ uid: uid, username: values.username!, city: values.city!, email: values.email });
+				if (userData) {
+					await storeToCookies<UserData>('userData', userData);
+					router.push('/discover');
+				}
+				setLoading(false);
 			}
 		}
   }
@@ -89,6 +98,7 @@ export default function AuthForm({ type }: AuthFormProps) {
 						</div>
 
 						<Button 
+							disabled={loading}
 							type='submit' 
 							className='w-full h-10 green-gradient text-customWhite-200'
 						>

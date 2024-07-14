@@ -22,16 +22,7 @@ const nextConfig = {
     },
     eslint: {
         ignoreDuringBuilds: true
-    },
-    async redirects() {
-      return [
-        {
-          source: '/',
-          destination: '/sign-in',
-          permanent: true, // This indicates a 301 permanent redirect
-        },
-      ];
-    },
+    }
 };
 
 export default nextConfig;

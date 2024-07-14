@@ -7,34 +7,22 @@ import SearchTab from '@/components/discover/SearchTab';
 import Subtitle from '@/components/discover/Subtitle';
 import { searchTabs } from '@/constants';
 import { getFromLocalstorage } from '@/lib/actions/localStorage.actions';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { getFromCookies } from '@/lib/actions/cookies.action';
+import { useSearchParams } from 'next/navigation';
 
 const DiscoverPage = () => {
   const [activeTab, setActiveTab] = useState<SearchTabParams>(searchTabs[0]);
   const [subtitle, setSubtitle] = useState<string>('Popular places around you');
   const searchParams = useSearchParams();
-  const router = useRouter();
   const type = searchParams.get('type');
 
-  const getUserData = async () => {
-    const userData = await getFromCookies<UserData>('userData');
-    if (userData) {
-      // console.log(userData);
-      if (type === 'results') {
-        const subtitle = getFromLocalstorage<string>('resultsSubtitle');
-        setSubtitle(subtitle[0]);
-      } else {
-        setSubtitle('Popular places around you');
-      }
-    }
-    else {
-      router.push('/sign-in');
-    }
-  }
-
   useEffect(() => {
-    getUserData();
+    // get user data
+    if (type === 'results') {
+      const subtitle = getFromLocalstorage<string>('resultsSubtitle');
+      setSubtitle(subtitle[0]);
+    } else {
+      setSubtitle('Popular places around you');
+    }
   }, [type]);
 
   return (

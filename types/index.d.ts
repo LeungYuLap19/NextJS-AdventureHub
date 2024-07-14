@@ -366,6 +366,11 @@ declare interface CreateUserParams {
 // firebase api responses 
 declare interface UserData extends CreateUserParams{};
 
+declare interface AuthError {
+  errorCode: string;
+  message: string;
+}
+
 // functions interfaces ----------
 declare interface HandleKeyDownParams {
   event: React.KeyboardEvent<HTMLInputElement>;
