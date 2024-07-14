@@ -40,7 +40,6 @@ const DetailsPage = () => {
     const fromDefault = getResultsItemById('defaultItems', id!);
     const fromResults = getResultsItemById('resultsItems', id!);
 
-    console.log(fromDefault)
     setResultsItem(fromDefault || fromResults);
 
     getPlaceDetails();
