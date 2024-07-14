@@ -22,7 +22,7 @@ export default function PhotosCard({ item, photos=[] }: PhotosCardProps) {
           morePhotos > 0 &&
           <div 
             onClick={() => setOpen(true)}
-            className='absolute md:left-7 left-5 md:bottom-7 bottom-5 md:w-16 w-12 aspect-square rounded-lg border-2 border-customWhite-200 overflow-hidden cursor-pointer'>
+            className='absolute md:left-7 left-5 md:bottom-7 bottom-5 md:w-16 w-12 md:h-16 h-12 rounded-lg border-2 border-customWhite-200 overflow-hidden cursor-pointer'>
             <div className='relative w-full h-full'>
               <Photo 
                 displayName={''}
