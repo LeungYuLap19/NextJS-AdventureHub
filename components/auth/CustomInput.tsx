@@ -32,6 +32,7 @@ export default function CustomInput({ control, name, label, placeholder }: Custo
           <div>
             <FormControl>
               <Input 
+                  id={label}
                   placeholder={placeholder}
                   type={name === 'password' ? 'password' : 'text'}
                   className='bg-customWhite-100 border border-customBlack-100 placeholder:text-customBlack-100'
