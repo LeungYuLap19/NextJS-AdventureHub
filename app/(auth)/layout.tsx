@@ -11,6 +11,7 @@ export default function RootLayout({ children }: Readonly<{children: React.React
               alt='auth-background'
               fill={true}
               style={{objectFit: 'cover', objectPosition: 'center'}}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
     </main>

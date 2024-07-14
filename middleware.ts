@@ -5,7 +5,7 @@ export async function middleware(request: NextRequest) {
   const userData = await getFromCookies<UserData>('userData');
 
   // Define paths that should be publicly accessible without authentication
-  const publicPaths = ['/sign-in', '/sign-up', '/_next', '/static', '/favicon.ico', '/icons'];
+  const publicPaths = ['/sign-in', '/sign-up', '/_next', '/static', '/favicon.ico', '/icons', '/auth', '/root'];
 
   // Check if the request URL matches any of the public paths
   const isPublicPath = publicPaths.some(path => request.nextUrl.pathname.startsWith(path));
