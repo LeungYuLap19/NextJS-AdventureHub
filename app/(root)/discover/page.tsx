@@ -5,35 +5,26 @@ import Results from '@/components/discover/Results';
 import SearchInput from '@/components/discover/SearchInput';
 import SearchTab from '@/components/discover/SearchTab';
 import Subtitle from '@/components/discover/Subtitle';
-import { searchTabs } from '@/constants';
-import { getFromLocalstorage } from '@/lib/actions/localStorage.actions';
+import { categorizedSearchTabs } from '@/constants';
 import { useSearchParams } from 'next/navigation';
+import { useGetResults } from '@/lib/hooks/useGetResults';
 
 const DiscoverPage = () => {
-  const [activeTab, setActiveTab] = useState<SearchTabParams>(searchTabs[0]);
-  const [subtitle, setSubtitle] = useState<string>('Popular places around you');
+  const [activeTab, setActiveTab] = useState<CategorizedSearchTabParams>(categorizedSearchTabs[0]);
   const searchParams = useSearchParams();
   const type = searchParams.get('type');
 
-  useEffect(() => {
-    // get user data
-    if (type === 'results') {
-      const subtitle = getFromLocalstorage<string>('resultsSubtitle');
-      setSubtitle(subtitle[0]);
-    } else {
-      setSubtitle('Popular places around you');
-    }
-  }, [type]);
+  const results = useGetResults(type);
 
   return (
     <div className='flex flex-col gap-7 pt-[60px] max-sm:pt-[30px] max-lg:pb-28'>
       <Header title={<>Where do<br />you want to go?</>} />
 
       <div className='flex gap-[20px] max-md:flex-col md:mb-12'>
-        <SearchInput activeTab={activeTab} setSubtitle={setSubtitle} />
+        <SearchInput activeTab={activeTab} />
         <Subtitle title={<>Categories</>} style={'md:hidden'} />
         <div className='flex items-center h-[50px] max-md:h-10 overflow-auto'>
-          {searchTabs.map((tab: SearchTabParams) => (
+          {categorizedSearchTabs.map((tab: CategorizedSearchTabParams) => (
             <SearchTab 
               key={tab.label}
               tab={tab}
@@ -45,7 +36,11 @@ const DiscoverPage = () => {
       </div>
 
       <div className='flex flex-col w-full gap-12'>
-        <Results subtitle={subtitle} />
+        {
+          results.map((categorizedResults: CategorizedResultsItem) => (
+            <Results key={categorizedResults.label} categorizedResults={categorizedResults} />
+          ))
+        }
       </div>
     </div>
   );

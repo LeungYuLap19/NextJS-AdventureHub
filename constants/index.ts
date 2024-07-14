@@ -54,6 +54,66 @@ export const searchTabs: SearchTabParams[] = [
   },
 ];
 
+export const categorizedSearchTabs: CategorizedSearchTabParams[] = [
+  {
+    label: 'All',
+    imgUrl: '/root/all.svg',
+    categories: {
+      'Popular Places': [
+        10001, 10002, 10004, 10024, 10027, 10068,
+        13003, 13065, 13028, 13040, 13062, 13032,
+        14005, 14004, 16000, 17000
+      ]
+    }
+  },
+  {
+    label: 'Attractions',
+    imgUrl: '/root/attractions.svg',
+    categories: {
+      'Historical and Cultural Sites': [16020, 16031, 16041],
+      'Parks and Gardens': [16034, 16035, 16036, 16037, 16039, 16017, 16008],
+      'Nature and Trails': [16004, 16019, 16027, 16028],
+      'Water Bodies': [16002, 16003],
+    }
+  },
+  {
+    label: 'Food and drink',
+    imgUrl: '/root/food and drink.svg',
+    categories: {
+      'Restaurants': [13065],
+      'Desserts and Cafes': [13040, 13032],
+      'Bars': [13003],
+      'Night Market': [13062]
+    }
+  },
+  {
+    label: 'Entertainments',
+    imgUrl: '/root/entertainment.svg',
+    categories: {
+      'Family and Amusement': [10002, 10001, 10056],
+      'Movie Theaters': [10024],
+      'Cultural and Educational': [10027]
+    }
+  },
+  {
+    label: 'Shopping',
+    imgUrl: '/root/shopping.svg',
+    categories: {
+      'Shopping Spots': [17039, 17114, 17115],
+      'Arts and Crafts Stores': [17003],
+      'Bookstores': [17018],
+      'Market': [17144],
+    }
+  },
+  {
+    label: 'Events',
+    imgUrl: '/root/event.svg',
+    categories: {
+      'Events': [14005, 14004]
+    }
+  },
+]
+
 export const placeSearchFields: string[] = ['fsq_id', 'name', 'rating', 'categories'];
 
 export const placeDetailsFields: string[] = [

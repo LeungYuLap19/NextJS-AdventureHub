@@ -33,10 +33,16 @@ declare interface SearchTabParams {
   categories: number[];
 }
 
+declare interface CategorizedSearchTabParams {
+  label: string;
+  imgUrl: string;
+  categories: { [key: string]: number[]; };
+}
+
 declare interface SearchTabProps {
-  tab: SearchTabParams; 
-  activeTab: SearchTabParams;
-  setActiveTab: (tab: SearchTabParams) => void;
+  tab: CategorizedSearchTabParams; 
+  activeTab: CategorizedSearchTabParams;
+  setActiveTab: (tab: CategorizedSearchTabParams) => void;
 }
 
 declare interface PhotoProps {
@@ -92,6 +98,11 @@ declare interface Geo {
 declare interface LatLong {
   latitude: number;
   longitude: number;
+}
+
+declare interface CategorizedResultsItem {
+  label: string;
+  results: ResultsItem[];
 }
 
 declare interface ResultsItem {

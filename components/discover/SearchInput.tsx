@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { Button } from '../ui/button';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function SearchInput({ activeTab, setSubtitle }: { activeTab: SearchTabParams, setSubtitle: (subtitle: string) => void }) {
+export default function SearchInput({ activeTab }: { activeTab: CategorizedSearchTabParams }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [searchResults, setSearchResults] = useState<AutoCompleteResponse[] | null>(null);
   const [selected, setSelected] = useState<AutoCompleteResponse | null>(null);
@@ -50,18 +50,19 @@ export default function SearchInput({ activeTab, setSubtitle }: { activeTab: Sea
       const latitude = selected.geo.center.latitude;
       const longitude = selected.geo.center.longitude;
       const radius = countCommaSpacePairs(selected.text.primary) == 0 ? 50000 : 10000;
-      const categories = activeTab.categories;
       const fields = placeSearchFields;
       const sort = 'RELEVANCE';
-      const limit = 24;
+      const limit = (activeTab.label === 'All' || activeTab.label === 'Events') ? 24 : 8;
 
       setDisable(true);
-      const data = await placeSearch({ latitude, longitude, radius, categories, fields, sort, limit });
-      storeToLocalstorage<ResultsItem>('resultsItems', data);
 
-      const subtitle = `${activeTab.label === 'All' ? 'Popular Places in ' : activeTab.label + ' in '} ${selected.text.primary.split(',')[0].trim()}`;
-      storeToLocalstorage<string>('resultsSubtitle', [subtitle]);
-      setSubtitle(subtitle);
+      const categorizedResults: CategorizedResultsItem[] = [];
+      
+      for (const [categoryLabel, categoryIds] of Object.entries(activeTab.categories)) {
+        const data = await placeSearch({ latitude, longitude, radius, categories: categoryIds, fields, sort, limit });
+        categorizedResults.push({ label: categoryLabel, results: data });
+      }
+      storeToLocalstorage<CategorizedResultsItem>('resultsItems', categorizedResults);
       
       const event = new Event('resultsUpdated');
       window.dispatchEvent(event);
@@ -102,7 +103,7 @@ export default function SearchInput({ activeTab, setSubtitle }: { activeTab: Sea
       
       {
         searchResults &&
-        <div className='flex flex-col absolute top-[60px] max-md:top-[50px] left-0 w-full bg-customWhite-200 z-10 rounded-lg overflow-hidden drop-shadow-default'>
+        <div className='flex flex-col absolute top-[60px] max-md:top-[50px] left-0 w-full bg-customWhite-200 z-50 rounded-lg overflow-hidden drop-shadow-default'>
           {
             searchResults.map((result: AutoCompleteResponse, index: number) => (
               <p 

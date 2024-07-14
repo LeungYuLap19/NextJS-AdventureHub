@@ -11,7 +11,8 @@ export function getFromLocalstorage<T>(key: string): T[] {
   try {
     const jsonData = localStorage.getItem(key);
     if (jsonData) {
-        return JSON.parse(jsonData);
+      // console.log(jsonData);
+      return JSON.parse(jsonData);
     }
     return [];
   } catch (error) {
@@ -22,9 +23,16 @@ export function getFromLocalstorage<T>(key: string): T[] {
 
 export function getResultsItemById(key: string, id: string): ResultsItem | null {
   try {
-    const data = getFromLocalstorage<ResultsItem>(key);
-    const dataWithId = data.find((data: ResultsItem) => data.fsq_id === id);
-    return dataWithId || null;
+    const categorizedResults = getFromLocalstorage<CategorizedResultsItem>(key);
+    for (const categorizedResult of categorizedResults) {
+      const dataWithId = categorizedResult.results.find((result: ResultsItem) => result.fsq_id === id);
+      if (dataWithId) {
+        console.log('Returning dataWithId:', dataWithId);
+        return dataWithId;
+      }
+    }
+
+    return null;
   } catch (error) {
     console.error('Get from Localstorage by Id Error:', error);
     return null;
