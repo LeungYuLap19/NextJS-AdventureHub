@@ -1,10 +1,10 @@
 'use client'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Input } from '../ui/input'
 import { countCommaSpacePairs, formUrlQuery, handleKeyDown } from '@/lib/utils'
 import { autoComplete, placeSearch } from '@/lib/actions/fourSquareAPI';
 import { placeSearchFields } from '@/constants';
-import { storeToLocalstorage } from '@/lib/actions/localStorage.actions';
+import { getFromLocalstorage, storeToLocalstorage } from '@/lib/actions/localStorage.actions';
 import Image from 'next/image';
 import { Button } from '../ui/button';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -15,7 +15,26 @@ export default function SearchInput({ activeTab }: { activeTab: CategorizedSearc
   const [selected, setSelected] = useState<AutoCompleteResponse | null>(null);
   const [disable, setDisable] = useState<boolean>(false);
   const searchParams = useSearchParams();
+  const type = searchParams.get('type');
   const router = useRouter();
+
+  useEffect(() => {
+    if (type === 'results') {
+      const resultsGeo = getFromLocalstorage<AutoCompleteResponse>('resultsGeo');
+      if (resultsGeo.length !== 0) {
+        setSelected(resultsGeo[0]);
+        if (inputRef.current) {
+          inputRef.current.value = resultsGeo[0].text.primary;
+        }
+      }
+    }
+    else {
+      if (inputRef.current) {
+        setSelected(null);
+        inputRef.current.value = '';
+      }
+    }
+  }, [type]);
 
   const handleEnter = () => {
     if (inputRef.current && searchResults && !selected) {
@@ -63,6 +82,8 @@ export default function SearchInput({ activeTab }: { activeTab: CategorizedSearc
         categorizedResults.push({ label: categoryLabel, results: data });
       }
       storeToLocalstorage<CategorizedResultsItem>('resultsItems', categorizedResults);
+      storeToLocalstorage<AutoCompleteResponse>('resultsGeo', [selected]);
+      storeToLocalstorage<CategorizedSearchTabParams>('resultsTab', [activeTab]);
       
       const event = new Event('resultsUpdated');
       window.dispatchEvent(event);

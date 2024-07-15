@@ -4,7 +4,7 @@ import { nearbySearch, placeSearch } from "../actions/fourSquareAPI";
 import { placeSearchFields, searchTabs } from "@/constants";
 import { getLatLong } from "../actions/ipifyAPI";
 
-export function useGetResults(type: string | null): CategorizedResultsItem[] {
+export function useGetResults(type: string | null): { results: CategorizedResultsItem[], getLocation: () => Promise<LatLong | null> } {
   const [results, setResults] = useState<CategorizedResultsItem[]>([]);
   const defaultLabel = 'Popular places around you';
 
@@ -79,5 +79,5 @@ export function useGetResults(type: string | null): CategorizedResultsItem[] {
     }
   }, [type]);
 
-  return results;
+  return { results, getLocation };
 }
