@@ -382,6 +382,16 @@ declare interface AuthError {
   message: string;
 }
 
+// weather api response
+declare interface Weather {
+  current: {
+    condition: {
+      text: string
+    };
+    temp_c: number
+  }
+}
+
 // functions interfaces ----------
 declare interface HandleKeyDownParams {
   event: React.KeyboardEvent<HTMLInputElement>;
