@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = `http://api.weatherapi.com/v1/current.json?key=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&q=`;
+const baseUrl = `https://api.weatherapi.com/v1/current.json?key=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&q=`;
 
 export async function getLocalWeather({ latitude, longitude }: LatLong): Promise<Weather | null> {
   try {
