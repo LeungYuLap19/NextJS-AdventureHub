@@ -9,11 +9,12 @@ export default function SearchInput() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [disable, setDisable] = useState<boolean>(false);
   const handleEnter = () => {
-
+    
   }
 
-  const handleOnChange = () => {
-
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const event = new CustomEvent("plannersSearch", { detail: e.target.value.trim() });
+    window.dispatchEvent(event);
   }
 
   const handleSearch = () => {
