@@ -1,10 +1,9 @@
 'use server'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, addDoc, where, query, getDocs } from "firebase/firestore";
-import { app } from "../firebase"; 
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { collection, addDoc, where, query, getDocs } from "firebase/firestore";
+import { auth, db } from "../firebase"; 
 
 export async function createAccount({ email, password }: AccountParams): Promise<string | AuthError> {
-  const auth = getAuth(app);
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     // console.log(userCredential.user.uid);
@@ -16,7 +15,6 @@ export async function createAccount({ email, password }: AccountParams): Promise
 }
 
 export async function signInAccount({ email, password }: AccountParams): Promise<string | AuthError> {
-  const auth = getAuth(app);
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     // console.log(userCredential.user);
@@ -28,7 +26,6 @@ export async function signInAccount({ email, password }: AccountParams): Promise
 }
 
 export async function createUser({ uid, username, city, email }: CreateUserParams): Promise<UserData | null> {
-  const db = getFirestore(app);
   try {
     await addDoc(collection(db, "users"), {
       uid: uid,
@@ -45,7 +42,6 @@ export async function createUser({ uid, username, city, email }: CreateUserParam
 }
 
 export async function getUserByUID(uid: string): Promise<UserData | null> {
-  const db = getFirestore(app);
   const usersRef = collection(db, "users");
 
   try {

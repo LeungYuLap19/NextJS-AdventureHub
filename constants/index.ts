@@ -144,3 +144,116 @@ export const placeDetailsFields: string[] = [
 export const weekdays: string[] = [
   'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'
 ];
+
+const planners: PlannersItem[] = [
+  {
+    pid: 'jcjbdbwcowcwwndnoc12er3432i9',
+    name: 'Testing Trip',
+    country: 'Hong Kong',
+    date: {
+      from: new Date('2024-08-01'),
+      to: new Date('2024-08-10'),
+    },
+  },
+  {
+    pid: 'asdhaskjdhasd12',
+    name: 'Summer Vacation',
+    country: 'France',
+    date: {
+      from: new Date('2024-07-15'),
+      to: new Date('2024-07-25'),
+    },
+  },
+  {
+    pid: 'qweqweqwe1231',
+    name: 'Business Trip',
+    country: 'USA',
+    date: {
+      from: new Date('2024-09-01'),
+      to: new Date('2024-09-05'),
+    },
+  },
+  {
+    pid: 'zxczxcxz12312',
+    name: 'Family Holiday',
+    country: 'Spain',
+    date: {
+      from: new Date('2024-10-10'),
+      to: new Date('2024-10-20'),
+    },
+  },
+  {
+    pid: 'lkjlkjlkj123123',
+    name: 'Adventure Trip',
+    country: 'Australia',
+    date: {
+      from: new Date('2024-11-01'),
+      to: new Date('2024-11-15'),
+    },
+  },
+  {
+    pid: 'poupoiuy12312',
+    name: 'Honeymoon',
+    country: 'Maldives',
+    date: {
+      from: new Date('2024-12-01'),
+      to: new Date('2024-12-10'),
+    },
+  },
+  {
+    pid: 'jhkjhkuy123123',
+    name: 'Cultural Exploration',
+    country: 'Japan',
+    date: {
+      from: new Date('2024-06-20'),
+      to: new Date('2024-06-30'),
+    },
+  },
+  {
+    pid: 'cvbcnvb123123',
+    name: 'Winter Wonderland',
+    country: 'Switzerland',
+    date: {
+      from: new Date('2024-12-20'),
+      to: new Date('2024-12-30'),
+    },
+  },
+  {
+    pid: 'wertqwert123123',
+    name: 'City Break',
+    country: 'Italy',
+    date: {
+      from: new Date('2024-05-05'),
+      to: new Date('2024-05-12'),
+    },
+  },
+  {
+    pid: 'mnbmnb123123',
+    name: 'Road Trip',
+    country: 'Canada',
+    date: {
+      from: new Date('2024-07-01'),
+      to: new Date('2024-07-14'),
+    },
+  },
+  {
+    pid: 'asdfasdf12312',
+    name: 'Beach Holiday',
+    country: 'Thailand',
+    date: {
+      from: new Date('2024-08-15'),
+      to: new Date('2024-08-25'),
+    },
+  },
+  {
+    pid: 'xzcxzv123123',
+    name: 'Wildlife Safari',
+    country: 'South Africa',
+    date: {
+      from: new Date('2024-09-10'),
+      to: new Date('2024-09-20'),
+    },
+  },
+];
+
+export default planners;

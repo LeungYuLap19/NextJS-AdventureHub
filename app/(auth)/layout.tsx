@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/toaster'
 import Image from 'next/image'
 import React from 'react'
 
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: Readonly<{children: React.React
               priority={true}
           />
         </div>
+        <Toaster />
     </main>
   )
 }

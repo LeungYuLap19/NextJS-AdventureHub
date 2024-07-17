@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge"
 import { z } from "zod";
 import qs from "query-string";
 import { weekdays } from "@/constants";
+import { addDays, differenceInDays, format } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -13,6 +14,18 @@ export const authFormSchema = (type: 'sign-in' | 'sign-up') => z.object({
   city: type === 'sign-in' ? z.string().optional() : z.string().min(3).max(50),
   email: z.string().email(),
   password: z.string().min(8),
+});
+
+export const tripFormSchema = z.object({
+  name: z.string().min(1, 'Name your trip.'),
+  country: z.string().min(1, 'Enter a country.'),
+  date: z.object({
+    from: z.date(),
+    to: z.date(),
+  }).refine(
+    (data) => data.from > addDays(new Date(), -1),
+    "Start date must be in the future"
+  ),
 });
 
 export const handleKeyDown = ({event, func}: HandleKeyDownParams) => {
@@ -71,4 +84,13 @@ function formattedOpenClose(open: string, close: string): string {
   const formattedClose = closeHours % 12 || 12;
 
   return `${formattedOpen}:${openMinutes} ${openSuffix} - ${formattedClose}:${closeMinutes} ${closeSuffix}`;
+}
+
+export function formatDateRange(plannerItem: PlannersItem): string {
+  const { from, to } = plannerItem.date;
+  const daysDifference = differenceInDays(to, from);
+  const formattedFrom = format(from, 'dd/MM/yyyy');
+  const formattedTo = format(to, 'dd/MM/yyyy');
+
+  return `${daysDifference} Days ∙ ${formattedFrom} - ${formattedTo}`;
 }

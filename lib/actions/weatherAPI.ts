@@ -1,3 +1,4 @@
+'use server'
 import axios from "axios";
 
 const baseUrl = `https://api.weatherapi.com/v1/current.json?key=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&q=`;
