@@ -7,7 +7,7 @@ import React from 'react'
 
 export default function page() {
   return (
-    <div className='flex flex-col gap-7 pt-[30px] max-sm:pt-[10px] max-lg:pb-28'>
+    <div className='flex flex-col gap-7 pt-[60px] max-sm:pt-[40px] max-lg:pb-28'>
       <Header title={<>Plan Your<br/>Perfect Trip</>} />
       <div className='flex justify-between gap-2'>
         <SearchInput />
