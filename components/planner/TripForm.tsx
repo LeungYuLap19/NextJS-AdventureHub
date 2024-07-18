@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '../ui/button';
 import { createPlanner } from '@/lib/actions/firebasePlanner';
 import { toast } from '../ui/use-toast';
+import { serverTimestamp } from 'firebase/firestore';
 
 export default function TripForm({ setOpen }: { setOpen: (open: boolean) => void }) {
   const [loading, setLoading] = useState<boolean>(false);
@@ -23,18 +24,21 @@ export default function TripForm({ setOpen }: { setOpen: (open: boolean) => void
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
-    await createPlanner({
+    const data = await createPlanner({
       pid: crypto.randomUUID(),
       name: values.name,
       country: values.country,
       date: values.date,
+      createAt: new Date(),
     });
-    setLoading(false);
-    setOpen(false);
-    toast({
-      title: `Trip Created ∙ ${values.name} ∙ to ${capitalizeWords(values.country)}`,
-      description: formatDateRange({ pid: '', name: '', country: '', date: values.date }),
-    });
+    if (data) {
+      setLoading(false);
+      setOpen(false);
+      toast({
+        title: `Trip Created ∙ ${values.name} ∙ to ${capitalizeWords(values.country)}`,
+        description: formatDateRange(data),
+      });
+    }
   }
 
   return (

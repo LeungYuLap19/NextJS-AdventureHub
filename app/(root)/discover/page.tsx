@@ -105,7 +105,7 @@ const DiscoverPage = () => {
 
 const WrappedDiscoverPage = () => (
   <Suspense fallback={<div>Loading...</div>}>
-    <DiscoverPage />
+    {/* <DiscoverPage /> */}
   </Suspense>
 );
 

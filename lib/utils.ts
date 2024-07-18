@@ -94,3 +94,27 @@ export function formatDateRange(plannerItem: PlannersItem): string {
 
   return `${daysDifference} Days ∙ ${formattedFrom} - ${formattedTo}`;
 }
+
+export function sortPlanners(planners: PlannersItem[], sortOption: string): PlannersItem[] {
+  const currentDate = new Date();
+  switch(sortOption) {
+    case 'duration': 
+      return planners.sort((a, b) => differenceInDays(b.date.to, b.date.from) - differenceInDays(a.date.to, a.date.from));
+    case 'earliest': 
+      return planners.sort((a, b) => a.date.from.getTime() - b.date.from.getTime());
+    case 'latest': 
+      return planners.sort((a, b) => b.date.from.getTime() - a.date.from.getTime());
+    case 'recent': 
+      return planners.sort((a, b) => {
+        const diffA = Math.abs(a.date.from.getTime() - currentDate.getTime());
+        const diffB = Math.abs(b.date.from.getTime() - currentDate.getTime());
+        return diffA - diffB;
+      });
+    case 'recently':  
+      return planners.sort((a, b) => a.createAt?.getTime() - b.createAt?.getTime());
+    case 'country/city': 
+      return planners.sort((a, b) => a.country.localeCompare(b.country));
+    default:
+      return [];
+  }
+}

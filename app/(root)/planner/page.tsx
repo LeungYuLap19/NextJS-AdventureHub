@@ -11,7 +11,7 @@ export default function page() {
       <Header title={<>Plan Your<br/>Perfect Trip</>} />
       <div className='flex justify-between gap-2'>
         <SearchInput />
-        <div className='h-[50px] max-md:h-10 flex items-center'>
+        <div className='h-[50px] max-md:h-10 flex items-center gap-2'>
           <AddTrip />
         </div>
       </div>

@@ -5,11 +5,14 @@ import Subtitle from '../discover/Subtitle';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { getFromCookies } from '@/lib/actions/cookies.action';
+import SortBy from './SortBy';
+import { sortPlanners } from '@/lib/utils';
 
 export default function Results() {
   const [planners, setPlanners] = useState<PlannersItem[]>([]);
   const [filtered, setFiltered] = useState<PlannersItem[]>([]);
   const [noInput, setNoInput] = useState<boolean>(true);
+  const [selected, setSelected] = useState<string>('recently');
 
   const getUserData = async () => {
     const userData = await getFromCookies<UserData>('userData');
@@ -28,9 +31,12 @@ export default function Results() {
               to: data.to.toDate(),
             },
             photo: data.photo,
+            createAt: data.createAt.toDate()
           });
         });
-        setPlanners(plannersList.sort((a, b) => b.date.from.getTime() - a.date.from.getTime()));
+        const sortedPlanners = sortPlanners(plannersList, selected);
+        setPlanners(sortedPlanners);
+        setFiltered(sortedPlanners); // Also set the filtered planners initially
       });
 
       return () => unsubscribe();
@@ -39,7 +45,7 @@ export default function Results() {
 
   useEffect(() => {
     getUserData();
-  }, []);
+  }, [selected]);
 
   useEffect(() => {
     const handlePlannersSearch = (event: CustomEvent<string>) => {
@@ -51,10 +57,10 @@ export default function Results() {
             planner.name.toLowerCase().includes(searchData.toLowerCase()) ||
             planner.country.toLowerCase().includes(searchData.toLowerCase())
         );
-        setFiltered(filteredPlanners);
+        setFiltered(sortPlanners(filteredPlanners, selected)); 
       } else {
         setNoInput(true);
-        setFiltered([]);
+        setFiltered(sortPlanners(planners, selected)); 
       }
     };
 
@@ -62,11 +68,14 @@ export default function Results() {
     return () => {
       window.removeEventListener('plannersSearch', handlePlannersSearch as EventListener);
     };
-  }, [planners]);
+  }, [planners, selected]);
 
   return (
     <div className='flex flex-col w-full gap-7'>
-      <Subtitle title={planners.length <= 0 ? 'No Trips' : 'Your Trips'} />
+      <div className='flex justify-between items-center w-full'>
+        <Subtitle title={planners.length <= 0 ? 'No Trips' : 'Your Trips'} />
+        <SortBy setSelected={setSelected}/>
+      </div>
       <div className='w-full grid grid-cols-4 gap-7 max-lg:grid-cols-3 max-md:grid-cols-2 max-lg:gap-4 3xl:grid-cols-6'>
         {filtered.length > 0 ?
           filtered.map((planner: PlannersItem) => (
