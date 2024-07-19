@@ -33,10 +33,12 @@ const config = {
         'details-custom': 'calc((100vh - 136px) * 0.7)'
       },
       maxHeight: {
-        'details-custom': 'calc(100vh - 136px)'
+        'details-custom': 'calc(100vh - 136px)',
+        'planner-details-custom': 'calc(100vh - 116px)'
       },
       height: {
-        'details-custom': 'calc(100vh - 136px)'
+        'details-custom': 'calc(100vh - 136px)',
+        'planner-details-custom': 'calc(100vh - 116px)'
       },
       
       colors: {

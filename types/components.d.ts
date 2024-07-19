@@ -84,3 +84,14 @@ declare interface PlannersItem {
   photo?: string;
   createAt: Date;
 }
+
+declare interface PlannerTabsParams {
+  label: string;
+  imgUrl: string;
+}
+
+declare interface PlannerTabProps {
+  tab: PlannerTabsParams;
+  selected: PlannerTabsParams;
+  setSelected: (selected: PlannerTabsParams) => void 
+}
