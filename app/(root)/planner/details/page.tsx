@@ -53,7 +53,7 @@ export default function page() {
   }, [selected]);
 
   return (
-    <div className='w-full max-lg:pb-28 flex gap-4 max-md:flex-col-reverse pt-[10px] max-md:pt-[30px]'>
+    <div className='w-full max-lg:pb-28 flex gap-4 max-md:flex-col-reverse max-md:pt-[30px]'>
       <div className='flex-[0_0_40%] max-lg:flex-1 h-fit max-md:hidden max-h-planner-details-custom overflow-auto'>
         {
           planner &&
@@ -61,7 +61,7 @@ export default function page() {
         }
       </div>
 
-      <div className='flex-1 h-planner-details-custom bg-customWhite-200 max-md:bg-transparent rounded-md max-md:w-full max-md:flex-grow-0'>
+      <div className='flex-1 h-planner-details-custom bg-customWhite-200 max-md:bg-transparent rounded-md max-md:w-full max-md:flex-grow-0 md:mt-[10px]'>
         <div className='md:hidden'>
           {
             selected.label === 'places' && planner &&
@@ -86,12 +86,12 @@ export default function page() {
         }
       </div>
 
-      <div className='w-[60px] h-24 max-md:w-full max-md:h-[50px] max-md:flex max-md:justify-between'>
+      <div className='w-[50px] h-24 max-md:w-full max-md:h-[50px] max-md:flex max-md:justify-between'>
         <div className='md:hidden bg-customWhite-200 rounded-md'>
           <PlannerTab tab={plannerTabs[0]} selected={selected} setSelected={setSelected} />
         </div>
 
-        <div className='max-md:flex bg-customWhite-200 rounded-md gap-1'>
+        <div className='max-md:flex bg-customWhite-200 rounded-md gap-1 md:mt-[10px]'>
           {
             plannerTabs.map((tab, index) => {
               if (index !== 0) {

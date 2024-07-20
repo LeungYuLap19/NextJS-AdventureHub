@@ -7,7 +7,7 @@ export default function PlannerTab({ tab, selected, setSelected }: PlannerTabPro
 
   return (
     <div 
-      className={cn('flex justify-center items-center h-[60px] max-md:h-[50px] aspect-square rounded-lg cursor-pointer', {
+      className={cn('flex justify-center items-center h-[50px] aspect-square rounded-lg cursor-pointer', {
         'bg-customGreen-400 text-customWhite-200': isSelected
       })}
       onClick={() => setSelected(tab)} 
