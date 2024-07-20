@@ -8,18 +8,13 @@ import { useForm } from 'react-hook-form';
 import { Button } from '../ui/button';
 import { createPlanner } from '@/lib/actions/firebasePlanner';
 import { toast } from '../ui/use-toast';
-import { serverTimestamp } from 'firebase/firestore';
 
 export default function TripForm({ setOpen }: { setOpen: (open: boolean) => void }) {
   const [loading, setLoading] = useState<boolean>(false);
 
   const formSchema = tripFormSchema;
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: '',
-      country: ''
-    }
+    resolver: zodResolver(formSchema)
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -35,7 +30,7 @@ export default function TripForm({ setOpen }: { setOpen: (open: boolean) => void
       setLoading(false);
       setOpen(false);
       toast({
-        title: `Trip Created ∙ ${values.name} ∙ to ${capitalizeWords(values.country)}`,
+        title: `Trip Created ∙ ${values.name} ∙ to ${capitalizeWords(values.country.text.primary)}`,
         description: formatDateRange(data),
       });
     }

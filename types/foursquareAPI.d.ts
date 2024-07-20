@@ -8,7 +8,7 @@ declare interface AutoCompleteResponse {
 declare interface AutoCompleteText {
   primary: string;
   secondary: string;
-  highlight: { start: number; lenght: number }[];
+  highlight: { start: number; length: number }[];
 }
 
 declare interface Geo {

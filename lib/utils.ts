@@ -16,9 +16,40 @@ export const authFormSchema = (type: 'sign-in' | 'sign-up') => z.object({
   password: z.string().min(8),
 });
 
+const latLongSchema = z.object({
+  latitude: z.number(),
+  longitude: z.number(),
+});
+
+const geoSchema = z.object({
+  name: z.string(),
+  center: latLongSchema,
+  bounds: z.object({
+    ne: latLongSchema,
+    sw: latLongSchema,
+  }),
+  cc: z.string(),
+  type: z.string(),
+});
+
+const autoCompleteTextSchema = z.object({
+  primary: z.string(),
+  secondary: z.string(),
+  highlight: z.array(z.object({
+    start: z.number(),
+    length: z.number()
+  })),
+});
+
+const autoCompleteResponseSchema = z.object({
+  type: z.literal('geo'),
+  text: autoCompleteTextSchema,
+  geo: geoSchema,
+});
+
 export const tripFormSchema = z.object({
   name: z.string().min(1, 'Name your trip.'),
-  country: z.string().min(1, 'Enter a country.'),
+  country: autoCompleteResponseSchema,
   date: z.object({
     from: z.date(),
     to: z.date(),
@@ -113,7 +144,7 @@ export function sortPlanners(planners: PlannersItem[], sortOption: string): Plan
     case 'recently':  
       return planners.sort((a, b) => a.createAt?.getTime() - b.createAt?.getTime());
     case 'country/city': 
-      return planners.sort((a, b) => a.country.localeCompare(b.country));
+      return planners.sort((a, b) => a.country.text.primary.localeCompare(b.country.text.primary));
     default:
       return [];
   }

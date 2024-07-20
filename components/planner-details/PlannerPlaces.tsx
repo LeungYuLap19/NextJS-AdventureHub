@@ -13,7 +13,7 @@ export default function PlannerPlaces({ planner }: { planner: PlannersItem }) {
           height={16} width={16}
         />
         <p className='max-md:text-sm text-customBlack-200 truncate'>
-          {planner.country || ''}
+          {planner.country.text.primary || ''}
         </p>
       </div>
       <Header title={<>{planner.name || ''}</>} />

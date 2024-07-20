@@ -60,7 +60,7 @@ export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
                 </React.Fragment>
               )) :
               plannersItem ? 
-              capitalizeWords(plannersItem.country) :
+              capitalizeWords(plannersItem.country.text.primary) :
               ''
             }
           </p>

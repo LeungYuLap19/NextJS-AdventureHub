@@ -76,7 +76,7 @@ declare interface PhotosCardProps {
 declare interface PlannersItem {
   pid: string;
   name: string;
-  country: string;
+  country: AutoCompleteResponse;
   date: {
     from: Date;
     to: Date;

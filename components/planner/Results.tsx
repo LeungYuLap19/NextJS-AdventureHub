@@ -55,7 +55,7 @@ export default function Results() {
         const filteredPlanners = planners.filter(
           (planner: PlannersItem) =>
             planner.name.toLowerCase().includes(searchData.toLowerCase()) ||
-            planner.country.toLowerCase().includes(searchData.toLowerCase())
+            planner.country.text.primary.toLowerCase().includes(searchData.toLowerCase())
         );
         setFiltered(sortPlanners(filteredPlanners, selected)); 
       } else {

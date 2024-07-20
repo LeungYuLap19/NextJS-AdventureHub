@@ -1,5 +1,5 @@
 'use server'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase';
 import { getFromCookies } from './cookies.action';
 
