@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 
 export default function PlacesItem({ type = 'list' }: { type?: 'list' | 'sheet' }) {
   return (
-    <div className='flex items-center w-full aspect-[3.5/1] bg-customWhite-200 rounded-lg overflow-hidden min-h-[140px] max-h-[220px] !p-0'>
+    <div className='flex items-center w-full bg-customWhite-200 rounded-lg overflow-hidden min-h-[140px] max-h-[220px] aspect-[3.5/1]'>
       <div className='h-full aspect-square bg-customBlack-100 relative'>
         {/* photo */}
       </div>
