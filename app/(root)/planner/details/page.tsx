@@ -9,9 +9,9 @@ import { plannerTabs } from '@/constants';
 import { db } from '@/lib/firebase';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 
-export default function page() {
+function PlannerDetailsPage() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const [planner, setPlanner] = useState<PlannersItem>();
@@ -104,3 +104,11 @@ export default function page() {
     </div>
   )
 }
+
+const WrappedPlannerDetailsPage = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <PlannerDetailsPage />
+  </Suspense>
+);
+
+export default WrappedPlannerDetailsPage;
