@@ -9,6 +9,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// schema start
 export const authFormSchema = (type: 'sign-in' | 'sign-up') => z.object({
   username: type === 'sign-in' ? z.string().optional() : z.string().min(5).max(20),
   city: type === 'sign-in' ? z.string().optional() : z.string().min(3).max(50),
@@ -58,6 +59,7 @@ export const tripFormSchema = z.object({
     "Start date must be in the future"
   ),
 });
+// schema end
 
 export const handleKeyDown = ({event, func}: HandleKeyDownParams) => {
   if (event.key === 'Enter') {
@@ -148,4 +150,77 @@ export function sortPlanners(planners: PlannersItem[], sortOption: string): Plan
     default:
       return [];
   }
+}
+
+export function get12HoursForecast(forecastday: ForecastDay[]): Hour[] {
+  const currentDate = new Date();
+  const currentHour = currentDate.getHours();
+  const currentDay = currentDate.getDate();
+
+  const allHours = forecastday.flatMap(day => day.hour);
+
+  const next12Hours = allHours.filter(hour => {
+    const hourDate = new Date(hour.time);
+    const hourDay = hourDate.getDate();
+    const hourHour = hourDate.getHours();
+
+    // Check if the hour is within the next 12 hours
+    return (
+      (hourDay === currentDay && hourHour >= currentHour) ||
+      (hourDay === currentDay + 1 && hourHour < currentHour)
+    );
+  }).slice(0, 12);
+
+  // Format the time to 12-hour format
+  const formattedNext12Hours = next12Hours.map((hour, index) => {
+    if (index == 0) {
+      return {
+        ...hour,
+        time: 'Now'
+      }
+    }
+    const hourDate = new Date(hour.time);
+    let hours = hourDate.getHours();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; 
+    const strTime = `${hours}${ampm}`;
+    return {
+      ...hour,
+      time: strTime,
+    };
+  });
+
+  return formattedNext12Hours;
+}
+
+export function get7DaysForecast(forecastday: ForecastDay[], currentDayIndex: number): FormattedDaysForecast[] {
+  return forecastday.map((day, index) => {
+    const weekdayIndex = (currentDayIndex + index) % 7;
+    
+    // Sort hours by temperature in descending order
+    const sortedHours = [...day.hour].sort((a, b) => b.temp_c - a.temp_c);
+    
+    // Calculate the number of hours to include in the top 25%
+    const top25PercentCount = Math.ceil(sortedHours.length * 0.25);
+    
+    // Get the hottest 25% hours
+    const hottestHours = sortedHours.slice(0, top25PercentCount);
+    
+    // Sort the hottest hours by hour and format them
+    const formattedHottestHours = hottestHours
+      .sort((a, b) => new Date(a.time).getHours() - new Date(b.time).getHours())
+      .map(hour => ({
+        hour: new Date(hour.time).getHours(),
+        temp_c: hour.temp_c,
+      }));
+
+    return {
+      weekday: index === 0 ? 'Today' : weekdays[weekdayIndex],
+      condition: day.day.condition,
+      maxtemp_c: day.day.maxtemp_c,
+      mintemp_c: day.day.mintemp_c,
+      hottestHours: formattedHottestHours,
+    };
+  });
 }

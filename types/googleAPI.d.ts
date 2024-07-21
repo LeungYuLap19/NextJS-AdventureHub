@@ -36,3 +36,48 @@ declare interface Weather {
     temp_c: number
   }
 }
+
+declare interface SevenDaysWeather {
+  location: {
+    name: string;
+  };
+  current: {
+    temp_c: number;
+    is_day: number;
+    condition: Condition;
+  };
+  forecast: {
+    forecastday: ForecastDay[];
+  };
+}
+
+declare interface Condition {
+  text: string;
+  icon: string;
+}
+
+declare interface ForecastDay {
+  day: {
+    maxtemp_c: number;
+    mintemp_c: number;
+    condition: Condition;
+  };
+  hour: Hour[];
+}
+
+declare interface Hour {
+  time: string;
+  condition: Condition;
+  temp_c: number;
+}
+
+declare interface FormattedDaysForecast {
+  weekday: string;
+  condition: Condition;
+  maxtemp_c: number;
+  mintemp_c: number;
+  hottestHours: {
+    hour: number;
+    temp_c: number;
+  }[];
+}

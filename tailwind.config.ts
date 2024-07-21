@@ -34,7 +34,7 @@ const config = {
       },
       maxHeight: {
         'details-custom': 'calc(100vh - 136px)',
-        'planner-details-custom': 'calc(100vh - 116px)'
+        'planner-details-custom': 'calc(100vh - 126px)'
       },
       height: {
         'details-custom': 'calc(100vh - 136px)',

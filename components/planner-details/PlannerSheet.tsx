@@ -10,7 +10,8 @@ import { DateTimePicker } from '../ui/dateTimePicker'
 import { Button } from '../ui/button'
 
 export default function PlannerSheet() {
-  const [dateTime, setDateTime] = useState<Date | undefined>(undefined);
+  const [fromDateTime, setFromDateTime] = useState<Date | undefined>(undefined);
+  const [toDateTime, setToDateTime] = useState<Date | undefined>(undefined);
   return (
     <Sheet>
       <SheetTrigger className='absolute left-4 bottom-3 bg-customGreen-400 text-customWhite-200 !px-4 !py-2 w-fit h-fit rounded-md'>
@@ -25,9 +26,9 @@ export default function PlannerSheet() {
 
           <div className="flex flex-col gap-2">
             <Label>From</Label>
-            <DateTimePicker hourCycle={24} value={dateTime} onChange={setDateTime} />
+            <DateTimePicker hourCycle={24} value={fromDateTime} onChange={setFromDateTime} />
             <Label>To</Label>
-            <DateTimePicker hourCycle={24} value={dateTime} onChange={setDateTime} />
+            <DateTimePicker hourCycle={24} value={toDateTime} onChange={setToDateTime} />
           </div>
 
           <Button className='w-fit h-fit py-2 px-4 bg-customGreen-400 text-customWhite-200 rounded-md'>

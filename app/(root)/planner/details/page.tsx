@@ -54,14 +54,14 @@ export default function page() {
 
   return (
     <div className='w-full max-lg:pb-28 flex gap-4 max-md:flex-col-reverse max-md:pt-[30px]'>
-      <div className='flex-[0_0_40%] max-lg:flex-1 h-fit max-md:hidden max-h-planner-details-custom overflow-auto'>
+      <div className='flex-[0_0_40%] max-lg:flex-1 h-fit max-md:hidden max-h-planner-details-custom overflow-auto md:mt-[10px]'>
         {
           planner &&
           <PlannerPlaces planner={planner} />
         }
       </div>
 
-      <div className='flex-1 h-planner-details-custom bg-customWhite-200 max-md:bg-transparent rounded-md max-md:w-full max-md:flex-grow-0 md:mt-[10px]'>
+      <div className='flex-1 h-planner-details-custom overflow-auto bg-customWhite-200 max-md:bg-transparent rounded-md max-md:w-full max-md:flex-grow-0 md:mt-[10px] min-w-0'>
         <div className='md:hidden'>
           {
             selected.label === 'places' && planner &&
@@ -77,8 +77,8 @@ export default function page() {
           <PlannerMap />
         }
         {
-          selected.label === 'weather' &&
-          <PlannerWeather />
+          selected.label === 'weather' && planner &&
+          <PlannerWeather country={planner?.country} />
         }
         {
           selected.label === 'edit' &&

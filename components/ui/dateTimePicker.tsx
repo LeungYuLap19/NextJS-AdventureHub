@@ -706,6 +706,7 @@ const DateTimePicker = React.forwardRef<DateTimePickerRef, DateTimePickerProps>(
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0">
           <Calendar
+            className='bg-customWhite-200'
             mode="single"
             selected={value}
             month={month}
