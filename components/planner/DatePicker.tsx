@@ -20,11 +20,9 @@ interface DatePickerProps {
 }
 
 export function DatePicker({ className, value, onChange }: DatePickerProps) {
-  const [open, setOpen] = useState(false);
-
   return (
     <div className={cn("grid gap-2", className)}>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover>
         <PopoverTrigger asChild className="border border-customBlack-100">
           <Button
             id="date"
@@ -33,7 +31,6 @@ export function DatePicker({ className, value, onChange }: DatePickerProps) {
               "justify-start text-left font-normal w-full",
               !value && "text-muted-foreground"
             )}
-            onClick={() => setOpen(!open)}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {value?.from ? (
