@@ -22,23 +22,18 @@ interface DatePickerProps {
 export function DatePicker({ className, value, onChange }: DatePickerProps) {
   const [open, setOpen] = useState(false);
 
-  const handleTriggerClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    setOpen((prev) => !prev);
-  };
-
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
+        <PopoverTrigger asChild className="border border-customBlack-100">
           <Button
             id="date"
             variant={"outline"}
             className={cn(
-              "justify-start text-left font-normal w-full border border-customBlack-100",
+              "justify-start text-left font-normal w-full",
               !value && "text-muted-foreground"
             )}
-            onClick={handleTriggerClick}
+            onClick={() => setOpen(!open)}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {value?.from ? (
@@ -58,7 +53,6 @@ export function DatePicker({ className, value, onChange }: DatePickerProps) {
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
             className="bg-customWhite-100"
-            initialFocus
             mode="range"
             defaultMonth={value?.from}
             selected={value}
