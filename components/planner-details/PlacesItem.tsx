@@ -7,11 +7,11 @@ import { cn } from '@/lib/utils'
 export default function PlacesItem({ type = 'list' }: { type?: 'list' | 'sheet' }) {
   return (
     <div className='flex items-center w-full aspect-[3.5/1] bg-customWhite-200 rounded-lg overflow-hidden min-h-[140px] max-h-[220px]'>
-      <div className='h-full aspect-square bg-customBlack-100 relative'>
+      <div className='h-full aspect-square bg-customBlack-100 relative flex-shrink-0'>
         {/* photo */}
       </div>
 
-      <div className='flex justify-between items-center w-full h-full px-4 py-3 relative'>
+      <div className='flex justify-between items-center w-full h-full px-4 py-3 relative flex-shrink-0'>
         <div className={cn('flex flex-col w-[80%] h-full', {
           'w-full justify-between': type === 'sheet'
         })}>

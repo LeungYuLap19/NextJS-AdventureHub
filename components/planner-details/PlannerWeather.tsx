@@ -29,7 +29,7 @@ export default function PlannerWeather({ country }: { country: AutoCompleteRespo
     <div className='flex flex-col md:p-7 md:pb-10'>
       <Header title={<>Local Weather</>} />
       {
-        fullWeather &&
+        fullWeather ?
         <>
           <div className='flex justify-between h-fit text-customBlack-300 mt-7'>
             <div className='flex flex-col gap-7'>
@@ -109,7 +109,8 @@ export default function PlannerWeather({ country }: { country: AutoCompleteRespo
               }
             </div>
           </div>
-        </>
+        </> :
+        <>Error getting weather</>
       }
     </div>
   )
