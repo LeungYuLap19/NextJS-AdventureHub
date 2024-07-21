@@ -9,6 +9,7 @@ export default function PlannerWeather({ country }: { country: AutoCompleteRespo
   const [fullWeather, setFullWeather] = useState<SevenDaysWeather | null>(null);
   const [formattedHours, setFormattedHours] = useState<Hour[] | null>(null);
   const [formattedDays, setFormattedDays] = useState<FormattedDaysForecast[] | null>(null);
+  const [renderKey, setRenderKey] = useState(0);
 
   const getFullWeather = async () => {
     const data = await getFullLocalWeather({ latitude: country.geo.center.latitude, longitude: country.geo.center.longitude });
@@ -18,20 +19,21 @@ export default function PlannerWeather({ country }: { country: AutoCompleteRespo
       setFormattedHours(formattedHourForecast);
       const formattedDaysForecast = get7DaysForecast(data.forecast.forecastday, data.current.is_day);
       setFormattedDays(formattedDaysForecast);
+      setRenderKey(renderKey + 1); // Force re-render
     }
   }
-
+  
   useEffect(() => {
     getFullWeather();
   }, []);
 
   return (
-    <div className='flex flex-col md:p-7 md:pb-10'>
+    <div key={renderKey} className='flex flex-col md:p-7 md:pb-10'>
       <Header title={<>Local Weather</>} />
       {
         fullWeather ?
         <>
-          <div className='flex justify-between h-fit text-customBlack-300 mt-7'>
+          <div className='flex gap-2 justify-between h-fit text-customBlack-300 mt-7'>
             <div className='flex flex-col gap-7'>
               <SectionWithIcon imgUrl='/root/marker.svg' text={fullWeather.location.name} />
               <p className='text-5xl'>{Math.floor(fullWeather.current.temp_c)}°</p>
@@ -43,7 +45,7 @@ export default function PlannerWeather({ country }: { country: AutoCompleteRespo
                 alt='condition icon'
                 height={30} width={30}
               />
-              <p>{fullWeather.current.condition.text}</p>
+              <p className='text-right'>{fullWeather.current.condition.text}</p>
               <p>{`H:${Math.floor(fullWeather.forecast.forecastday[0].day.maxtemp_c)}° L:${Math.floor(fullWeather.forecast.forecastday[0].day.mintemp_c)}°`}</p>
             </div>
           </div>
