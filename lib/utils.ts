@@ -144,7 +144,7 @@ export function sortPlanners(planners: PlannersItem[], sortOption: string): Plan
         return diffA - diffB;
       });
     case 'recently':  
-      return planners.sort((a, b) => a.createAt?.getTime() - b.createAt?.getTime());
+      return planners.sort((a, b) => b.createAt?.getTime() - a.createAt?.getTime());
     case 'country/city': 
       return planners.sort((a, b) => a.country.text.primary.localeCompare(b.country.text.primary));
     default:
