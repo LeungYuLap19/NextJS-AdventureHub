@@ -4,15 +4,25 @@ import {
   Map as GoogleMap,
   AdvancedMarker,
 } from '@vis.gl/react-google-maps';
+import { cn } from '@/lib/utils';
 
-export default function Map({ latitude, longitude }: LatLong) {
+interface MapProps {
+  latitude: number;
+  longitude: number;
+  type: 'place' | 'planner'
+}
+
+export default function Map({ latitude, longitude, type }: MapProps) {
   const position = { lat: latitude, lng: longitude };
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY!}>
-      <div className='md:max-w-[450px] rounded-lg aspect-square bg-customBlack-100 overflow-hidden'>
+      <div className={cn('md:max-w-[450px] rounded-lg bg-customBlack-100 overflow-hidden', {
+        'max-w-full h-full md:!max-w-none !aspect-auto': type === 'planner',
+        'aspect-square': type === 'place'
+      })}>
         <GoogleMap
-          zoom={15}
-          center={position}
+          defaultZoom={15}
+          defaultCenter={position}
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID}
         >
           <AdvancedMarker position={position} />

@@ -7,6 +7,7 @@ import { db } from '@/lib/firebase';
 import { getFromCookies } from '@/lib/actions/cookies.action';
 import SortBy from './SortBy';
 import { sortPlanners } from '@/lib/utils';
+import { PlannersItem } from '@/types/components';
 
 export default function Results() {
   const [planners, setPlanners] = useState<PlannersItem[]>([]);

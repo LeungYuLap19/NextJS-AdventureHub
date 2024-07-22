@@ -120,7 +120,7 @@ export default function Details({ itemDetails, extraData }: { itemDetails: Place
           )}
           {geocodes?.main && (
             <>
-              <Map latitude={geocodes.main.latitude} longitude={geocodes.main.longitude} />
+              <Map latitude={geocodes.main.latitude} longitude={geocodes.main.longitude} type='place' />
               <Link href={extraData ? extraData.googleMapsUri : `https://www.google.com/maps/search/?api=1&query=${geocodes.main.latitude},${geocodes.main.longitude}`} target='_blank'>
                 <Button className='w-fit bg-customWhite-200 cursor-pointer'>Open In Google Map</Button>
               </Link>

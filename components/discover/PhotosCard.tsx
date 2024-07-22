@@ -3,6 +3,8 @@ import Photo from './Photo'
 import { Rating } from '@mui/material'
 import Image from 'next/image'
 import PhotosSwiper from './PhotosSwiper';
+import { PhotosCardProps } from '@/types/components';
+import AddToPlanner from '../details/AddToPlanner';
 
 export default function PhotosCard({ item, photos=[] }: PhotosCardProps) {
   const morePhotos = photos.length - 1;
@@ -56,12 +58,7 @@ export default function PhotosCard({ item, photos=[] }: PhotosCardProps) {
           />
         </div>
 
-        <Image
-          className='cursor-pointer'
-          src={'/root/add.svg'}
-          alt='add-icon'
-          width={25} height={25}
-        />
+        <AddToPlanner />
       </div>
 
       {

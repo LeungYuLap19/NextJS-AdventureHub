@@ -38,7 +38,7 @@ export default function TripForm({ setOpen, type, defaultValues, pid }: TripForm
         });
       }
     }
-    else if (type === 'edit') {
+    else if (type === 'edit' && pid) {
       const data = await editPlanner({
         pid: pid,
         name: values.name,

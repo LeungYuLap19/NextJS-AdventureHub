@@ -5,6 +5,8 @@ import Image from 'next/image'
 import Photo from './Photo'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { capitalizeWords, formatDateRange, formUrlQuery } from '@/lib/utils'
+import { ResultsItemProps } from '@/types/components'
+import AddToPlanner from '../details/AddToPlanner'
 
 export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
   const searchParams = useSearchParams();
@@ -23,11 +25,11 @@ export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
   }
 
   return (
-    <div 
-      onClick={handleOnClick}
-      className='w-full bg-customWhite-200 rounded-lg overflow-hidden cursor-pointer'
-    >
-      <div className='w-full aspect-square bg-customBlack-100 relative'>
+    <div className='w-full bg-customWhite-200 rounded-lg overflow-hidden cursor-pointer'>
+      <div 
+        onClick={handleOnClick}
+        className='w-full aspect-square bg-customBlack-100 relative'
+      >
         {
           (item && item.photo) ?
           <Photo 
@@ -46,7 +48,10 @@ export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
       </div>
 
       <div className='flex w-full items-center justify-between pl-2 pr-4 pt-1 pb-2'>
-        <div className={`flex flex-col justify-between w-[80%] ${plannersItem && '!w-full'}`}>
+        <div 
+          onClick={handleOnClick}
+          className={`flex flex-col justify-between w-[80%] ${plannersItem && '!w-full'}`}
+        >
           <p className='truncate'>
             {item ? item.name : plannersItem ? plannersItem.name : ''}
           </p>
@@ -84,12 +89,7 @@ export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
 
         {
           item &&
-          <Image 
-            className='cursor-pointer'
-            src={'/root/add.svg'}
-            alt='add-icon'
-            width={20} height={20}
-          />
+          <AddToPlanner />
         }
       </div>
     </div>

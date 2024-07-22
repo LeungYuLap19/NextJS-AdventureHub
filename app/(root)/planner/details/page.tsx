@@ -75,8 +75,9 @@ function PlannerDetailsPage() {
           <PlannerCalendar />
         }
         {
-          selected.label === 'map' &&
-          <PlannerMap />
+          // get all places in planner
+          selected.label === 'map' && planner &&
+          <PlannerMap planner={planner} />
         }
         {
           selected.label === 'weather' && planner &&

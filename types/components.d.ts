@@ -102,5 +102,5 @@ declare interface TripFormProps {
   setOpen?: (open: boolean) => void; 
   type: 'create' | 'edit';
   defaultValues?: Partial<z.infer<typeof tripFormSchema>>;
-  pid: string;
+  pid?: string;
 }
