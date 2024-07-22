@@ -38,7 +38,7 @@ export default function AddTrip() {
             </DialogDescription>
           </DialogHeader>
 
-          <TripForm setOpen={setOpen}/>
+          <TripForm setOpen={setOpen} type='create'/>
         </DialogContent>
       </Dialog>
     </div>

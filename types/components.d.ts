@@ -1,3 +1,5 @@
+import { tripFormSchema } from "@/lib/utils";
+
 // auth components props ----------
 declare interface AuthFormProps {
   type: 'sign-in' | 'sign-up';
@@ -94,4 +96,11 @@ declare interface PlannerTabProps {
   tab: PlannerTabsParams;
   selected: PlannerTabsParams;
   setSelected: (selected: PlannerTabsParams) => void 
+}
+
+declare interface TripFormProps {
+  setOpen?: (open: boolean) => void; 
+  type: 'create' | 'edit';
+  defaultValues?: Partial<z.infer<typeof tripFormSchema>>;
+  pid: string;
 }

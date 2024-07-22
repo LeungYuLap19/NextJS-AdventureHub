@@ -1,38 +1,58 @@
 import React, { useState } from 'react'
-import { capitalizeWords, formatDateRange, tripFormSchema } from '@/lib/utils'
+import { capitalizeWords, cn, formatDateRange, tripFormSchema } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Form } from '../ui/form';
 import CustomInput from './CustomInput';
 import { useForm } from 'react-hook-form';
 import { Button } from '../ui/button';
-import { createPlanner } from '@/lib/actions/firebasePlanner';
+import { createPlanner, editPlanner } from '@/lib/actions/firebasePlanner';
 import { toast } from '../ui/use-toast';
+import { TripFormProps } from '@/types/components';
 
-export default function TripForm({ setOpen }: { setOpen: (open: boolean) => void }) {
+export default function TripForm({ setOpen, type, defaultValues, pid }: TripFormProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
   const formSchema = tripFormSchema;
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
+    defaultValues
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
-    const data = await createPlanner({
-      pid: crypto.randomUUID(),
-      name: values.name,
-      country: values.country,
-      date: values.date,
-      createAt: new Date(),
-    });
-    if (data) {
-      setLoading(false);
-      setOpen(false);
-      toast({
-        title: `Trip Created ∙ ${values.name} ∙ to ${capitalizeWords(values.country.text.primary)}`,
-        description: formatDateRange(data),
+    if (type === 'create') {
+      const data = await createPlanner({
+        pid: crypto.randomUUID(),
+        name: values.name,
+        country: values.country,
+        date: values.date,
+        createAt: new Date(),
       });
+      if (data && setOpen) {
+        setLoading(false);
+        setOpen(false);
+        toast({
+          title: `Trip Created ∙ ${values.name} ∙ to ${capitalizeWords(values.country.text.primary)}`,
+          description: formatDateRange(data),
+        });
+      }
+    }
+    else if (type === 'edit') {
+      const data = await editPlanner({
+        pid: pid,
+        name: values.name,
+        country: values.country,
+        date: values.date,
+        createAt: new Date(),
+      });
+      if (data) {
+        setLoading(false);
+        toast({
+          title: `Saved ∙ ${values.name} ∙ to ${capitalizeWords(values.country.text.primary)}`,
+          description: formatDateRange(data),
+        });
+      }
     }
   }
 
@@ -57,9 +77,12 @@ export default function TripForm({ setOpen }: { setOpen: (open: boolean) => void
         <Button
           disabled={loading}
           type='submit'
-          className='w-full h-10 green-gradient text-customWhite-200'
+          className={cn('h-10 green-gradient text-customWhite-200', {
+            'w-full': type === 'create',
+            'w-fit': type === 'edit'
+          })}
         >
-          Create
+          {type === 'create' ? 'Create' : 'Save'}
         </Button>
       </form>
     </Form>

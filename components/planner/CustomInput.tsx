@@ -79,7 +79,7 @@ export default function CustomInput({ control, name, label, placeholder }: Custo
                     id={label}
                     placeholder={placeholder}
                     type={'text'}
-                    className='bg-customWhite-100 border border-customBlack-100 placeholder:text-customBlack-100'
+                    className='bg-transparent border border-customBlack-100 placeholder:text-customBlack-100'
                     value={
                       typeof field.value === 'string' || typeof field.value === 'number'
                         ? field.value

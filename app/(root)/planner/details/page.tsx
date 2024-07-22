@@ -5,8 +5,10 @@ import PlannerMap from '@/components/planner-details/PlannerMap';
 import PlannerPlaces from '@/components/planner-details/PlannerPlaces';
 import PlannerTab from '@/components/planner-details/PlannerTab';
 import PlannerWeather from '@/components/planner-details/PlannerWeather';
+import { Toaster } from '@/components/ui/toaster';
 import { plannerTabs } from '@/constants';
 import { db } from '@/lib/firebase';
+import { PlannersItem, PlannerTabsParams } from '@/types/components';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { useSearchParams } from 'next/navigation'
 import React, { Suspense, useEffect, useState } from 'react'
@@ -81,8 +83,8 @@ function PlannerDetailsPage() {
           <PlannerWeather country={planner?.country} />
         }
         {
-          selected.label === 'edit' &&
-          <PlannerEdit />
+          selected.label === 'edit' && planner &&
+          <PlannerEdit planner={planner} />
         }
       </div>
 
@@ -108,6 +110,7 @@ function PlannerDetailsPage() {
 const WrappedPlannerDetailsPage = () => (
   <Suspense fallback={<div>Loading...</div>}>
     <PlannerDetailsPage />
+    <Toaster />
   </Suspense>
 );
 
