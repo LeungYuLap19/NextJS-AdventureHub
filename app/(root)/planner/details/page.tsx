@@ -56,7 +56,7 @@ function PlannerDetailsPage() {
 
   return (
     <div className='w-full max-lg:pb-28 flex gap-4 max-md:flex-col-reverse max-md:pt-[30px]'>
-      <div className='flex-[0_0_40%] max-lg:flex-1 h-fit max-md:hidden max-h-planner-details-custom overflow-auto md:mt-[10px]'>
+      <div className='flex-[0_0_40%] max-lg:flex-1 max-md:hidden h-planner-details-custom overflow-auto md:mt-[10px]'>
         {
           planner &&
           <PlannerPlaces planner={planner} />
