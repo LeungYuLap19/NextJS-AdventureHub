@@ -9,11 +9,11 @@ export default function PlannerPlaces({ planner }: { planner: PlannersItem }) {
   const { plannerPlaces, renderKey } = useGetPlannerPlaces(planner);
 
   return (
-    <div key={renderKey} className='flex flex-col gap-7'>
+    <div className='flex flex-col gap-7'>
       <SectionWithIcon imgUrl='/root/marker.svg' text={planner.country.text.primary || ''} />
       <Header title={<>{planner.name || ''}</>} />
 
-      <div className='flex flex-col w-full gap-4'>
+      <div key={renderKey} className='flex flex-col w-full gap-4'>
         {
           plannerPlaces &&
           plannerPlaces.places.map((plannerPlace: PlannerPlace) => (

@@ -9,7 +9,8 @@ import { useRouter } from 'next/navigation'
 export default function PlacesItem({ type = 'list', item }: { type?: 'list' | 'sheet'; item: ResultsItem }) {
   const router = useRouter();
   const handleOnClick = () => {
-    router.push(`http://localhost:3000/discover/details?id=${item.fsq_id}`, { scroll: false });
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    router.push(`${baseUrl}discover/details?id=${item.fsq_id}`, { scroll: false });
   }
 
   return (
