@@ -6,10 +6,10 @@ import { PlannersItem } from '@/types/components'
 import { useGetPlannerPlaces } from '@/lib/hooks/useGetPlannerPlaces'
 
 export default function PlannerPlaces({ planner }: { planner: PlannersItem }) {
-  const { plannerPlaces } = useGetPlannerPlaces(planner);
+  const { plannerPlaces, renderKey } = useGetPlannerPlaces(planner);
 
   return (
-    <div className='flex flex-col gap-7'>
+    <div key={renderKey} className='flex flex-col gap-7'>
       <SectionWithIcon imgUrl='/root/marker.svg' text={planner.country.text.primary || ''} />
       <Header title={<>{planner.name || ''}</>} />
 

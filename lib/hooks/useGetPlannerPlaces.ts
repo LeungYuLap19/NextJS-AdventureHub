@@ -5,6 +5,7 @@ import { db } from "../firebase";
 
 export function useGetPlannerPlaces(planner: PlannersItem) {
   const [plannerPlaces, setPlannerPlaces] = useState<PlannerPlaces | null>(null);
+  const [renderKey, setRenderKey] = useState(0);
 
   useEffect(() => {
     const q = query(collection(db, 'plannersPlaces'), where('pid', '==', planner.pid));
@@ -15,14 +16,16 @@ export function useGetPlannerPlaces(planner: PlannersItem) {
           pid: docData.pid,
           places: docData.places,
         });
+        setRenderKey(renderKey + 1);
       }
       else {
         setPlannerPlaces(null);
+        setRenderKey(renderKey + 1);
       }
     });
 
     return () => unsubscribe();
   }, [planner]);
 
-  return { plannerPlaces };
+  return { renderKey, plannerPlaces };
 }
