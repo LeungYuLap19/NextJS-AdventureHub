@@ -10,6 +10,7 @@ import { getResultsItemById } from '@/lib/actions/localStorage.actions';
 import { placeDetails } from '@/lib/actions/fourSquareAPI';
 import { placeDetailsFields } from '@/constants';
 import { textSearch } from '@/lib/actions/googleAPI';
+import { Toaster } from '@/components/ui/toaster';
 
 const DetailsPage = () => {
   const searchParams = useSearchParams();
@@ -109,6 +110,7 @@ const DetailsPage = () => {
 const WrappedDetailsPage = () => (
   <Suspense fallback={<div>Loading...</div>}>
     <DetailsPage />
+    <Toaster />
   </Suspense>
 );
 

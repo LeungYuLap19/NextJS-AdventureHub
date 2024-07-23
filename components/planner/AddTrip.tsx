@@ -29,7 +29,7 @@ export default function AddTrip() {
         </DialogTrigger>
         <DialogContent 
           onClick={(e) => e.stopPropagation()}
-          className='bg-customWhite-100'
+          className='bg-customWhite-200'
         >
           <DialogHeader>
             <DialogTitle>Plan Your Next Adventure</DialogTitle>

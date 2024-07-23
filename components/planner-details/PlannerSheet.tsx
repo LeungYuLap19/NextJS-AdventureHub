@@ -9,7 +9,7 @@ import { Label } from '../ui/label'
 import { DateTimePicker } from '../ui/dateTimePicker'
 import { Button } from '../ui/button'
 
-export default function PlannerSheet() {
+export default function PlannerSheet({ item }: { item: ResultsItem }) {
   const [fromDateTime, setFromDateTime] = useState<Date | undefined>(undefined);
   const [toDateTime, setToDateTime] = useState<Date | undefined>(undefined);
   return (
@@ -22,7 +22,7 @@ export default function PlannerSheet() {
       </SheetTrigger>
       <SheetContent side={'left'} className='max-sm:w-full !max-w-full w-[500px] bg-customWhite-200'>
         <div className='flex flex-col w-full gap-10 pt-10'>
-          <PlacesItem type='sheet' />
+          <PlacesItem type='sheet' item={item} />
 
           <div className="flex flex-col gap-2">
             <Label>From</Label>

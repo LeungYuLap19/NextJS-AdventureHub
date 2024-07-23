@@ -89,7 +89,7 @@ export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
 
         {
           item &&
-          <AddToPlanner />
+          <AddToPlanner resultsItem={item} />
         }
       </div>
     </div>

@@ -11,6 +11,8 @@ import { useGetResults } from '@/lib/hooks/useGetResults';
 import { getFromLocalstorage } from '@/lib/actions/localStorage.actions';
 import { getLocalWeather } from '@/lib/actions/weatherAPI';
 import { cn } from '@/lib/utils';
+import { Toaster } from '@/components/ui/toaster';
+import { CategorizedSearchTabParams } from '@/types/components';
 
 const DiscoverPage = () => {
   const [activeTab, setActiveTab] = useState<CategorizedSearchTabParams>(categorizedSearchTabs[0]);
@@ -106,6 +108,7 @@ const DiscoverPage = () => {
 const WrappedDiscoverPage = () => (
   <Suspense fallback={<div>Loading...</div>}>
     <DiscoverPage />
+    <Toaster />
   </Suspense>
 );
 

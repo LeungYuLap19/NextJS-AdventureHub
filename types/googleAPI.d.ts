@@ -81,3 +81,13 @@ declare interface FormattedDaysForecast {
     temp_c: number;
   }[];
 }
+
+declare interface PlannerPlaces {
+  pid: string;
+  places: PlannerPlace[];
+}
+
+declare interface PlannerPlace {
+  place: ResultsItem;
+  assignedDate: Date | null;
+}

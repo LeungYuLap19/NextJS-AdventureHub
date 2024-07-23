@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Photo from './Photo'
 import { Rating } from '@mui/material'
-import Image from 'next/image'
 import PhotosSwiper from './PhotosSwiper';
 import { PhotosCardProps } from '@/types/components';
 import AddToPlanner from '../details/AddToPlanner';
@@ -58,7 +57,7 @@ export default function PhotosCard({ item, photos=[] }: PhotosCardProps) {
           />
         </div>
 
-        <AddToPlanner />
+        <AddToPlanner resultsItem={item} />
       </div>
 
       {

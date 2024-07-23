@@ -1,75 +1,13 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ResultsItem from '../discover/ResultsItem';
 import Subtitle from '../discover/Subtitle';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { getFromCookies } from '@/lib/actions/cookies.action';
 import SortBy from './SortBy';
-import { sortPlanners } from '@/lib/utils';
 import { PlannersItem } from '@/types/components';
+import { useGetPlanners } from '@/lib/hooks/useGetPlanners';
 
 export default function Results() {
-  const [planners, setPlanners] = useState<PlannersItem[]>([]);
-  const [filtered, setFiltered] = useState<PlannersItem[]>([]);
-  const [noInput, setNoInput] = useState<boolean>(true);
-  const [selected, setSelected] = useState<string>('recently');
-
-  const getUserData = async () => {
-    const userData = await getFromCookies<UserData>('userData');
-    if (userData?.uid) {
-      const q = query(collection(db, 'planners'), where('uid', '==', userData.uid));
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const plannersList: PlannersItem[] = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          plannersList.push({
-            pid: data.pid,
-            name: data.name,
-            country: data.country,
-            date: {
-              from: data.from.toDate(),
-              to: data.to.toDate(),
-            },
-            photo: data.photo,
-            createAt: data.createAt.toDate()
-          });
-        });
-        const sortedPlanners = sortPlanners(plannersList, selected);
-        setPlanners(sortedPlanners);
-        setFiltered(sortedPlanners); // Also set the filtered planners initially
-      });
-
-      return () => unsubscribe();
-    }
-  };
-
-  useEffect(() => {
-    getUserData();
-  }, [selected]);
-
-  useEffect(() => {
-    const handlePlannersSearch = (event: CustomEvent<string>) => {
-      const searchData = event.detail;
-      if (searchData.length > 0) {
-        setNoInput(false);
-        const filteredPlanners = planners.filter(
-          (planner: PlannersItem) =>
-            planner.name.toLowerCase().includes(searchData.toLowerCase()) ||
-            planner.country.text.primary.toLowerCase().includes(searchData.toLowerCase())
-        );
-        setFiltered(sortPlanners(filteredPlanners, selected)); 
-      } else {
-        setNoInput(true);
-        setFiltered(sortPlanners(planners, selected)); 
-      }
-    };
-
-    window.addEventListener('plannersSearch', handlePlannersSearch as EventListener);
-    return () => {
-      window.removeEventListener('plannersSearch', handlePlannersSearch as EventListener);
-    };
-  }, [planners, selected]);
+  const { planners, filtered, noInput, setSelected } = useGetPlanners();
 
   return (
     <div className='flex flex-col w-full gap-7'>
