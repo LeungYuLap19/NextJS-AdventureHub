@@ -15,10 +15,11 @@ export default function PlannerPlaces({ planner }: { planner: PlannersItem }) {
 
       <div key={renderKey} className='flex flex-col w-full gap-4'>
         {
-          plannerPlaces &&
+          plannerPlaces ?
           plannerPlaces.places.map((plannerPlace: PlannerPlace) => (
             <PlacesItem key={plannerPlace.place.fsq_id} item={plannerPlace.place} />
-          ))
+          )) :
+          'cannont display'
         }
       </div>
     </div>
