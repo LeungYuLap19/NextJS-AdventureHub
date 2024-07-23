@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Header from '../discover/Header'
 import PlacesItem from './PlacesItem'
 import SectionWithIcon from './SectionWithIcon'
@@ -15,10 +15,11 @@ export default function PlannerPlaces({ planner }: { planner: PlannersItem }) {
 
       <div key={renderKey} className='flex flex-col w-full gap-4'>
         {
-          plannerPlaces &&
+          plannerPlaces ?
           plannerPlaces.places.map((plannerPlace: PlannerPlace) => (
             <PlacesItem key={plannerPlace.place.fsq_id} item={plannerPlace.place} />
-          ))
+          )) :
+          'cannot get places'
         }
       </div>
     </div>
