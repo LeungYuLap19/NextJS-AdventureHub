@@ -6,7 +6,7 @@ import { PlannersItem } from '@/types/components'
 import { useGetPlannerPlaces } from '@/lib/hooks/useGetPlannerPlaces'
 
 export default function PlannerPlaces({ planner }: { planner: PlannersItem }) {
-  const { plannerPlaces, renderKey } = useGetPlannerPlaces(planner);
+  const { plannerPlaces } = useGetPlannerPlaces(planner);
 
   return (
     <div className='flex flex-col gap-7 h-full'>
@@ -20,7 +20,6 @@ export default function PlannerPlaces({ planner }: { planner: PlannersItem }) {
             <PlacesItem key={plannerPlace.place.fsq_id} item={plannerPlace.place} />
           ))
         }
-        render problem
       </div>
     </div>
   )
