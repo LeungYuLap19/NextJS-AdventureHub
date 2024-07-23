@@ -64,7 +64,7 @@ function PlannerDetailsPage() {
       </div>
 
       <div className='flex-1 h-planner-details-custom overflow-auto bg-customWhite-200 max-md:bg-transparent rounded-md max-md:w-full max-md:flex-grow-0 md:mt-[10px] min-w-0'>
-        <div className='md:hidden'>
+        <div className='md:hidden w-full h-full'>
           {
             selected.label === 'places' && planner &&
             <PlannerPlaces planner={planner} />
