@@ -5,12 +5,29 @@ import PlannerSheet from './PlannerSheet'
 import { cn } from '@/lib/utils'
 import Photo from '../discover/Photo'
 import { useRouter } from 'next/navigation'
+import { removeFromPlanner } from '@/lib/actions/firebasePlanner'
+import { PlacesItemProps } from '@/types/components'
+import { toast } from '../ui/use-toast'
 
-export default function PlacesItem({ type = 'list', item }: { type?: 'list' | 'sheet'; item: ResultsItem }) {
+export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps) {
   const router = useRouter();
   const handleOnClick = () => {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     router.push(`${baseUrl}discover/details?id=${item.fsq_id}`, { scroll: false });
+  }
+
+  const handleOnRemove = async () => {
+    const done = await removeFromPlanner(item.fsq_id, pid);
+    if (done) {
+      toast({
+        title: `${item.name} removed.`
+      });
+    }
+    else {
+      toast({
+        title: `Failed to Remove ${item.name}.`
+      });
+    }
   }
 
   return (
@@ -84,6 +101,7 @@ export default function PlacesItem({ type = 'list', item }: { type?: 'list' | 's
 
           {type === 'list' && (
             <Image
+              onClick={handleOnRemove}
               src={'/root/delete.svg'}
               alt='delete'
               height={20}

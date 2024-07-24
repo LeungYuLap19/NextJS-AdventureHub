@@ -104,3 +104,9 @@ declare interface TripFormProps {
   defaultValues?: Partial<z.infer<typeof tripFormSchema>>;
   pid?: string;
 }
+
+declare interface PlacesItemProps {
+  type?: 'list' | 'sheet'; 
+  item: ResultsItem; 
+  pid: string
+}

@@ -8,6 +8,7 @@ import { getFromLocalstorage, storeToLocalstorage } from '@/lib/actions/localSto
 import Image from 'next/image';
 import { Button } from '../ui/button';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { CategorizedSearchTabParams } from '@/types/components';
 
 export default function SearchInput({ activeTab }: { activeTab: CategorizedSearchTabParams }) {
   const inputRef = useRef<HTMLInputElement | null>(null);

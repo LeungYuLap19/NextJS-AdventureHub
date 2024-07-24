@@ -1,5 +1,5 @@
 'use server'
-import { addDoc, collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { getFromCookies } from './cookies.action';
 import { PlannersItem } from '@/types/components';
@@ -82,21 +82,43 @@ export async function addToPlanner(resultsItem: ResultsItem, pid: string) {
   }
 }
 
-// export async function getFromPlanner(pid: string): Promise<PlannerPlaces | null> {
-//   try {
-//     const q = query(collection(db, 'plannersPlaces'), where('pid', '==', pid));
-//     const querySnapshot = await getDocs(q);
+export async function removeFromPlanner(fsq_id: string, pid: string) {
+  try {
+    const q = query(collection(db, 'plannersPlaces'), where('pid', '==', pid));
+    const querySnapshot = await getDocs(q);
 
-//     if (!querySnapshot.empty) {
-//       const docData = querySnapshot.docs[0].data();
-//       return {
-//         pid: docData.pid,
-//         places: docData.places,
-//       };
-//     }
-//     return null;
-//   } catch (error: any) {
-//     console.error('Get From Planner Error:', error.code, error.message);
-//     return null;
-//   }
-// }
+    if (!querySnapshot.empty) {
+      const docRef = querySnapshot.docs[0].ref;
+      const existingPlaces = querySnapshot.docs[0].data().places;
+
+      const updatedPlaces = existingPlaces.filter((place: any) => place.place.fsq_id !== fsq_id);
+
+      await updateDoc(docRef, {
+        places: updatedPlaces
+      });
+
+      return true;
+    }
+    return false;
+  } catch (error: any) {
+    console.error('Remove From Planner Error:', error.code, error.message);
+    return false;
+  }
+}
+
+export async function deletePlanner(pid: string) {
+  try {
+    const q = query(collection(db, 'planners'), where('pid', '==', pid));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const docRef = querySnapshot.docs[0].ref;
+      await deleteDoc(docRef);
+      return true;
+    }
+    return false;
+  } catch (error: any) {
+    console.error('Delete Planner Error:', error.code, error.message);
+    return false;
+  }
+}

@@ -6,11 +6,21 @@ import { Button } from '../ui/button';
 import { PlannersItem } from '@/types/components';
 import { addToPlanner } from '@/lib/actions/firebasePlanner';
 import { toast } from '../ui/use-toast';
+import { ToastAction } from '../ui/toast';
+import { useRouter } from 'next/navigation';
 
 export default function AddToPlanner({ resultsItem }: { resultsItem: ResultsItem }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<PlannersItem | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+
+  const handleOnClick = () => {
+    if (selected) {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+      router.push(`${baseUrl}planner/details?id=${selected?.pid}`);
+    }
+  }
 
   const onSubmit = async () => {
     setLoading(true);
@@ -29,6 +39,13 @@ export default function AddToPlanner({ resultsItem }: { resultsItem: ResultsItem
         toast({
           title: `Added to ${selected.name} ∙ ${resultsItem.name}`,
           description: `You can assign places to calendar in ${selected.name}`,
+          action: 
+          <ToastAction 
+            altText="check" 
+            onClick={handleOnClick}
+          >
+            {`Check ${selected.name}`}
+          </ToastAction>
         });
       }
     }
