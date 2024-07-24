@@ -8,10 +8,12 @@ import { useRouter } from 'next/navigation'
 import { removeFromPlanner } from '@/lib/actions/firebasePlanner'
 import { PlacesItemProps } from '@/types/components'
 import { toast } from '../ui/use-toast'
+import { storeToLocalstorage } from '@/lib/actions/localStorage.actions'
 
 export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps) {
   const router = useRouter();
   const handleOnClick = () => {
+    storeToLocalstorage<CategorizedResultsItem>('plannerPlace', [{label: '', results: [item]}]);
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     router.push(`${baseUrl}discover/details?id=${item.fsq_id}`, { scroll: false });
   }

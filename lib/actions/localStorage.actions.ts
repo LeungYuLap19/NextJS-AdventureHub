@@ -27,7 +27,7 @@ export function getResultsItemById(key: string, id: string): ResultsItem | null 
     for (const categorizedResult of categorizedResults) {
       const dataWithId = categorizedResult.results.find((result: ResultsItem) => result.fsq_id === id);
       if (dataWithId) {
-        console.log('Returning dataWithId:', dataWithId);
+        // console.log('Returning dataWithId:', dataWithId);
         return dataWithId;
       }
     }

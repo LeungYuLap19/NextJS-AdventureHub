@@ -1,3 +1,5 @@
+import { CategorizedSearchTabParams, NavigationTabProps, PlannerTabsParams, SearchTabParams } from "@/types/components";
+
 export const navLinks: NavigationTabProps[] = [
   {
     label: 'Discover',
@@ -139,7 +141,7 @@ export const placeDetailsFields: string[] = [
 
   'price', // for extra info maybe
   'popularity',
-]
+];
 
 export const weekdays: string[] = [
   'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'

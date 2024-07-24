@@ -52,7 +52,7 @@ export default function AddToPlanner({ resultsItem }: { resultsItem: ResultsItem
     else {
       setLoading(false);
       toast({
-        title: 'Choose a planner or create on in Planner page.'
+        title: 'Choose a planner or create one in Planner page.'
       });
     }
   }

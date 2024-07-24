@@ -24,5 +24,10 @@ export function useGetPlannerPlaces(planner: PlannersItem) {
     return () => unsubscribe();
   }, [planner]);
 
-  return { plannerPlaces };
+  function getFsqIds(plannerPlaces: PlannerPlaces): string[] {
+    if (!plannerPlaces) return [];
+    return plannerPlaces.places.map((plannerPlace: PlannerPlace) => plannerPlace.place.fsq_id);
+  }
+
+  return { plannerPlaces, getFsqIds };
 }

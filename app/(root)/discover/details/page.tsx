@@ -40,8 +40,9 @@ const DetailsPage = () => {
   useEffect(() => {
     const fromDefault = getResultsItemById('defaultItems', id!);
     const fromResults = getResultsItemById('resultsItems', id!);
+    const fromPlanner = getResultsItemById('plannerPlace', id!);
 
-    setResultsItem(fromDefault || fromResults);
+    setResultsItem(fromDefault || fromResults || fromPlanner);
 
     getPlaceDetails();
   }, [id]);
