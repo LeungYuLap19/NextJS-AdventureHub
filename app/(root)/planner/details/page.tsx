@@ -18,6 +18,11 @@ function PlannerDetailsPage() {
   const id = searchParams.get('id');
   const [planner, setPlanner] = useState<PlannersItem>();
   const [selected, setSelected] = useState<PlannerTabsParams>(plannerTabs[1]);
+  const [selectedFsqId, setSelectedFsqId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    console.log(selectedFsqId);
+  }, [selectedFsqId]);
   
   useEffect(() => {
     const q = query(collection(db, 'planners'), where('pid', '==', id));
@@ -59,7 +64,7 @@ function PlannerDetailsPage() {
       <div className='flex-[0_0_40%] max-lg:flex-1 max-md:hidden h-planner-details-custom overflow-auto md:mt-[10px]'>
         {
           planner &&
-          <PlannerPlaces planner={planner} />
+          <PlannerPlaces planner={planner} selectedFsqId={selectedFsqId} />
         }
       </div>
 
@@ -67,7 +72,7 @@ function PlannerDetailsPage() {
         {
           selected.label === 'places' && planner &&
           <div className='md:hidden w-full h-full'>
-            <PlannerPlaces planner={planner} />
+            <PlannerPlaces planner={planner} selectedFsqId={selectedFsqId} />
           </div>
         }
         {
@@ -76,7 +81,7 @@ function PlannerDetailsPage() {
         }
         {
           selected.label === 'map' && planner &&
-          <PlannerMap planner={planner} />
+          <PlannerMap planner={planner} setSelectedFsqId={setSelectedFsqId} />
         }
         {
           selected.label === 'weather' && planner &&

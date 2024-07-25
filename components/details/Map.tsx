@@ -21,10 +21,11 @@ export default function Map({ positions, type, setSelected }: MapProps) {
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY!}>
       <div className={cn('md:max-w-[450px] rounded-lg bg-customBlack-100 overflow-hidden', {
-        'max-w-full h-full md:!max-w-none !aspect-auto': type === 'planner',
+        '!max-w-full !h-full md:!max-w-none !aspect-auto': type === 'planner',
         'aspect-square': type === 'place'
       })}>
         <GoogleMap
+          className='h-planner-details-custom'
           defaultZoom={type === 'planner' ? 10 : 15}
           defaultCenter={positions[0]}
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID}

@@ -1,6 +1,6 @@
 import { Rating } from '@mui/material'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import PlannerSheet from './PlannerSheet'
 import { cn } from '@/lib/utils'
 import Photo from '../discover/Photo'
@@ -10,7 +10,7 @@ import { PlacesItemProps } from '@/types/components'
 import { toast } from '../ui/use-toast'
 import { storeToLocalstorage } from '@/lib/actions/localStorage.actions'
 
-export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps) {
+export default function PlacesItem({ type = 'list', item, pid, selectedFsqId }: PlacesItemProps) {
   const router = useRouter();
   const handleOnClick = () => {
     storeToLocalstorage<CategorizedResultsItem>('plannerPlace', [{label: '', results: [item]}]);
@@ -32,8 +32,10 @@ export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps
     }
   }
 
+  const isSelected = selectedFsqId === item.fsq_id ? true : false;
+
   return (
-    <div className='relative w-full bg-customWhite-200 rounded-lg overflow-hidden min-h-[140px] max-h-[220px]'>
+    <div className={`relative w-full bg-customWhite-200 rounded-lg overflow-hidden min-h-[140px] max-h-[220px] transition-all duration-300 ${isSelected && 'border-2 border-customGreen-400'}`}>
       <div className='absolute inset-0 flex items-center justify-center'>
         <div 
           onClick={handleOnClick}
