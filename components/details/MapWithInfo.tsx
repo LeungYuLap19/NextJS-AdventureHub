@@ -6,7 +6,7 @@ import Photo from '../discover/Photo';
 import { useRouter } from 'next/navigation';
 import { storeToLocalstorage } from '@/lib/actions/localStorage.actions';
 
-export default function MapWithInfo({ type, places, position }: MapWithInfoProps) {
+export default function MapWithInfo({ type, planner, places, position }: MapWithInfoProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<PlannerPlace | null>(null);
   const router = useRouter();
@@ -31,7 +31,12 @@ export default function MapWithInfo({ type, places, position }: MapWithInfoProps
             places &&
             places[0].geoData ?
             places[0].geoData :
-            position
+            position ? position :
+            planner ? {
+              lat: planner?.country.geo.center.latitude,
+              lng: planner?.country.geo.center.longitude
+            } :
+            undefined
           }
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID}
         >
@@ -47,9 +52,18 @@ export default function MapWithInfo({ type, places, position }: MapWithInfoProps
                 position={data.geoData}
               />
             )) :
+            position ?
             <AdvancedMarker 
               position={position}
-            />
+            /> :
+            planner ?
+            <AdvancedMarker position={
+              {
+                lat: planner?.country.geo.center.latitude,
+                lng: planner?.country.geo.center.longitude
+              }
+            } /> :
+            <></>
           }
 
           {

@@ -9,11 +9,17 @@ export default function PlannerMap({ planner }: { planner: PlannersItem; }) {
   return (
     <div className='w-full h-full'>
       {
-        places &&
+        places ?
         <MapWithInfo 
           type='planner'
           places={places}
-        />
+        /> :
+        planner ?
+        <MapWithInfo 
+          type='planner'
+          planner={planner}
+        /> :
+        <></>
       }
     </div>
   )

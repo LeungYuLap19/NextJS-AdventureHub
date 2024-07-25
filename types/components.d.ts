@@ -114,6 +114,7 @@ declare interface PlacesItemProps {
 declare interface MapWithInfoProps {
   type: 'place' | 'planner';
   places?: PlannerPlace[];
+  planner?: PlannersItem;
   position?: {
     lat: number;
     lng: number;
