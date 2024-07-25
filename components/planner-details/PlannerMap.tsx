@@ -1,23 +1,18 @@
-import React, { useEffect } from 'react'
-import Map from '../details/Map'
+import React from 'react'
 import { PlannersItem } from '@/types/components'
 import { useGetPlannerMap } from '@/lib/hooks/useGetPlannerMap';
+import MapWithInfo from '../details/MapWithInfo';
 
-export default function PlannerMap({ planner, setSelectedFsqId }: { planner: PlannersItem; setSelectedFsqId: (selectedFsqId: string) => void }) {
-  const { geoData, positions, setSelected, selectedFsqId } = useGetPlannerMap(planner);
-
-  useEffect(() => {
-    selectedFsqId && setSelectedFsqId(selectedFsqId);
-  }, [selectedFsqId]);
+export default function PlannerMap({ planner }: { planner: PlannersItem; }) {
+  const { places } = useGetPlannerMap(planner);
 
   return (
     <div className='w-full h-full'>
       {
-        geoData.length > 0 && positions &&
-        <Map 
-          positions={positions}
+        places &&
+        <MapWithInfo 
           type='planner'
-          setSelected={setSelected}
+          places={places}
         />
       }
     </div>

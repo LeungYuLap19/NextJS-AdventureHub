@@ -4,9 +4,9 @@ import Badge from './Badge';
 import { capitalizeWords, convertOpeningHours } from '@/lib/utils';
 import DetailsTable from './DetailsTable';
 import SocialMediaLink from './SocialMediaLink';
-import Map from './Map';
 import Link from 'next/link';
 import { Button } from '../ui/button';
+import MapWithInfo from './MapWithInfo';
 
 export default function Details({ itemDetails, extraData }: { itemDetails: PlaceDetails, extraData: ExtraData | null}) {
   const {
@@ -120,7 +120,7 @@ export default function Details({ itemDetails, extraData }: { itemDetails: Place
           )}
           {geocodes?.main && (
             <>
-              <Map positions={[{lat: geocodes.main.latitude, lng: geocodes.main.longitude}]} type='place' />
+              <MapWithInfo type='place' position={{lat: geocodes.main.latitude, lng: geocodes.main.longitude}} />
               <Link href={extraData ? extraData.googleMapsUri : `https://www.google.com/maps/search/?api=1&query=${geocodes.main.latitude},${geocodes.main.longitude}`} target='_blank'>
                 <Button className='w-fit bg-customWhite-200 cursor-pointer'>Open In Google Map</Button>
               </Link>

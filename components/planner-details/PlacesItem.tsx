@@ -10,7 +10,7 @@ import { PlacesItemProps } from '@/types/components'
 import { toast } from '../ui/use-toast'
 import { storeToLocalstorage } from '@/lib/actions/localStorage.actions'
 
-export default function PlacesItem({ type = 'list', item, pid, selectedFsqId }: PlacesItemProps) {
+export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps) {
   const router = useRouter();
   const handleOnClick = () => {
     storeToLocalstorage<CategorizedResultsItem>('plannerPlace', [{label: '', results: [item]}]);
@@ -32,10 +32,8 @@ export default function PlacesItem({ type = 'list', item, pid, selectedFsqId }: 
     }
   }
 
-  const isSelected = selectedFsqId === item.fsq_id ? true : false;
-
   return (
-    <div className={`relative w-full bg-customWhite-200 rounded-lg overflow-hidden min-h-[140px] max-h-[220px] transition-all duration-300 ${isSelected && 'border-2 border-customGreen-400'}`}>
+    <div className={`relative w-full bg-customWhite-200 rounded-lg overflow-hidden min-h-[140px] max-h-[220px] transition-all duration-300`}>
       <div className='absolute inset-0 flex items-center justify-center'>
         <div 
           onClick={handleOnClick}

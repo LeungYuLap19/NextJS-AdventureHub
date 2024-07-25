@@ -109,5 +109,13 @@ declare interface PlacesItemProps {
   type?: 'list' | 'sheet'; 
   item: ResultsItem; 
   pid: string;
-  selectedFsqId
+}
+
+declare interface MapWithInfoProps {
+  type: 'place' | 'planner';
+  places?: PlannerPlace[];
+  position?: {
+    lat: number;
+    lng: number;
+  };
 }
