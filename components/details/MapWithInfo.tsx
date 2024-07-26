@@ -75,10 +75,10 @@ export default function MapWithInfo({ type, planner, places, position }: MapWith
             >
               <div className='p-[12px] pl-0'>
                 <div className='h-[100px] max-md:h-[80px] w-fit bg-customWhite-200 flex gap-4'>
-                  <div className='h-full min-w-[100px] max-w-[200px] w-fit flex flex-col justify-between'>
+                  <div className='h-full md:min-w-[100px] md:max-w-[200px] max-md:w-[100px] flex flex-col justify-between'>
                     <div className='flex flex-col gap-1'>
-                      <p className='font-semibold text-base truncate'>{selected.place.name}</p>
-                      <p className='truncate'>
+                      <p className='font-semibold text-base line-clamp-1'>{selected.place.name}</p>
+                      <p className='line-clamp-1'>
                         {
                           selected.place.categories.map((category: Category, index: number) => (
                             <React.Fragment key={category.id}>

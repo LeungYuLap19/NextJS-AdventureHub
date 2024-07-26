@@ -1,6 +1,6 @@
 import { Rating } from '@mui/material'
 import Image from 'next/image'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PlannerSheet from './PlannerSheet'
 import { cn } from '@/lib/utils'
 import Photo from '../discover/Photo'
@@ -9,6 +9,7 @@ import { removeFromPlanner } from '@/lib/actions/firebasePlanner'
 import { PlacesItemProps } from '@/types/components'
 import { toast } from '../ui/use-toast'
 import { storeToLocalstorage } from '@/lib/actions/localStorage.actions'
+import { placeDetails } from '@/lib/actions/fourSquareAPI'
 
 export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps) {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps
   }
 
   const handleOnRemove = async () => {
-    const done = await removeFromPlanner(item.fsq_id, pid);
+    const done = pid && await removeFromPlanner(item.fsq_id, pid);
     if (done) {
       toast({
         title: `${item.name} removed.`
@@ -32,9 +33,24 @@ export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps
     }
   }
 
+  const [extraData, setExtraData] = useState<PlaceDetails | null>(null);
+  useEffect(() => {
+    const getExtraData = async () => {
+      if (type === 'sheet') {
+        const fsq_id = item.fsq_id;
+        const fields = ['fsq_id', 'location', 'hours'];
+        const data = await placeDetails({ fsq_id, fields });
+        if (data) {
+          setExtraData(data);
+        }
+      }
+    }
+    getExtraData();
+  }, [type]);
+
   return (
     <div className={`relative w-full bg-customWhite-200 rounded-lg overflow-hidden min-h-[140px] max-h-[220px] transition-all duration-300`}>
-      <div className='absolute inset-0 flex items-center justify-center'>
+      <div className='absolute inset-0 flex items-center'>
         <div 
           onClick={handleOnClick}
           className='h-full aspect-square bg-customBlack-100 relative flex-shrink-0 cursor-pointer'
@@ -48,7 +64,7 @@ export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps
             /> 
           }
         </div>
-        <div className='flex justify-between items-center w-full h-full px-4 py-3 relative'>
+        <div className='flex justify-between items-center flex-grow h-full px-4 py-3 relative'>
           <div
             className={cn('flex flex-col w-[80%] h-full', {
               'w-full justify-between': type === 'sheet'
@@ -56,12 +72,12 @@ export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps
           >
             <p 
               onClick={handleOnClick}
-              className='truncate cursor-pointer'
+              className='line-clamp-1 cursor-pointer'
             >
               {item && item.name}
             </p>
             <p
-              className={cn('text-xs text-customBlack-100 truncate', {
+              className={cn('text-xs text-customBlack-100 line-clamp-1', {
                 'text-sm': type === 'sheet'
               })}
             >
@@ -76,13 +92,13 @@ export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps
               }
             </p>
 
-            {type === 'sheet' && (
+            {type === 'sheet' && extraData && (
               <>
-                <p className='text-sm text-customBlack-100 truncate'>
-                  Testing open daily 7:00 - 17:00
+                <p className='text-sm text-customBlack-100 line-clamp-1'>
+                  { extraData.hours.display }
                 </p>
-                <p className='text-sm text-customBlack-100 truncate'>
-                  Testing place address
+                <p className='text-sm text-customBlack-100 line-clamp-1'>
+                  { extraData.location.address }
                 </p>
               </>
             )}

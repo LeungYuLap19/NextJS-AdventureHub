@@ -63,7 +63,7 @@ const DiscoverPage = () => {
       <div className='flex items-center h-[30px] mb-[-25px] w-full'>
         {
           weather &&
-            <p className='max-md:text-sm text-customBlack-200 w-full truncate'>
+            <p className='max-md:text-sm text-customBlack-200 w-full line-clamp-1'>
               <span className={cn('font-bold', {
                 'text-slate-500': weather.current.temp_c  <= 10,
                 'text-blue-500': weather.current.temp_c > 10,

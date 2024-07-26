@@ -108,7 +108,7 @@ declare interface TripFormProps {
 declare interface PlacesItemProps {
   type?: 'list' | 'sheet'; 
   item: ResultsItem; 
-  pid: string;
+  pid?: string;
 }
 
 declare interface MapWithInfoProps {

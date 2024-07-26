@@ -52,10 +52,10 @@ export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
           onClick={handleOnClick}
           className={`flex flex-col justify-between w-[80%] ${plannersItem && '!w-full'}`}
         >
-          <p className='truncate'>
+          <p className='line-clamp-1'>
             {item ? item.name : plannersItem ? plannersItem.name : ''}
           </p>
-          <p className='text-xs text-customBlack-100 truncate'>
+          <p className='text-xs text-customBlack-100 line-clamp-1'>
             {
               item ?
               item.categories.map((category: Category, index: number) => (
@@ -79,7 +79,7 @@ export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
               size="small" readOnly 
             /> :
             plannersItem ?
-            <p className='text-xs text-customBlack-100 truncate'>
+            <p className='text-xs text-customBlack-100 line-clamp-1'>
               <span className='max-md:hidden'>{formatDateRange(plannersItem).split(' ∙ ')[0] + ' ∙ '}</span>
               {formatDateRange(plannersItem).split(' ∙ ')[1]}
             </p> :

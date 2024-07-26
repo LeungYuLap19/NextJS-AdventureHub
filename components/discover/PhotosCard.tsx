@@ -37,8 +37,8 @@ export default function PhotosCard({ item, photos=[] }: PhotosCardProps) {
 
       <div className='flex w-full items-center justify-between pl-2 pr-4 h-[90px] px-5 pt-1 pb-2'>
         <div className='flex flex-col justify-between w-[80%]'>
-          <p className='truncate text-lg'>{item.name}</p>
-          <p className='text-sm text-customBlack-100 truncate'>
+          <p className='line-clamp-1 text-lg'>{item.name}</p>
+          <p className='text-sm text-customBlack-100 line-clamp-1'>
             {
               item.categories.map((category: Category, index: number) => (
                 <React.Fragment key={category.id}>

@@ -9,7 +9,7 @@ export default function SectionWithIcon({ imgUrl, text }: { imgUrl: string; text
         alt='location'
         height={16} width={16}
       />
-      <p className='text-sm text-customBlack-200 truncate'>
+      <p className='text-sm text-customBlack-200 line-clamp-1'>
         {text}
       </p>
     </div>
