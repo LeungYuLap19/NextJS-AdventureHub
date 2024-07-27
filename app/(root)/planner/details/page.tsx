@@ -71,8 +71,8 @@ function PlannerDetailsPage() {
           </div>
         }
         {
-          selected.label === 'calendar' &&
-          <PlannerCalendar />
+          selected.label === 'calendar' && planner &&
+          <PlannerCalendar planner={planner} />
         }
         {
           selected.label === 'map' && planner &&

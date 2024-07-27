@@ -11,7 +11,7 @@ import { toast } from '../ui/use-toast'
 import { storeToLocalstorage } from '@/lib/actions/localStorage.actions'
 import { placeDetails } from '@/lib/actions/fourSquareAPI'
 
-export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps) {
+export default function PlacesItem({ type = 'list', item, pid, planner }: PlacesItemProps) {
   const router = useRouter();
   const handleOnClick = () => {
     storeToLocalstorage<CategorizedResultsItem>('plannerPlace', [{label: '', results: [item]}]);
@@ -114,7 +114,7 @@ export default function PlacesItem({ type = 'list', item, pid }: PlacesItemProps
               />
             }
 
-            {type === 'list' && <PlannerSheet item={item} />}
+            {type === 'list' && planner && <PlannerSheet planner={planner} item={item} />}
           </div>
 
           {type === 'list' && (

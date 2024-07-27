@@ -63,7 +63,7 @@ export async function addToPlanner(resultsItem: ResultsItem, pid: string) {
         await updateDoc(docRef, {
           places: [
             ...existingPlaces,
-            { place: resultsItem, assignedDate: null }
+            { place: resultsItem, assignedDateTimes: { from: null, to: null } }
           ]
         });
       } else {
@@ -72,10 +72,10 @@ export async function addToPlanner(resultsItem: ResultsItem, pid: string) {
     } else {
       await addDoc(collection(db, 'plannersPlaces'), {
         pid: pid,
-        places: [{ place: resultsItem, assignedDate: null }]
+        places: [{ place: resultsItem, assignedDateTimes: { from: null, to: null } }]
       });
     }
-    return { pid: pid, places: [{ place: resultsItem, assignedDate: null }] };
+    return { pid: pid, places: [{ place: resultsItem, assignedDateTimes: { from: null, to: null } }] };
   } catch (error: any) {
     console.error('Add To Planner Error:', error.code, error.message);
     return null;
@@ -108,17 +108,55 @@ export async function removeFromPlanner(fsq_id: string, pid: string) {
 
 export async function deletePlanner(pid: string) {
   try {
-    const q = query(collection(db, 'planners'), where('pid', '==', pid));
-    const querySnapshot = await getDocs(q);
+    const q1 = query(collection(db, 'planners'), where('pid', '==', pid));
+    const q2 = query(collection(db, 'plannersPlaces'), where('pid', '==', pid));
+    const querySnapshotPlanners = await getDocs(q1);
+    const querySnapshotPlannersPlaces = await getDocs(q2);
 
-    if (!querySnapshot.empty) {
-      const docRef = querySnapshot.docs[0].ref;
-      await deleteDoc(docRef);
+    if (!querySnapshotPlanners.empty && !querySnapshotPlannersPlaces.empty) {
+      const PlannersDocRef = querySnapshotPlanners.docs[0].ref;
+      const PlannersPlacesDocRef = querySnapshotPlannersPlaces.docs[0].ref;
+      await deleteDoc(PlannersDocRef);
+      await deleteDoc(PlannersPlacesDocRef);
       return true;
     }
     return false;
   } catch (error: any) {
     console.error('Delete Planner Error:', error.code, error.message);
+    return false;
+  }
+}
+
+export async function assignDateTime(pid: string, fsq_id: string, from: Date, to: Date) {
+  try {
+    const q = query(collection(db, 'plannersPlaces'), where('pid', '==', pid));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const docRef = querySnapshot.docs[0].ref;
+      const currentDoc = querySnapshot.docs[0].data();
+      const updatedPlaces = currentDoc.places.map((place: PlannerPlace) => {
+        if (place.place.fsq_id === fsq_id) {
+          return {
+            ...place, 
+            assignedDateTimes: {
+              from,
+              to,
+            },
+          };
+        }
+      });
+
+      await updateDoc(docRef, {
+        places: updatedPlaces,
+      });
+
+      return true;
+    }
+
+    return false;
+  } catch (error: any) {
+    console.error('Assign Date Time Error:', error.code, error.message);
     return false;
   }
 }

@@ -109,6 +109,7 @@ declare interface PlacesItemProps {
   type?: 'list' | 'sheet'; 
   item: ResultsItem; 
   pid?: string;
+  planner?: PlannersItem;
 }
 
 declare interface MapWithInfoProps {
@@ -119,4 +120,9 @@ declare interface MapWithInfoProps {
     lat: number;
     lng: number;
   };
+}
+
+declare interface PlannerSheetProps {
+  item: ResultsItem;
+  planner: PlannersItem
 }

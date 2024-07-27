@@ -4,6 +4,7 @@ import { z } from "zod";
 import qs from "query-string";
 import { weekdays } from "@/constants";
 import { addDays, differenceInDays, format } from "date-fns";
+import { PlannersItem } from "@/types/components";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -223,4 +224,24 @@ export function get7DaysForecast(forecastday: ForecastDay[], currentDayIndex: nu
       hottestHours: formattedHottestHours,
     };
   });
+}
+
+export function formatDate(planner: PlannersItem): FormattedDate[] {
+  const { from, to } = planner.date;
+
+  const dateList: FormattedDate[] = [];
+  let currentDate = new Date(from);
+
+  while (currentDate <= to) {
+    const formattedDate: FormattedDate = {
+      weekday: currentDate.toLocaleString('en-US', { weekday: 'long' }),
+      month: currentDate.toLocaleString('en-US', { month: 'long' }),
+      day: currentDate.getDate(),
+      year: currentDate.getFullYear(),
+    };
+    dateList.push(formattedDate);
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dateList;
 }

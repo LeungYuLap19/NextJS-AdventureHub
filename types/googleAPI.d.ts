@@ -89,9 +89,12 @@ declare interface PlannerPlaces {
 
 declare interface PlannerPlace {
   place: ResultsItem;
-  assignedDate: Date | null;
+  assignedDateTimes: {
+    from: Date | null;
+    to: Date | null;
+  };
   geoData?: {
     lat: number;
     lng: number;
-  }
+  };
 }

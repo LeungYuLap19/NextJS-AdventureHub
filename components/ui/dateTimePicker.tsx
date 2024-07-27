@@ -604,6 +604,8 @@ TimePicker.displayName = 'TimePicker';
 type Granularity = 'day' | 'hour' | 'minute' | 'second';
 
 type DateTimePickerProps = {
+  fromDate: Date;
+  toDate: Date;
   value?: Date;
   onChange?: (date: Date | undefined) => void;
   disabled?: boolean;
@@ -636,6 +638,8 @@ type DateTimePickerRef = {
 const DateTimePicker = React.forwardRef<DateTimePickerRef, DateTimePickerProps>(
   (
     {
+      fromDate,
+      toDate,
       locale = enUS,
       value,
       onChange,
@@ -706,6 +710,9 @@ const DateTimePicker = React.forwardRef<DateTimePickerRef, DateTimePickerProps>(
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0">
           <Calendar
+            disabled={(date) =>
+              fromDate > date || date > toDate
+            }
             className='bg-customWhite-200'
             mode="single"
             selected={value}
@@ -717,7 +724,7 @@ const DateTimePicker = React.forwardRef<DateTimePickerRef, DateTimePickerProps>(
             {...props}
           />
           {granularity !== 'day' && (
-            <div className="border-t border-border p-3">
+            <div className="border-t border-border p-3 bg-customWhite-200">
               <TimePicker
                 onChange={onChange}
                 date={value}

@@ -14,3 +14,10 @@ declare interface ConvertOpeningHoursReturn {
   weekday: string;
   hours: string;
 }
+
+declare interface FormattedDate {
+  weekday: string;
+  month: string;
+  day: number;
+  year: number;
+}
