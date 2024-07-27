@@ -11,7 +11,7 @@ import { toast } from '../ui/use-toast'
 import { storeToLocalstorage } from '@/lib/actions/localStorage.actions'
 import { placeDetails } from '@/lib/actions/fourSquareAPI'
 
-export default function PlacesItem({ type = 'list', item, pid, planner }: PlacesItemProps) {
+export default function PlacesItem({ type = 'list', item, pid, planner, assignedDateTimes }: PlacesItemProps) {
   const router = useRouter();
   const handleOnClick = () => {
     storeToLocalstorage<CategorizedResultsItem>('plannerPlace', [{label: '', results: [item]}]);
@@ -98,7 +98,7 @@ export default function PlacesItem({ type = 'list', item, pid, planner }: Places
                   { extraData.hours.display }
                 </p>
                 <p className='text-sm text-customBlack-100 line-clamp-1'>
-                  { extraData.location.address }
+                  { extraData.location.formatted_address }
                 </p>
               </>
             )}
@@ -114,7 +114,7 @@ export default function PlacesItem({ type = 'list', item, pid, planner }: Places
               />
             }
 
-            {type === 'list' && planner && <PlannerSheet planner={planner} item={item} />}
+            {type === 'list' && planner && assignedDateTimes && <PlannerSheet planner={planner} item={item} assignedDateTimes={assignedDateTimes} />}
           </div>
 
           {type === 'list' && (

@@ -137,6 +137,7 @@ export async function assignDateTime(pid: string, fsq_id: string, from: Date, to
       const currentDoc = querySnapshot.docs[0].data();
       const updatedPlaces = currentDoc.places.map((place: PlannerPlace) => {
         if (place.place.fsq_id === fsq_id) {
+          console
           return {
             ...place, 
             assignedDateTimes: {
@@ -145,6 +146,7 @@ export async function assignDateTime(pid: string, fsq_id: string, from: Date, to
             },
           };
         }
+        return place;
       });
 
       await updateDoc(docRef, {

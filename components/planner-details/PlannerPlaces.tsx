@@ -17,7 +17,7 @@ export default function PlannerPlaces({ planner }: { planner: PlannersItem }) {
         {
           plannerPlaces &&
           plannerPlaces.places.map((plannerPlace: PlannerPlace) => (
-            <PlacesItem key={plannerPlace.place.fsq_id} item={plannerPlace.place} pid={planner.pid} planner={planner} />
+            <PlacesItem key={plannerPlace.place.fsq_id} item={plannerPlace.place} pid={planner.pid} planner={planner} assignedDateTimes={plannerPlace.assignedDateTimes} />
           ))
         }
       </div>

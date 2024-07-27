@@ -1,21 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
-} from "@/components/ui/sheet"
-import PlacesItem from './PlacesItem'
-import { Label } from '../ui/label'
-import { DateTimePicker } from '../ui/dateTimePicker'
-import { Button } from '../ui/button'
-import { PlannerSheetProps } from '@/types/components'
-import { assignDateTime } from '@/lib/actions/firebasePlanner'
-import { toast } from '../ui/use-toast'
+} from "@/components/ui/sheet";
+import PlacesItem from './PlacesItem';
+import { Label } from '../ui/label';
+import { DateTimePicker } from '../ui/dateTimePicker';
+import { Button } from '../ui/button';
+import { PlannerSheetProps } from '@/types/components';
+import { assignDateTime } from '@/lib/actions/firebasePlanner';
+import { toast } from '../ui/use-toast';
 
-export default function PlannerSheet({ item, planner }: PlannerSheetProps) {
-  const [fromDateTime, setFromDateTime] = useState<Date | undefined>(planner.date.from);
-  const initialToDateTime = fromDateTime ? new Date(fromDateTime.getTime() + 60 * 60 * 1000) : undefined;
-  const [toDateTime, setToDateTime] = useState<Date | undefined>(initialToDateTime);
+export default function PlannerSheet({ item, planner, assignedDateTimes }: PlannerSheetProps) {
+  // Helper function to convert Timestamp to Date
+  const timestampToDate = (timestamp: { seconds: number; nanoseconds: number }) => {
+    return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+  };
+
+  // Convert assignedDateTimes to Date objects if they are available
+  const fromDateTimeInitial = assignedDateTimes?.from ? timestampToDate(assignedDateTimes.from) : planner.date.from;
+  const toDateTimeInitial = assignedDateTimes?.to ? timestampToDate(assignedDateTimes.to) : (fromDateTimeInitial ? new Date(fromDateTimeInitial.getTime() + 60 * 60 * 1000) : undefined);
+
+  const [fromDateTime, setFromDateTime] = useState<Date | undefined>(fromDateTimeInitial);
+  const [toDateTime, setToDateTime] = useState<Date | undefined>(toDateTimeInitial);
   const [alert, setAlert] = useState<string | null>(null);
   const [disable, setDisable] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -24,8 +32,7 @@ export default function PlannerSheet({ item, planner }: PlannerSheetProps) {
     if ((fromDateTime && toDateTime) && (fromDateTime >= toDateTime)) {
       setAlert("Please select a 'To' date that is later than the 'From' date.");
       setDisable(true);
-    }
-    else {
+    } else {
       setAlert(null);
       setDisable(false);
     }
@@ -42,15 +49,14 @@ export default function PlannerSheet({ item, planner }: PlannerSheetProps) {
           title: `${item.name} added to calendar`,
           description: `${fromDateTime.toString().slice(0, 21)} --- ${toDateTime.toString().slice(0, 21)}`,
         });
-      }
-      else {
+      } else {
         setDisable(false);
         toast({
           description: `Error adding ${item.name} to calendar`
         });
       }
     }
-  }
+  };
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -96,5 +102,5 @@ export default function PlannerSheet({ item, planner }: PlannerSheetProps) {
         </div>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

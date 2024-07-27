@@ -110,6 +110,10 @@ declare interface PlacesItemProps {
   item: ResultsItem; 
   pid?: string;
   planner?: PlannersItem;
+  assignedDateTimes?: {
+    from: { seconds: number; nanoseconds: number } | null;
+    to: { seconds: number; nanoseconds: number } | null;
+  };
 }
 
 declare interface MapWithInfoProps {
@@ -124,5 +128,9 @@ declare interface MapWithInfoProps {
 
 declare interface PlannerSheetProps {
   item: ResultsItem;
-  planner: PlannersItem
+  planner: PlannersItem;
+  assignedDateTimes?: {
+    from: { seconds: number; nanoseconds: number } | null;
+    to: { seconds: number; nanoseconds: number } | null;
+  };
 }
