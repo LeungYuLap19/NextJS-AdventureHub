@@ -1,6 +1,7 @@
 import { cn, formatDate } from '@/lib/utils'
 import { PlannersItem } from '@/types/components'
 import React, { useEffect, useState } from 'react'
+import CalendarTimeSlots from '../planner-calendar/CalendarTimeSlots';
 
 export default function PlannerCalendar({ planner }: { planner: PlannersItem }) {
   const dateList = formatDate(planner);
@@ -32,6 +33,8 @@ export default function PlannerCalendar({ planner }: { planner: PlannersItem }) 
       <div className='w-full flex justify-center'>
         <p className='font-semibold'>{`${selected.weekday} ∙ ${selected.month.slice(0, 3)} ${selected.day} ${selected.year}`}</p>
       </div>
+
+      <CalendarTimeSlots />
     </div>
   )
 }

@@ -28,14 +28,15 @@ export default function MapWithInfo({ type, planner, places, position }: MapWith
           className='h-planner-details-custom'
           defaultZoom={type === 'planner' ? 10 : 15}
           defaultCenter={
-            places &&
-            places[0].geoData ?
-            places[0].geoData :
-            position ? position :
-            planner ? {
+            (places && places[0] && places[0].geoData) ? 
+            places[0].geoData : 
+            position ? 
+            position : 
+            planner ? 
+            {
               lat: planner?.country.geo.center.latitude,
               lng: planner?.country.geo.center.longitude
-            } :
+            } : 
             undefined
           }
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID}
