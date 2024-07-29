@@ -13,14 +13,8 @@ import { assignDateTime } from '@/lib/actions/firebasePlanner';
 import { toast } from '../ui/use-toast';
 
 export default function PlannerSheet({ item, planner, assignedDateTimes }: PlannerSheetProps) {
-  // Helper function to convert Timestamp to Date
-  const timestampToDate = (timestamp: { seconds: number; nanoseconds: number }) => {
-    return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
-  };
-
-  // Convert assignedDateTimes to Date objects if they are available
-  const fromDateTimeInitial = assignedDateTimes?.from ? timestampToDate(assignedDateTimes.from) : planner.date.from;
-  const toDateTimeInitial = assignedDateTimes?.to ? timestampToDate(assignedDateTimes.to) : (fromDateTimeInitial ? new Date(fromDateTimeInitial.getTime() + 60 * 60 * 1000) : undefined);
+  const fromDateTimeInitial = assignedDateTimes?.from ? assignedDateTimes.from : planner.date.from;
+  const toDateTimeInitial = assignedDateTimes?.to ? assignedDateTimes.to : (fromDateTimeInitial ? new Date(fromDateTimeInitial.getTime() + 60 * 60 * 1000) : undefined);
 
   const [fromDateTime, setFromDateTime] = useState<Date | undefined>(fromDateTimeInitial);
   const [toDateTime, setToDateTime] = useState<Date | undefined>(toDateTimeInitial);

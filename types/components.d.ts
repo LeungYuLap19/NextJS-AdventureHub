@@ -111,8 +111,8 @@ declare interface PlacesItemProps {
   pid?: string;
   planner?: PlannersItem;
   assignedDateTimes?: {
-    from: { seconds: number; nanoseconds: number } | null;
-    to: { seconds: number; nanoseconds: number } | null;
+    from: Date | null;
+    to: Date | null;
   };
 }
 
@@ -130,7 +130,15 @@ declare interface PlannerSheetProps {
   item: ResultsItem;
   planner: PlannersItem;
   assignedDateTimes?: {
-    from: { seconds: number; nanoseconds: number } | null;
-    to: { seconds: number; nanoseconds: number } | null;
+    from: Date | null;
+    to: Date | null;
   };
+}
+
+// planner calendar
+declare interface CalendarTimeSlotProps {
+  time: string; 
+  last?: string; 
+  placesOfTheDate: PlannerPlace[] | null; 
+  targetDate: Date;
 }

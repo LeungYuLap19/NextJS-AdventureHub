@@ -245,3 +245,13 @@ export function formatDate(planner: PlannersItem): FormattedDate[] {
 
   return dateList;
 }
+
+export function convertTimestampToDate(timestamp: { seconds: number; nanoseconds: number }) {
+  return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+}
+
+export function isSameDay(date1: Date, date2: Date) {
+  return date1.getFullYear() === date2.getFullYear() &&
+         date1.getMonth() === date2.getMonth() &&
+         date1.getDate() === date2.getDate();
+}
