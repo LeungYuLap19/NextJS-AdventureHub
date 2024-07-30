@@ -114,7 +114,8 @@ export default function PlacesItem({ type = 'list', item, pid, planner, assigned
               />
             }
 
-            {type === 'list' && planner && assignedDateTimes && <PlannerSheet planner={planner} item={item} assignedDateTimes={assignedDateTimes} />}
+            {type === 'list' && planner && assignedDateTimes && 
+            <PlannerSheet planner={planner} item={item} assignedDateTimes={assignedDateTimes} type='item' />}
           </div>
 
           {type === 'list' && (

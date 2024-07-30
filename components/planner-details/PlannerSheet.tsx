@@ -12,15 +12,20 @@ import { PlannerSheetProps } from '@/types/components';
 import { assignDateTime } from '@/lib/actions/firebasePlanner';
 import { toast } from '../ui/use-toast';
 
-export default function PlannerSheet({ item, planner, assignedDateTimes }: PlannerSheetProps) {
-  const fromDateTimeInitial = assignedDateTimes?.from ? assignedDateTimes.from : planner.date.from;
-  const toDateTimeInitial = assignedDateTimes?.to ? assignedDateTimes.to : (fromDateTimeInitial ? new Date(fromDateTimeInitial.getTime() + 60 * 60 * 1000) : undefined);
-
-  const [fromDateTime, setFromDateTime] = useState<Date | undefined>(fromDateTimeInitial);
-  const [toDateTime, setToDateTime] = useState<Date | undefined>(toDateTimeInitial);
+export default function PlannerSheet({ item, planner, assignedDateTimes, type }: PlannerSheetProps) {
+  const [fromDateTime, setFromDateTime] = useState<Date | undefined>(undefined);
+  const [toDateTime, setToDateTime] = useState<Date | undefined>(undefined);
   const [alert, setAlert] = useState<string | null>(null);
   const [disable, setDisable] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fromDateTimeInitial = assignedDateTimes?.from ? assignedDateTimes.from : planner.date.from;
+    const toDateTimeInitial = assignedDateTimes?.to ? assignedDateTimes.to : (fromDateTimeInitial ? new Date(fromDateTimeInitial.getTime() + 60 * 60 * 1000) : undefined);
+
+    setFromDateTime(fromDateTimeInitial);
+    setToDateTime(toDateTimeInitial);
+  }, [assignedDateTimes]);
 
   useEffect(() => {
     if ((fromDateTime && toDateTime) && (fromDateTime >= toDateTime)) {
@@ -54,8 +59,18 @@ export default function PlannerSheet({ item, planner, assignedDateTimes }: Plann
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger className='absolute left-4 bottom-3 bg-customGreen-400 text-customWhite-200 !px-4 !py-2 w-fit h-fit rounded-md'>
-        <p className='max-3xl:text-xs font-normal'>
+      <SheetTrigger 
+        className={`
+          ${ type === 'item' && 'absolute left-4 bottom-3 bg-customGreen-400 text-customWhite-200 !px-4 !py-2 w-fit h-fit rounded-md'}
+          ${ type === 'calendar' && 'absolute w-full h-full bg-transparent cursor-pointer top-0 left-0'}
+        `}
+      >
+        <p 
+          className={`
+            ${ type === 'item' && 'max-3xl:text-xs font-normal'}
+            ${ type === 'calendar' && 'hidden'}
+          `}
+        >
           Add
           <span className='max-lg:hidden'>{' to Calendar'}</span>
         </p>

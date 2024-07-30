@@ -1,8 +1,10 @@
 import { times } from '@/constants';
 import React, { useEffect, useState } from 'react';
 import CalendarTimeLine from './CalendarTimeLine';
+import PlannerSheet from '../planner-details/PlannerSheet';
+import { PlannersItem } from '@/types/components';
 
-export default function CalendarTimeSlots({ placesOfSelected, selected }: { placesOfSelected: PlannerPlace[]; selected: FormattedDate }) {
+export default function CalendarTimeSlots({ placesOfSelected, selected, planner }: { placesOfSelected: PlannerPlace[]; selected: FormattedDate; planner: PlannersItem }) {
   const [columns, setColumns] = useState<PlannerPlace[][]>([]);
   const selectedDate = new Date(selected.year, new Date(`${selected.month} 1, ${selected.year}`).getMonth(), selected.day);
 
@@ -77,10 +79,13 @@ export default function CalendarTimeSlots({ placesOfSelected, selected }: { plac
                 return (
                   <div 
                     key={placeIndex}
-                    className='absolute w-full rounded-lg bg-customGreen-200 text-customWhite-200 p-2 pl-3 z-50 cursor-pointer'
+                    className='absolute w-full rounded-lg bg-customGreen-200 text-customWhite-200 p-2 pl-3 z-40'
                     style={{ top: `${top}%`, height: `${height}%` }}
                   >
                     <p className='w-full line-clamp-1'>{place.place.name}</p> 
+                    <div className='w-full h-full relative'>
+                      <PlannerSheet item={place.place} planner={planner} assignedDateTimes={place.assignedDateTimes} type='calendar' />
+                    </div>
                   </div>
                 );
               }

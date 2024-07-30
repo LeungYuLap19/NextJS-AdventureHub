@@ -133,6 +133,7 @@ declare interface PlannerSheetProps {
     from: Date | null;
     to: Date | null;
   };
+  type: 'item' | 'calendar';
 }
 
 // planner calendar

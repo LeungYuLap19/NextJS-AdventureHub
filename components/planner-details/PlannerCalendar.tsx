@@ -59,7 +59,7 @@ export default function PlannerCalendar({ planner }: { planner: PlannersItem }) 
         <p className='font-semibold'>{`${selected.weekday} ∙ ${selected.month.slice(0, 3)} ${selected.day} ${selected.year}`}</p>
       </div>
 
-      <CalendarTimeSlots placesOfSelected={placesOfSelected} selected={selected} />
+      <CalendarTimeSlots placesOfSelected={placesOfSelected} selected={selected} planner={planner} />
     </div>
   )
 }
