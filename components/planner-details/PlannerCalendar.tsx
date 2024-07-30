@@ -1,14 +1,39 @@
 import { cn, formatDate } from '@/lib/utils'
 import { PlannersItem } from '@/types/components'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CalendarTimeSlots from '../planner-calendar/CalendarTimeSlots';
+import { useGetPlannerPlaces } from '@/lib/hooks/useGetPlannerPlaces';
 
 export default function PlannerCalendar({ planner }: { planner: PlannersItem }) {
   const dateList = formatDate(planner);
   const [selected, setSelected] = useState<FormattedDate>(dateList[0]);
+  const { plannerPlaces } = useGetPlannerPlaces(planner);
+  const [placesOfSelected, setPlacesOfSelected] = useState<PlannerPlace[]>([]);
+
+  useEffect(() => {
+    const selectedDate = new Date(selected.year, new Date(`${selected.month} 1, ${selected.year}`).getMonth(), selected.day);
+    const placesArray: PlannerPlace[] = [];
+    plannerPlaces && 
+    plannerPlaces.places.forEach((place) => {
+      const fromDate = place.assignedDateTimes.from;
+      const toDate = place.assignedDateTimes.to;
+      if (fromDate && toDate) {
+        // console.log({selectedDate, fromDate, toDate})
+        const isWithin = selectedDate >= new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate()) &&
+                 selectedDate <= new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate());
+        // console.log(isWithin);
+
+        if (isWithin) {
+          placesArray.push(place);
+        }
+      }
+    });
+
+    setPlacesOfSelected(placesArray);
+  }, [selected, plannerPlaces]);
 
   return (
-    <div className='w-full flex flex-col md:p-7 gap-5 items-center'>
+    <div className='w-full flex flex-col md:p-7 gap-5 items-center h-fit'>
       <div className='max-w-full overflow-auto flex gap-3'>
         {
           dateList.map((date: FormattedDate, index) => (
@@ -33,6 +58,8 @@ export default function PlannerCalendar({ planner }: { planner: PlannersItem }) 
       <div className='w-full flex justify-center'>
         <p className='font-semibold'>{`${selected.weekday} ∙ ${selected.month.slice(0, 3)} ${selected.day} ${selected.year}`}</p>
       </div>
+
+      <CalendarTimeSlots placesOfSelected={placesOfSelected} selected={selected} />
     </div>
   )
 }

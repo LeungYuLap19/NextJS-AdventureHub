@@ -89,7 +89,7 @@ declare interface PlannerPlaces {
 
 declare interface PlannerPlace {
   place: ResultsItem;
-  assignedDateTimes?: {
+  assignedDateTimes: {
     from: Date | null;
     to: Date | null;
   };
