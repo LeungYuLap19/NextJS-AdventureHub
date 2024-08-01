@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { navLinks } from '@/constants'
 import NavigationTab from './NavigationTab'
 import { getFromCookies } from '@/lib/actions/cookies.action'
+import NavigationProfile from './NavigationProfile'
 
 export default async function Navigation() {
   const userData = await getFromCookies<UserData>('userData');
@@ -25,15 +26,7 @@ export default async function Navigation() {
         }
       </div>
 
-      <Link
-        href={'/profile'}
-        className='flex justify-center items-center text-xl h-12 aspect-square green-gradient text-customWhite-200 rounded-full flex-shrink-0 ml-3 max-sm:h-10'
-      >
-        {
-          userData &&
-          userData.username[0].toUpperCase()
-        }
-      </Link>
+      { userData && <NavigationProfile userData={userData} />}
     </div>
   )
 }

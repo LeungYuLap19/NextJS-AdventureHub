@@ -32,3 +32,14 @@ export async function getFromCookies<T>(key: string): Promise<T | null> {
     return null;
   }
 }
+
+
+export async function removeFromCookies(key: string): Promise<boolean> {
+  try {
+    cookies().delete(key);
+    return true;
+  } catch (error) {
+    console.error('Remove From Cookies Error:', error);
+    return false;
+  }
+}

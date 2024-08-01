@@ -14,6 +14,7 @@ import CustomInput from './CustomInput'
 import { createAccount, createUser, getUserByUID, signInAccount } from '@/lib/actions/firebaseAuth'
 import { storeToCookies } from '@/lib/actions/cookies.action'
 import { toast } from '../ui/use-toast'
+import { AuthFormProps } from '@/types/components'
 
 export default function AuthForm({ type }: AuthFormProps) {
   const router = useRouter();
