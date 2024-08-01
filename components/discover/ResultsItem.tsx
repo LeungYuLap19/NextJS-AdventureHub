@@ -1,14 +1,16 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Rating } from '@mui/material'
-import Image from 'next/image'
 import Photo from './Photo'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { capitalizeWords, formatDateRange, formUrlQuery } from '@/lib/utils'
+import { capitalizeWords, cn, formatDateRange, formUrlQuery } from '@/lib/utils'
 import { ResultsItemProps } from '@/types/components'
 import AddToPlanner from '../details/AddToPlanner'
+import { useGetPlannerPlaces } from '@/lib/hooks/useGetPlannerPlaces'
 
 export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
+  const [plannerPhotos, setPlannerPhotos] = useState<string[]>([]);
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const handleOnClick = () => {
@@ -24,6 +26,28 @@ export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
     router.push(newUrl, { scroll: false });
   }
 
+  const plannerPlaces = plannersItem ? useGetPlannerPlaces(plannersItem).plannerPlaces : null;
+
+  useEffect(() => {
+    if (plannerPlaces) {
+      const photos: string[] = [];
+      plannerPlaces.places.map((place) => {
+        place.place.photo &&
+        photos.push(place.place.photo);
+      });
+
+      if (photos.length > 4) {
+        const random = Array.from({ length: 4 }, () => Math.floor(Math.random() * photos.length));
+        const randomPhotos: string[] = random.map((index) => photos[index]);
+        setPlannerPhotos(randomPhotos);
+      }
+      else {
+        console.log(photos);
+        setPlannerPhotos(photos);
+      }
+    }
+  }, [plannerPlaces]);
+
   return (
     <div className='w-full bg-customWhite-200 rounded-lg overflow-hidden cursor-pointer'>
       <div 
@@ -37,12 +61,25 @@ export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
             imgUrl={item.photo} 
             morePhoto={false}     
           /> :
-          (plannersItem && plannersItem.photo) ?
-          <Photo 
-            displayName={plannersItem.name} 
-            imgUrl={plannersItem.photo} 
-            morePhoto={false}  
-          /> :
+          plannerPhotos ?
+          <div className={cn('w-full h-full grid gap-0', {
+            'grid-cols-1 grid-rows-1': plannerPhotos.length === 1,
+            'grid-cols-2 grid-rows-1': plannerPhotos.length === 2,
+            'grid-cols-2 grid-rows-2': plannerPhotos.length > 2,
+          })}>
+            {
+              plannerPhotos.map((photo, index) => (
+                <div key={index} className={`w-full h-full overflow-hidden relative ${plannerPhotos.length === 3 && index === 2 ? 'col-span-2': ''}`}>
+                  <Photo 
+                    displayName={'photo ' + index} 
+                    imgUrl={photo} 
+                    morePhoto={false}
+                  />
+                </div>
+              ))
+            }
+          </div> 
+          :
           <></>
         }
       </div>

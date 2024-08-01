@@ -1,3 +1,4 @@
+import { PhotoProps } from '@/types/components'
 import Image from 'next/image'
 import React from 'react'
 
