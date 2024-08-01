@@ -37,8 +37,12 @@ export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
       });
 
       if (photos.length > 4) {
-        const random = Array.from({ length: 4 }, () => Math.floor(Math.random() * photos.length));
-        const randomPhotos: string[] = random.map((index) => photos[index]);
+        const randomIndexes = new Set<number>();
+        while (randomIndexes.size < 4) {
+          randomIndexes.add(Math.floor(Math.random() * photos.length));
+        }
+        const randomArray = Array.from(randomIndexes);
+        const randomPhotos: string[] = randomArray.map((index) => photos[index]);
         setPlannerPhotos(randomPhotos);
       }
       else {
