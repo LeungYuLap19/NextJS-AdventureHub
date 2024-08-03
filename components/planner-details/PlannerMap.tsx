@@ -13,7 +13,7 @@ export default function PlannerMap({ planner }: { planner: PlannersItem; }) {
   return (
     <div className='w-full h-full'>
       {
-        planner && places && places.length === 0 ?
+        planner && (!places || places.length == 0) ?
         <MapWithInfo 
           type='planner'
           planner={planner}

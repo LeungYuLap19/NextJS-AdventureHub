@@ -113,13 +113,16 @@ export async function deletePlanner(pid: string) {
     const querySnapshotPlanners = await getDocs(q1);
     const querySnapshotPlannersPlaces = await getDocs(q2);
 
-    if (!querySnapshotPlanners.empty && !querySnapshotPlannersPlaces.empty) {
+    if (!querySnapshotPlanners.empty) {
       const PlannersDocRef = querySnapshotPlanners.docs[0].ref;
-      const PlannersPlacesDocRef = querySnapshotPlannersPlaces.docs[0].ref;
       await deleteDoc(PlannersDocRef);
-      await deleteDoc(PlannersPlacesDocRef);
+      if (!querySnapshotPlannersPlaces.empty) {
+        const PlannersPlacesDocRef = querySnapshotPlannersPlaces.docs[0].ref;
+        await deleteDoc(PlannersPlacesDocRef);
+      }
       return true;
     }
+
     return false;
   } catch (error: any) {
     console.error('Delete Planner Error:', error.code, error.message);
