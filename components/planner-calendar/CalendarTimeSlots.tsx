@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import CalendarTimeLine from './CalendarTimeLine';
 import PlannerSheet from '../planner-details/PlannerSheet';
 import { PlannersItem } from '@/types/components';
+import { cn } from '@/lib/utils';
 
 export default function CalendarTimeSlots({ placesOfSelected, selected, planner }: { placesOfSelected: PlannerPlace[]; selected: FormattedDate; planner: PlannersItem }) {
   const [columns, setColumns] = useState<PlannerPlace[][]>([]);
@@ -79,12 +80,23 @@ export default function CalendarTimeSlots({ placesOfSelected, selected, planner 
                 return (
                   <div 
                     key={placeIndex}
-                    className='absolute w-full rounded-lg bg-customGreen-200 text-customWhite-200 p-2 pl-3 z-40'
-                    style={{ top: `${top}%`, height: `${height}%` }}
+                    className={cn('absolute w-full rounded-lg overflow-hidden text-customWhite-200 p-2 pl-3 z-40', {
+                      'bg-customGreen-200': !place.place.photo,
+                    })}
+                    style={{ 
+                      top: `${top}%`, 
+                      height: `${height}%`,
+                    }}
                   >
-                    <p className='w-full line-clamp-1'>{place.place.name}</p> 
+                    {place.place.photo && (
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center brightness-50"
+                        style={{ backgroundImage: `url(${place.place.photo})` }}
+                      />
+                    )}
                     <div className='w-full h-full relative'>
                       <PlannerSheet item={place.place} planner={planner} assignedDateTimes={place.assignedDateTimes} type='calendar' />
+                      <p className='w-full line-clamp-1'>{place.place.name}</p> 
                     </div>
                   </div>
                 );
