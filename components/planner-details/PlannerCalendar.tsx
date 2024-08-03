@@ -33,7 +33,7 @@ export default function PlannerCalendar({ planner }: { planner: PlannersItem }) 
   }, [selected, plannerPlaces]);
 
   return (
-    <div className='w-full flex flex-col md:p-7 gap-5 items-center h-fit'>
+    <div className='w-full flex flex-col md:p-7 gap-5 items-center h-fit max-md:overflow-hidden'>
       <div className='max-w-full overflow-auto flex gap-3'>
         {
           dateList.map((date: FormattedDate, index) => (
