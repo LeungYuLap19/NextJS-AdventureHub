@@ -46,7 +46,6 @@ export default function ResultsItem({ item, plannersItem }: ResultsItemProps) {
         setPlannerPhotos(randomPhotos);
       }
       else {
-        console.log(photos);
         setPlannerPhotos(photos);
       }
     }

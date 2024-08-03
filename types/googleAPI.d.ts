@@ -19,6 +19,16 @@ declare interface CreateUserParams {
   email: string;
 }
 
+declare interface UpdateUserDataParams {
+  uid: string;
+  city: string;
+  username: string;
+  oemail: string;
+  nemail: string;
+  opassword: string;
+  npassword?: string;
+}
+
 // firebase api responses 
 declare interface UserData extends CreateUserParams{};
 

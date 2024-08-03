@@ -60,6 +60,13 @@ export const tripFormSchema = z.object({
     "Start date must be in the future"
   ),
 });
+
+export const profileFormSchema = z.object({
+  username: z.string().min(5).max(20),
+  email: z.string().email(),
+  npassword: z.string().min(8).optional(),
+  opassword: z.string().min(8),
+})
 // schema end
 
 export const handleKeyDown = ({event, func}: HandleKeyDownParams) => {

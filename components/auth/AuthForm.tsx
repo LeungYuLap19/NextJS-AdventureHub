@@ -51,9 +51,9 @@ export default function AuthForm({ type }: AuthFormProps) {
 					await storeToCookies<UserData>('userData', userData);
 					router.push('/discover');
 				}
-				setLoading(false);
 			}
 		}
+		setLoading(false);
   }
 
   return (
