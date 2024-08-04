@@ -26,7 +26,6 @@ export function useGetPlannerMap(planner: PlannersItem ) {
           return plannerPlace;
         });
 
-        console.log(placesWithGeo);
         setPlaces(placesWithGeo);
       }
     }

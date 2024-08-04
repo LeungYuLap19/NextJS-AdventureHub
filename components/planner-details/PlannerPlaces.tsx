@@ -15,10 +15,11 @@ export default function PlannerPlaces({ planner }: { planner: PlannersItem }) {
 
       <div className='flex flex-col w-full gap-4'>
         {
-          plannerPlaces &&
+          plannerPlaces && plannerPlaces.places.length > 0 ?
           plannerPlaces.places.map((plannerPlace: PlannerPlace) => (
             <PlacesItem key={plannerPlace.place.fsq_id} item={plannerPlace.place} pid={planner.pid} planner={planner} assignedDateTimes={plannerPlace.assignedDateTimes} />
-          ))
+          )) :
+          <p>It looks like you haven't added any places yet. Start planning your journey now!</p>
         }
       </div>
     </div>
