@@ -20,6 +20,7 @@ const config = {
     extend: {
       screens: {
         '3xl': '2250px',
+        'xsm': '514px',
       },
       dropShadow: {
         default: '0px 0px 8px rgba(0, 0, 0, 0.10)'
