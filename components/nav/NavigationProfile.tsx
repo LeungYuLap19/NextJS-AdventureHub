@@ -35,7 +35,7 @@ export default function NavigationProfile({ userData }: { userData: UserData }) 
             }
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className='bg-customWhite-200'>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DialogTrigger asChild>

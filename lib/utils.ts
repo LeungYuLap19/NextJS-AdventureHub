@@ -66,7 +66,20 @@ export const profileFormSchema = z.object({
   email: z.string().email(),
   npassword: z.string().min(8).optional(),
   opassword: z.string().min(8),
-})
+});
+
+export const blogFormSchema = z.object({
+  cover: z.instanceof(File).refine(file => file.type.startsWith('image/'), {
+    message: 'Please upload a valid image file for the blog cover.'
+  }).optional(),
+  title: z.string()
+    .min(5, { message: 'Title must be at least 5 characters long.' })
+    .max(100, { message: 'Title cannot exceed 100 characters.' }),
+  article: z.string()
+    .min(20, { message: 'Article must be at least 20 characters long.' })
+    .max(10000, { message: 'Article cannot exceed 10000 characters.' }),
+});
+
 // schema end
 
 export const handleKeyDown = ({event, func}: HandleKeyDownParams) => {

@@ -29,12 +29,43 @@ declare interface UpdateUserDataParams {
   npassword?: string;
 }
 
+declare interface CreateBlogParams {
+  bid: string;
+  publishTime: Date;
+  cover: File | undefined; 
+  article: string;
+  title: string;
+}
+
 // firebase api responses 
 declare interface UserData extends CreateUserParams{};
 
 declare interface AuthError {
   errorCode: string;
   message: string;
+}
+
+declare interface PlannerPlaces {
+  pid: string;
+  places: PlannerPlace[];
+}
+
+declare interface PlannerPlace {
+  place: ResultsItem;
+  assignedDateTimes: {
+    from: Date | null;
+    to: Date | null;
+  };
+  geoData?: {
+    lat: number;
+    lng: number;
+  };
+}
+
+declare interface BlogComment {
+  displayName: string;
+  publishTime: Date;
+  text: string;
 }
 
 // weather api response
@@ -90,21 +121,4 @@ declare interface FormattedDaysForecast {
     hour: number;
     temp_c: number;
   }[];
-}
-
-declare interface PlannerPlaces {
-  pid: string;
-  places: PlannerPlace[];
-}
-
-declare interface PlannerPlace {
-  place: ResultsItem;
-  assignedDateTimes: {
-    from: Date | null;
-    to: Date | null;
-  };
-  geoData?: {
-    lat: number;
-    lng: number;
-  };
 }

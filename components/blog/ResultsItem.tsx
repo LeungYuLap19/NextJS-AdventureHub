@@ -1,13 +1,24 @@
+'use client'
 import { cn } from '@/lib/utils'
 import React from 'react'
 import Photo from '../discover/Photo'
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function ResultsItem({ type }: { type: 'recommend' | 'popular' }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const handleOnClick = () => {
+    router.push(`${pathname}/details`);
+  }
+
   return (
-    <div className={cn('flex-shrink-0 relative bg-customWhite-200 rounded-lg overflow-hidden cursor-pointer', {
-      'sm:w-full sm:pt-[56.8%] max-sm:h-full max-sm:pl-[70%]': type === 'recommend',
-      'w-full pt-[40%]': type === 'popular'
-    })}>
+    <div
+      onClick={handleOnClick} 
+      className={cn('flex-shrink-0 relative bg-customWhite-200 rounded-lg overflow-hidden cursor-pointer', {
+        'sm:w-full sm:pt-[56.8%] max-sm:h-full max-sm:pl-[70%]': type === 'recommend',
+        'w-full pt-[40%]': type === 'popular'
+      })}
+    >
       <div className='absolute inset-0 text-white'>
         <div className='h-full w-full relative bg-customBlack-100 flex'>
           {/* photo */}
