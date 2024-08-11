@@ -68,10 +68,16 @@ export const profileFormSchema = z.object({
   opassword: z.string().min(8),
 });
 
+const MAX_FILE_SIZE = 5000000;
 export const blogFormSchema = z.object({
-  cover: z.instanceof(File).refine(file => file.type.startsWith('image/'), {
-    message: 'Please upload a valid image file for the blog cover.'
-  }).optional(),
+  cover: z.instanceof(File)
+    .refine(file => file.type.startsWith('image/'), {
+      message: 'Please upload a valid image file for the blog cover.'
+    })
+    .refine(file => file.size <= MAX_FILE_SIZE, {
+      message: 'Max image size is 5mb.'
+    })
+    .optional(),
   title: z.string()
     .min(5, { message: 'Title must be at least 5 characters long.' })
     .max(100, { message: 'Title cannot exceed 100 characters.' }),
@@ -274,4 +280,24 @@ export function isSameDay(date1: Date, date2: Date) {
   return date1.getFullYear() === date2.getFullYear() &&
          date1.getMonth() === date2.getMonth() &&
          date1.getDate() === date2.getDate();
+}
+
+export function convertImageToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      if (reader.result) {
+        resolve(reader.result.toString());
+      } else {
+        reject('Failed to convert image to base64.');
+      }
+    };
+
+    reader.onerror = () => {
+      reject('An error occurred while reading the file.');
+    };
+
+    reader.readAsDataURL(file);
+  });
 }

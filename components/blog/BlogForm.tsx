@@ -1,5 +1,5 @@
 'use client'
-import { blogFormSchema } from '@/lib/utils'
+import { blogFormSchema, convertImageToBase64 } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
@@ -10,7 +10,7 @@ import UserBadge from './UserBadge';
 import CustomInput from './CustomInput';
 import Photo from '../discover/Photo';
 import Image from 'next/image';
-import { createBlog } from '@/lib/actions/firebaseBlog';
+import { createBlog, uploadImage } from '@/lib/actions/firebaseBlog';
 import { toast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
 
@@ -28,11 +28,18 @@ export default function BlogForm({ userData }: { userData: UserData }) {
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
+    const bid = crypto.randomUUID();
+    let imgUrl = null;
+    if (values.cover) {
+      const base64 = await convertImageToBase64(values.cover);
+      imgUrl = await uploadImage({ image: base64, fileName: 'blogs', bid });
+    }
+
     const done = await createBlog({
-      bid: crypto.randomUUID(),
+      bid: bid,
       publishTime: new Date(),
-      cover: values.cover,
-      article: values.article,
+      cover: imgUrl,
+      article: values.article.replace(/\n/g, '<br/>'),
       title: values.title
     });
     if (done) {
@@ -43,19 +50,28 @@ export default function BlogForm({ userData }: { userData: UserData }) {
       });
     }
     else {
+      setLoading(false);
       toast({
         title: `Error Creating Blog`,
       });
     }
-    setLoading(false);
   };
 
+  const MAX_FILE_SIZE = 5000000;
   const [imageUrl, setImgUrl] = useState<string | null>(null);
   const coverFile = form.watch('cover');
   useEffect(() => {
     if (coverFile) {
-      const url = URL.createObjectURL(coverFile);
-      setImgUrl(url);
+      if (coverFile.size > MAX_FILE_SIZE) {
+        toast({
+          title: `Max image size is 5mb.`,
+        });
+        setImgUrl(null);
+      } 
+      else {
+        const url = URL.createObjectURL(coverFile);
+        setImgUrl(url);
+      }
     }
     else {
       setImgUrl(null);

@@ -32,9 +32,15 @@ declare interface UpdateUserDataParams {
 declare interface CreateBlogParams {
   bid: string;
   publishTime: Date;
-  cover: File | undefined; 
+  cover: string | null; 
   article: string;
   title: string;
+}
+
+declare interface UploadImageParams {
+  bid: string;
+  image: string;
+  fileName: string;
 }
 
 // firebase api responses 

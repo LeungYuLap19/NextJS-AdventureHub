@@ -1,7 +1,8 @@
 'use server'
 import { addDoc, collection } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
 import { getFromCookies } from './cookies.action';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 export async function createBlog({ bid, publishTime, cover, article, title }: CreateBlogParams): Promise<boolean> {
   try {
@@ -10,7 +11,7 @@ export async function createBlog({ bid, publishTime, cover, article, title }: Cr
       uid: userData?.uid,
       bid: bid,
       publishTime: publishTime,
-      // cover need to be url from firebase storage
+      cover: cover,
       article: article,
       title: title
     });
@@ -18,5 +19,22 @@ export async function createBlog({ bid, publishTime, cover, article, title }: Cr
   } catch (error: any) {
     console.error('Create Blog Error:', error.code, error.message);
     return false;
+  }
+}
+
+export async function uploadImage({ image, fileName, bid }: UploadImageParams): Promise<string | null> {
+  const storageRef = ref(storage, `${fileName}/${bid}`);
+  try {
+    // Convert base64 string back to Blob
+    const response = await fetch(image);
+    const blob = await response.blob();
+
+    // Upload the Blob to Firebase Storage
+    const snapshot = await uploadBytes(storageRef, blob);
+    const imgUrl = await getDownloadURL(snapshot.ref);
+    return imgUrl;
+  } catch (error: any) {
+    console.error('Upload Image Error:', error.code, error.message);
+    return null;
   }
 }
