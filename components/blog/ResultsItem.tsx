@@ -4,7 +4,7 @@ import React from 'react'
 import Photo from '../discover/Photo'
 import { usePathname, useRouter } from 'next/navigation';
 
-export default function ResultsItem({ type }: { type: 'recommend' | 'popular' }) {
+export default function ResultsItem({ type, blog }: { type: 'recommend' | 'popular'; blog: Blog }) {
   const router = useRouter();
   const pathname = usePathname();
   const handleOnClick = () => {
@@ -16,44 +16,58 @@ export default function ResultsItem({ type }: { type: 'recommend' | 'popular' })
       onClick={handleOnClick} 
       className={cn('flex-shrink-0 relative bg-customWhite-200 rounded-lg overflow-hidden cursor-pointer', {
         'sm:w-full sm:pt-[56.8%] max-sm:h-full max-sm:pl-[70%]': type === 'recommend',
-        'w-full pt-[40%]': type === 'popular'
+        'w-full h-fit': type === 'popular'
       })}
     >
-      <div className='absolute inset-0 text-white'>
-        <div className='h-full w-full relative bg-customBlack-100 flex'>
+      <div className={cn('text-white', {
+        'absolute inset-0': type ==='recommend',
+        'w-full h-fit': type === 'popular'
+      })}>
+        <div className={cn('w-full bg-customBlack-100', {
+          'relative h-full flex': type === 'recommend',
+          'flex flex-col h-fit': type === 'popular'
+        })}>
           {/* photo */}
           {
             type === 'popular' ?
             <div className='h-full aspect-square relative'>
               <Photo 
-                displayName='testing-img'
-                imgUrl='/root/testing-img.jpg'
+                displayName={blog.title}
+                imgUrl={blog.cover}
                 morePhoto={false}
               />
             </div> :
             <Photo
-              displayName='testing-img'
-              imgUrl='/root/testing-img.jpg'
+              displayName={blog.title}
+              imgUrl={blog.cover}
               morePhoto={true}
             />
           }
       
           {
             type === 'recommend' ?
-            <div className='absolute left-0 bottom-0 w-full p-2 pl-3'>
-              <p className='text-lg font-bold line-clamp-1'>Blog Title</p>
-              <p className='text-sm line-clamp-1'>Username</p>
-            </div> :
-            <div className='h-full flex-1 bg-customWhite-200 text-customBlack-300 flex flex-col justify-between p-3'>
-              <div className='flex flex-col gap-1'>
-                <p className='font-bold line-clamp-1 max-md:text-lg'>Blog Title</p>
-                <p className='text-xs 2xl:line-clamp-5 xl:line-clamp-3 lg:line-clamp-5 md:line-clamp-3 max-md:text-sm sm:line-clamp-5 max-sm:line-clamp-3 max-xsm:line-clamp-2 max-xsm:text-xs'>Lorem ipsum odor amet, consectetuer adipiscing elit. Donec metus pharetra proin pretium pharetra purus curabitur. Et turpis orci netus gravida libero. Adipiscing ante ac eu blandit sem, enim suscipit at. Nascetur nulla per magna pulvinar maximus. Aliquet viverra scelerisque est mattis luctus porta suscipit. Faucibus fringilla integer ridiculus, fusce proin cursus. Massa rutrum quis mattis justo mauris aptent justo cursus. Malesuada penatibus felis phasellus etiam dolor mi magna.</p>
-              </div>
+            <div className='absolute left-0 bottom-0 w-full p-4 pl-5 flex flex-col gap-2'>
+              <p className='text-lg font-bold line-clamp-1'>{blog.title}</p>
               <div className='flex gap-2 items-center'>
-                <div className='flex justify-center items-center w-fit aspect-square green-gradient text-customWhite-200 rounded-full flex-shrink-0 h-8'>
-                  J
+                <div className='flex justify-center items-center w-fit aspect-square green-gradient text-sm text-customWhite-200 rounded-full flex-shrink-0 h-7'>
+                  {blog.userData.username[0].toUpperCase()}
                 </div>
-                <p className='text-sm line-clamp-1 font-semibold'>Username</p>
+                <p className='text-xs line-clamp-1'>{blog.userData.username}</p>
+              </div>
+            </div> :
+            <div className='h-full bg-customWhite-200 text-customBlack-300 flex flex-col gap-4 justify-between pl-3 pr-4 pt-2 pb-3'>
+              <div className='flex flex-col'>
+                <p className='line-clamp-1'>{blog.title}</p>
+                <p className='text-xs line-clamp-2 text-customBlack-100 w-[90%]'>
+                  {blog.article}
+                </p>
+              </div>
+              
+              <div className='flex gap-2 items-center'>
+                <div className='flex justify-center items-center w-fit aspect-square green-gradient text-sm text-customWhite-200 rounded-full flex-shrink-0 h-7'>
+                  {blog.userData.username[0].toUpperCase()}
+                </div>
+                <p className='text-xs line-clamp-1'>{blog.userData.username}</p>
               </div>
             </div>
           }

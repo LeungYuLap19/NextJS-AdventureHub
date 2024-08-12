@@ -68,6 +68,15 @@ declare interface PlannerPlace {
   };
 }
 
+declare interface Blog {
+  bid: string;
+  title: string;
+  article: string;
+  cover: string;
+  publishTime: Date;
+  userData: UserData;
+}
+
 declare interface BlogComment {
   displayName: string;
   publishTime: Date;

@@ -15,7 +15,7 @@ export default function Results() {
         <Subtitle title={planners.length <= 0 ? 'No Trips' : 'Your Trips'} />
         <SortBy setSelected={setSelected}/>
       </div>
-      <div className='w-full grid grid-cols-4 gap-7 max-lg:grid-cols-3 max-md:grid-cols-2 max-lg:gap-4 3xl:grid-cols-6'>
+      <div className='w-full grid grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2 gap-4 3xl:grid-cols-6'>
         {filtered.length > 0 ?
           filtered.map((planner: PlannersItem) => (
             <ResultsItem key={planner.pid} plannersItem={planner} />
