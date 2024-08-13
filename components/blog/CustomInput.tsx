@@ -58,7 +58,7 @@ export default function CustomInput({
                   className={`${
                     name === 'cover'
                       ? 'hidden'
-                      : 'text-3xl font-semibold text-customBlack-300 max-md:text-xl bg-transparent border-none p-0 focus-visible:ring-transparent'
+                      : 'text-3xl font-semibold text-customBlack-300 max-md:text-xl bg-transparent border-none p-0 focus-visible:ring-0 focus-visible:ring-offset-0'
                   }`}
                   accept={name === 'cover' ? 'image/*' : undefined}
                   placeholder={name === 'title' ? placeholder : undefined}
@@ -67,7 +67,7 @@ export default function CustomInput({
               ) : (
                 <Textarea
                   id={label}
-                  className='h-[50vh] text-base rounded-none bg-transparent border-none focus-visible:ring-transparent p-0 text-customBlack-300'
+                  className='h-[50vh] text-base rounded-none bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 p-0 text-customBlack-300'
                   placeholder={placeholder}
                   onChange={handleChange}
                 />

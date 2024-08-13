@@ -4,6 +4,7 @@ import "./globals.css";
 import { register } from 'swiper/element/bundle';
 import "swiper/swiper-bundle.css";
 import 'swiper/css/navigation';
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ 
   subsets: ["latin"], 
@@ -27,7 +28,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   register();
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${ubuntu.variable}`}>{children}</body>
+      <body className={`${inter.variable} ${ubuntu.variable}`}>
+        <NextTopLoader color="#2A7144" height={4} />
+        {children}
+      </body>
     </html>
   );
 }

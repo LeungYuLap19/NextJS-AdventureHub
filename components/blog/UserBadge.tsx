@@ -7,7 +7,7 @@ export default function UserBadge({ userData, publishTime }: { userData: UserDat
         { userData && userData.username[0].toUpperCase() }
       </div>
       <p className='line-clamp-1 max-md:text-sm'>
-        <span className='font-semibold'>{ userData && userData.username } ∙ </span>
+        <span className='font-semibold'>{ userData && userData.username }&nbsp;&nbsp;∙&nbsp;&nbsp;</span>
         {
           publishTime ?
           publishTime.toDateString() :

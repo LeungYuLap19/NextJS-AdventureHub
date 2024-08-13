@@ -1,14 +1,21 @@
 'use client'
-import { cn } from '@/lib/utils'
+import { cn, formUrlQuery } from '@/lib/utils'
 import React from 'react'
 import Photo from '../discover/Photo'
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function ResultsItem({ type, blog }: { type: 'recommend' | 'popular'; blog: Blog }) {
   const router = useRouter();
-  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const handleOnClick = () => {
-    router.push(`${pathname}/details`);
+    const newUrl = formUrlQuery({
+      params: searchParams.toString(),
+      query: {
+        id: blog.bid
+      },
+      extraRoute: '/details'
+    });
+    router.push(newUrl, { scroll: false });
   }
 
   return (
@@ -31,17 +38,22 @@ export default function ResultsItem({ type, blog }: { type: 'recommend' | 'popul
           {
             type === 'popular' ?
             <div className='h-full aspect-square relative'>
-              <Photo 
-                displayName={blog.title}
-                imgUrl={blog.cover}
-                morePhoto={false}
-              />
+              {
+                blog.cover &&
+                <Photo 
+                  displayName={blog.title}
+                  imgUrl={blog.cover}
+                  morePhoto={false}
+                />
+              }
             </div> :
+            blog.cover ?
             <Photo
               displayName={blog.title}
               imgUrl={blog.cover}
               morePhoto={true}
-            />
+            /> :
+            <></>
           }
       
           {
