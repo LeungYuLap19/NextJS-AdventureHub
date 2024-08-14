@@ -23,7 +23,7 @@ export function useGetBlogs() {
             userData: userData, 
           });
         });
-        console.log(blogsList);
+        // console.log(blogsList);
         const sortedBlogs = blogsList.sort((a, b) => new Date(b.publishTime).getTime() - new Date(a.publishTime).getTime());
         setMyBlogs(sortedBlogs);
       });

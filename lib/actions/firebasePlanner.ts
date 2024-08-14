@@ -29,7 +29,6 @@ export async function editPlanner({ pid, name, country, date, createAt }: Planne
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-      console.log('query exist')
       const docRef = querySnapshot.docs[0].ref;
       await updateDoc(docRef, {
         name: name,

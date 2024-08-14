@@ -6,7 +6,6 @@ import { useGetBlogs } from '@/lib/hooks/useGetBlogs';
 
 export default function Results() {
   const { myBlogs } = useGetBlogs();
-
   const testingBlog: Blog = {
     bid: '123',
     title: 'Testing Blog Title',
@@ -18,7 +17,7 @@ export default function Results() {
       username: 'Testing User',
       city: '',
       email: ''
-    }
+    },
   }
 
   return (
@@ -42,14 +41,19 @@ export default function Results() {
         }
       </div>
 
-      <Subtitle title={'Your Blogs'} />
-      <div className='w-full grid grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2 gap-4 3xl:grid-cols-6'>
-        {
-          myBlogs.map((blog) => (
-            <ResultsItem key={blog.bid} type='popular' blog={blog} />
-          ))
-        }
-      </div>
+      {
+        myBlogs.length > 0 &&
+        <>
+          <Subtitle title={'Your Blogs'} />
+          <div className='w-full grid grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2 gap-4 3xl:grid-cols-6'>
+            {
+              myBlogs.map((blog) => (
+                <ResultsItem key={blog.bid} type='popular' blog={blog} />
+              ))
+            }
+          </div>
+        </>
+      }
     </div>
   )
 }

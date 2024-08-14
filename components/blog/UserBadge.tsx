@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function UserBadge({ userData, publishTime }: { userData: UserData, publishTime?: Date }) {
+export default function UserBadge({ userData, publishTime, views }: { userData: UserData, publishTime?: Date, views?: string[] }) {
   return (
     <div className='flex gap-2 items-center'>
       <div className='flex justify-center items-center text-xl h-12 aspect-square green-gradient text-customWhite-200 rounded-full flex-shrink-0 max-sm:h-10'>
@@ -12,6 +12,11 @@ export default function UserBadge({ userData, publishTime }: { userData: UserDat
           publishTime ?
           publishTime.toDateString() :
           'Now'
+        }
+        <span className='font-semibold'>&nbsp;&nbsp;∙&nbsp;&nbsp;</span>
+        {
+          views &&
+          views.length + ' views'
         }
       </p>
     </div>

@@ -1,5 +1,5 @@
 'use server'
-import { addDoc, collection, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { addDoc, collection, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { db, storage } from '../firebase';
 import { getFromCookies } from './cookies.action';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -15,6 +15,25 @@ export async function createBlog({ bid, publishTime, cover, article, title }: Cr
       cover: cover,
       article: article,
       title: title
+    });
+    const done = await createBlogInteraction(bid);
+    if (done) {
+      return true;
+    }
+    return false;
+  } catch (error: any) {
+    console.error('Create Blog Error:', error.code, error.message);
+    return false;
+  }
+}
+
+async function createBlogInteraction(bid: string): Promise<boolean> {
+  try {
+    await addDoc(collection(db, 'blogsInteractions'), {
+      bid: bid,
+      likes: [],
+      comments: [],
+      views: [],
     });
     return true;
   } catch (error: any) {
@@ -64,5 +83,80 @@ export async function getBlogByBid(bid: string): Promise<Blog | null> {
   } catch (error: any) {
     console.error('Get Blog By Bid Error:', error.code, error.message);
     return null;
+  }
+}
+
+export async function likeBlog(bid: string, uid: string): Promise<boolean> {
+  try {
+    const q = query(collection(db, 'blogsInteractions'), where('bid', '==', bid));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const docRef = querySnapshot.docs[0].ref;
+      const data = querySnapshot.docs[0].data();
+      let likes: string[] = data.likes;
+      likes.includes(uid) ? likes = likes.filter((id: string) => id !== uid) : likes.push(uid);
+      await updateDoc(docRef, {
+        ...data,
+        likes: likes,
+      });
+      return true;
+    }
+    return false;
+  } catch (error: any) {
+    console.error('Like Blog Action Error:', error.code, error.message);
+    return false;
+  }
+}
+
+export async function addBlogComment({ bid, displayName, publishTime, text }: AddBlogCommentParams): Promise<boolean> {
+  try {
+    const q = query(collection(db, 'blogsInteractions'), where('bid', '==', bid));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const docRef = querySnapshot.docs[0].ref;
+      const data = querySnapshot.docs[0].data();
+      let comments: BlogComment[] = data.comments;
+      comments.push({
+        displayName,
+        publishTime,
+        text,
+      });
+      await updateDoc(docRef, {
+        ...data,
+        comments: comments,
+      });
+      return true;
+    }
+
+    return false;
+  } catch (error: any) {
+    console.error('Add Blog Comment Error:', error.code, error.message);
+    return false;
+  }
+}
+
+export async function addBlogView(bid: string, uid: string): Promise<boolean> {
+  try {
+    const q = query(collection(db, 'blogsInteractions'), where('bid', '==', bid));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const docRef = querySnapshot.docs[0].ref;
+      const data = querySnapshot.docs[0].data();
+      let views: string[] = data.views;
+      views.push(uid);
+      await updateDoc(docRef, {
+        ...data,
+        views: views,
+      });
+      return true;
+    }
+
+    return false;
+  } catch (error: any) {
+    console.error('Add Blog View Error:', error.code, error.message);
+    return false;
   }
 }

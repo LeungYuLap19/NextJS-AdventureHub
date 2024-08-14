@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Subtitle from '../discover/Subtitle'
 import UserBadge from './UserBadge';
 import Image from 'next/image';
@@ -7,33 +7,74 @@ import AnimatedCounter from './AnimatedCounter';
 import { Textarea } from '../ui/textarea';
 import Review from '../details/Review';
 import { useSearchParams } from 'next/navigation';
-import { getBlogByBid } from '@/lib/actions/firebaseBlog';
+import { addBlogComment, getBlogByBid, likeBlog } from '@/lib/actions/firebaseBlog';
 import Photo from '../discover/Photo';
 import { Button } from '../ui/button';
+import { useGetBlogsDetails } from '@/lib/hooks/useGetBlogsDetails';
+import { toast } from '../ui/use-toast';
 
 export default function BlogDetails({ userData }: { userData: UserData }) {
-  // testing userData
-  const [liked, setLiked] = useState<boolean>(false);
-  const testComment: BlogComment = {
-    displayName: 'Jimmy',
-    publishTime: new Date(),
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tempor orci eu lobortis elementum nibh. Suspendisse sed nisi lacus sed viverra tellus in hac habitasse. Eget lorem dolor sed viverra ipsum nunc. Et tortor consequat id porta nibh venenatis cras sed felis.'
-  };
-
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
+  const { details, liked } = useGetBlogsDetails(id || '');
   const [blog, setBlog] = useState<Blog | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     const getBlogDetails = async (bid: string) => {
       const blog = await getBlogByBid(bid);
-      console.log(blog);
       setBlog(blog);
     }
-    
     id && getBlogDetails(id);
   }, [id]);
 
+  const handleLike = async () => {
+    if (id) {
+      const done = await likeBlog(id, userData.uid);
+      if (!done) {
+        toast({
+          description: 'Like Blog Error.'
+        });
+      }
+    }
+  }
+
+  const handleSubmit = async () => {
+    setLoading(true);
+  
+    if (!id) {
+      toast({
+        description: 'User Data Error.'
+      });
+      setLoading(false);
+      return;
+    }
+  
+    if (!inputRef.current || inputRef.current.value.trim() === '') {
+      toast({
+        description: 'Enter your thought before submitting.'
+      });
+      setLoading(false);
+      return;
+    }
+  
+    const done = await addBlogComment({
+      bid: id,
+      displayName: userData.username,
+      publishTime: new Date(),
+      text: inputRef.current.value.trim()
+    });
+  
+    if (!done) {
+      toast({
+        description: 'Failed to add comment.'
+      });
+    }
+  
+    setLoading(false);
+  }
+  
   return (
     <div className='flex flex-col gap-12 max-sm:gap-8 max-lg:pb-28 pt-5'>
       {
@@ -56,7 +97,11 @@ export default function BlogDetails({ userData }: { userData: UserData }) {
           <Subtitle title={blog.title} /> 
 
             {/* user */}
-            <UserBadge userData={blog.userData} publishTime={blog.publishTime} />
+            <UserBadge 
+              userData={blog.userData} 
+              publishTime={blog.publishTime} 
+              views={details ? details.views : undefined} 
+            />
 
             {/* article */}
             <p dangerouslySetInnerHTML={{ __html: blog.article }} />
@@ -68,7 +113,7 @@ export default function BlogDetails({ userData }: { userData: UserData }) {
         {/* community */}
         <div className='w-full flex gap-6'>
           <div className='flex gap-1 items-center'>
-            <div className='cursor-pointer' onClick={() => setLiked(!liked)}>
+            <div className='cursor-pointer' onClick={handleLike}>
               <Image 
                 src={`${liked ? '/root/heart-filled.svg' : '/root/heart.svg'}`}
                 alt='like'
@@ -77,8 +122,7 @@ export default function BlogDetails({ userData }: { userData: UserData }) {
             </div>
             
             <div className='flex'>
-              {/* testing amount */}
-              <AnimatedCounter amount={ 0 } />
+              <AnimatedCounter amount={ details ? details.likes.length : 0 } />
               &nbsp;Likes
             </div>
           </div>
@@ -90,30 +134,35 @@ export default function BlogDetails({ userData }: { userData: UserData }) {
               height={24} width={24}
             />
             <div className='flex'>
-              {/* testing amount */}
-              <AnimatedCounter amount={ 0 } /> 
+              <AnimatedCounter amount={ details ? details.comments.length : 0 } /> 
               &nbsp;Comments
             </div>
           </div>
         </div>
 
         <Subtitle title={'Community'} />
-        <Textarea className='text-base bg-transparent text-customBlack-300' placeholder="Write your thought here…" />
+        <Textarea 
+          ref={inputRef}
+          className='text-base bg-transparent text-customBlack-300' 
+          placeholder="Write your thought here…" 
+        />
         <Button
+          disabled={loading}
+          onClick={handleSubmit}
           className='h-10 green-gradient text-customWhite-200 w-fit'
         >
           Comment
         </Button>
-        <div className='content-details'>
-          {/* testing commments */}
-          {/* {
-            Array.from({ length: 6 }, (_, index) => (
+        <div className='content-details lg:mb-20 mt-10'>
+          {
+            details && details.comments.length > 0 &&
+            details.comments.map((comment, index) => (
               <Review 
                 key={index}
-                comment={testComment}
+                comment={comment}
               />
             ))
-          } */}
+          }
         </div> 
       </div>
     </div>

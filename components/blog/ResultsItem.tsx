@@ -3,11 +3,13 @@ import { cn, formUrlQuery } from '@/lib/utils'
 import React from 'react'
 import Photo from '../discover/Photo'
 import { useRouter, useSearchParams } from 'next/navigation';
+import { addBlogView } from '@/lib/actions/firebaseBlog';
+import { getFromCookies } from '@/lib/actions/cookies.action';
 
 export default function ResultsItem({ type, blog }: { type: 'recommend' | 'popular'; blog: Blog }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
       query: {
@@ -15,7 +17,11 @@ export default function ResultsItem({ type, blog }: { type: 'recommend' | 'popul
       },
       extraRoute: '/details'
     });
-    router.push(newUrl, { scroll: false });
+    const userData = await getFromCookies<UserData>('userData');
+    if (userData) {
+      const done = await addBlogView(blog.bid, userData?.uid);
+      done && router.push(newUrl, { scroll: false });
+    }
   }
 
   return (

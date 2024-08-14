@@ -43,6 +43,10 @@ declare interface UploadImageParams {
   fileName: string;
 }
 
+declare interface AddBlogCommentParams extends BlogComment {
+  bid: string;
+}
+
 // firebase api responses 
 declare interface UserData extends CreateUserParams{};
 
@@ -75,6 +79,12 @@ declare interface Blog {
   cover: string;
   publishTime: Date;
   userData: UserData;
+}
+
+declare interface BlogDetails {
+  likes: string[];
+  comments: BlogComment[];
+  views: string[];
 }
 
 declare interface BlogComment {

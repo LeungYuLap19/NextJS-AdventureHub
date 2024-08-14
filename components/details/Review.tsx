@@ -25,7 +25,7 @@ export default function Review({ review, comment }: { review?: Review; comment?:
           <p className='max-2xl:text-sm font-semibold'>
             { review ? review.authorAttribution.displayName + ' ∙ ' : comment ? comment.displayName + ' ∙ ': ''} 
             <span className='font-normal'>
-              { review ? review.relativePublishTimeDescription : comment ? comment.publishTime.toLocaleDateString() : ''}
+              { review ? review.relativePublishTimeDescription : comment ? comment.publishTime.toDateString() : ''}
             </span>
           </p>
           {
