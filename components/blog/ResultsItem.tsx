@@ -1,12 +1,11 @@
 'use client'
 import { cn, formUrlQuery } from '@/lib/utils'
-import React from 'react'
+import React, { Suspense } from 'react'
 import Photo from '../discover/Photo'
 import { useRouter, useSearchParams } from 'next/navigation';
 import { addBlogView } from '@/lib/actions/firebaseBlog';
-import { getFromCookies } from '@/lib/actions/cookies.action';
 
-export default function ResultsItem({ type, blog }: { type: 'recommend' | 'popular'; blog: Blog }) {
+const ResultsItemPage = ({ type, blog }: { type: 'recommend' | 'popular'; blog: Blog }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const handleOnClick = async () => {
@@ -91,3 +90,11 @@ export default function ResultsItem({ type, blog }: { type: 'recommend' | 'popul
     </div>
   )
 }
+
+const ResultsItem = ({ type, blog }: { type: 'recommend' | 'popular'; blog: Blog }) => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <ResultsItemPage type={type} blog={blog} />
+  </Suspense>
+)
+
+export default ResultsItem;
