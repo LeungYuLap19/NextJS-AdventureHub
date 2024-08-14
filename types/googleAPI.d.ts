@@ -44,6 +44,7 @@ declare interface UploadImageParams {
 }
 
 declare interface AddBlogCommentParams extends BlogComment {
+  displayName?: string;
   bid: string;
 }
 

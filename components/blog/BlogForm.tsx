@@ -13,8 +13,10 @@ import Image from 'next/image';
 import { createBlog, uploadImage } from '@/lib/actions/firebaseBlog';
 import { toast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
+import { getFromCookies } from '@/lib/actions/cookies.action';
 
-export default function BlogForm({ userData }: { userData: UserData }) {
+export default function BlogForm() {
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const formSchema = blogFormSchema;
@@ -81,6 +83,16 @@ export default function BlogForm({ userData }: { userData: UserData }) {
   const handleClearFile = () => {
     form.setValue('cover', undefined);
   }
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const userData = await getFromCookies<UserData>('userData');
+      if (userData) {
+        setUserData(userData);
+      }
+    };
+    getUserData();
+  }, []);
 
   return (
     <Form {...form}>

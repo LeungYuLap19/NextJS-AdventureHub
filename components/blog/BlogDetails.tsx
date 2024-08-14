@@ -13,7 +13,7 @@ import { Button } from '../ui/button';
 import { useGetBlogsDetails } from '@/lib/hooks/useGetBlogsDetails';
 import { toast } from '../ui/use-toast';
 
-export default function BlogDetails({ userData }: { userData: UserData }) {
+export default function BlogDetails() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const { details, liked } = useGetBlogsDetails(id || '');
@@ -31,7 +31,7 @@ export default function BlogDetails({ userData }: { userData: UserData }) {
 
   const handleLike = async () => {
     if (id) {
-      const done = await likeBlog(id, userData.uid);
+      const done = await likeBlog(id);
       if (!done) {
         toast({
           description: 'Like Blog Error.'
@@ -61,7 +61,6 @@ export default function BlogDetails({ userData }: { userData: UserData }) {
   
     const done = await addBlogComment({
       bid: id,
-      displayName: userData.username,
       publishTime: new Date(),
       text: inputRef.current.value.trim()
     });

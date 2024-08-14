@@ -86,7 +86,11 @@ export async function getBlogByBid(bid: string): Promise<Blog | null> {
   }
 }
 
-export async function likeBlog(bid: string, uid: string): Promise<boolean> {
+export async function likeBlog(bid: string): Promise<boolean> {
+  const userData = await getFromCookies<UserData>('userData');
+  if (!userData) {
+    return false;
+  }
   try {
     const q = query(collection(db, 'blogsInteractions'), where('bid', '==', bid));
     const querySnapshot = await getDocs(q);
@@ -95,7 +99,7 @@ export async function likeBlog(bid: string, uid: string): Promise<boolean> {
       const docRef = querySnapshot.docs[0].ref;
       const data = querySnapshot.docs[0].data();
       let likes: string[] = data.likes;
-      likes.includes(uid) ? likes = likes.filter((id: string) => id !== uid) : likes.push(uid);
+      likes.includes(userData.uid) ? likes = likes.filter((id: string) => id !== userData.uid) : likes.push(userData.uid);
       await updateDoc(docRef, {
         ...data,
         likes: likes,
@@ -109,7 +113,11 @@ export async function likeBlog(bid: string, uid: string): Promise<boolean> {
   }
 }
 
-export async function addBlogComment({ bid, displayName, publishTime, text }: AddBlogCommentParams): Promise<boolean> {
+export async function addBlogComment({ bid, publishTime, text }: AddBlogCommentParams): Promise<boolean> {
+  const userData = await getFromCookies<UserData>('userData');
+  if (!userData) {
+    return false;
+  }
   try {
     const q = query(collection(db, 'blogsInteractions'), where('bid', '==', bid));
     const querySnapshot = await getDocs(q);
@@ -119,7 +127,7 @@ export async function addBlogComment({ bid, displayName, publishTime, text }: Ad
       const data = querySnapshot.docs[0].data();
       let comments: BlogComment[] = data.comments;
       comments.push({
-        displayName,
+        displayName: userData.username,
         publishTime,
         text,
       });
