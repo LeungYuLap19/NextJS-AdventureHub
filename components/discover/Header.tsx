@@ -1,3 +1,4 @@
+import { HeaderProps } from '@/types/components'
 import React from 'react'
 
 export default function Header({ title }: HeaderProps) {

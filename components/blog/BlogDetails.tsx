@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 import Subtitle from '../discover/Subtitle'
 import UserBadge from './UserBadge';
 import Image from 'next/image';
@@ -13,7 +13,7 @@ import { Button } from '../ui/button';
 import { useGetBlogsDetails } from '@/lib/hooks/useGetBlogsDetails';
 import { toast } from '../ui/use-toast';
 
-export default function BlogDetails() {
+const BlogDetailsPage = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const { details, liked } = useGetBlogsDetails(id || '');
@@ -167,3 +167,11 @@ export default function BlogDetails() {
     </div>
   )
 }
+
+const BlogDetails = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <BlogDetailsPage />
+  </Suspense>
+);
+
+export default BlogDetails;
