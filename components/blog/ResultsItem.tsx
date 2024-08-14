@@ -17,11 +17,8 @@ export default function ResultsItem({ type, blog }: { type: 'recommend' | 'popul
       },
       extraRoute: '/details'
     });
-    const userData = await getFromCookies<UserData>('userData');
-    if (userData) {
-      const done = await addBlogView(blog.bid, userData?.uid);
-      done && router.push(newUrl, { scroll: false });
-    }
+    const done = await addBlogView(blog.bid);
+    done && router.push(newUrl, { scroll: false });
   }
 
   return (

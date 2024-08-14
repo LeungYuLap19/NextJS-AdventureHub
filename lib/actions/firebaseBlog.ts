@@ -137,7 +137,11 @@ export async function addBlogComment({ bid, displayName, publishTime, text }: Ad
   }
 }
 
-export async function addBlogView(bid: string, uid: string): Promise<boolean> {
+export async function addBlogView(bid: string): Promise<boolean> {
+  const userData = await getFromCookies<UserData>('userData');
+  if (!userData) {
+    return false;
+  }
   try {
     const q = query(collection(db, 'blogsInteractions'), where('bid', '==', bid));
     const querySnapshot = await getDocs(q);
@@ -146,7 +150,7 @@ export async function addBlogView(bid: string, uid: string): Promise<boolean> {
       const docRef = querySnapshot.docs[0].ref;
       const data = querySnapshot.docs[0].data();
       let views: string[] = data.views;
-      views.push(uid);
+      views.push(userData.uid);
       await updateDoc(docRef, {
         ...data,
         views: views,

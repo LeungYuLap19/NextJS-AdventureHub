@@ -1,3 +1,4 @@
+'use server'
 import React from 'react'
 import BlogForm from './BlogForm'
 import { getFromCookies } from '@/lib/actions/cookies.action';

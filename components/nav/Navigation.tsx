@@ -1,6 +1,5 @@
 import React from 'react'
 import Logo from '../logo/Logo'
-import Link from 'next/link'
 import { navLinks } from '@/constants'
 import NavigationTab from './NavigationTab'
 import { getFromCookies } from '@/lib/actions/cookies.action'
