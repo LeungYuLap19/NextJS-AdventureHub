@@ -1,10 +1,23 @@
 'use client'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Input } from '../ui/input'
 
 export default function SearchInput() {
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [searchTerm, setSearchTerm] = useState('');
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const event = new CustomEvent("blogsSearch", { detail: searchTerm.trim() });
+      window.dispatchEvent(event);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]);
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   }
 
   return (

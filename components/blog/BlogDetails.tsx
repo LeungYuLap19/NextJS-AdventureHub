@@ -70,6 +70,9 @@ const BlogDetailsPage = () => {
         description: 'Failed to add comment.'
       });
     }
+    else {
+      inputRef.current.value = '';
+    }
   
     setLoading(false);
   }

@@ -13,10 +13,12 @@ export default function UserBadge({ userData, publishTime, views }: { userData: 
           publishTime.toDateString() :
           'Now'
         }
-        <span className='font-semibold'>&nbsp;&nbsp;∙&nbsp;&nbsp;</span>
         {
           views &&
-          views.length + ' views'
+          <>
+            <span className='font-semibold'>&nbsp;&nbsp;∙&nbsp;&nbsp;</span>
+            {views.length + ' views'}
+          </>
         }
       </p>
     </div>
