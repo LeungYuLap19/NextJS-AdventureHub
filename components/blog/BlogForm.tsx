@@ -14,9 +14,11 @@ import { createBlog, uploadImage } from '@/lib/actions/firebaseBlog';
 import { toast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { getFromCookies } from '@/lib/actions/cookies.action';
+import AddPlaceTag from './AddPlaceTag';
 
 export default function BlogForm() {
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [placeTags, setPlaceTags] = useState<AutoCompleteResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const formSchema = blogFormSchema;
@@ -37,12 +39,14 @@ export default function BlogForm() {
       imgUrl = await uploadImage({ image: base64, fileName: 'blogs', bid });
     }
 
+    const tags = placeTags.map(tag => tag.text.primary);
     const done = await createBlog({
       bid: bid,
       publishTime: new Date(),
       cover: imgUrl,
       article: values.article.replace(/\n/g, '<br/>'),
-      title: values.title
+      title: values.title,
+      tags: tags,
     });
     if (done) {
       router.push('/blog');
@@ -94,6 +98,15 @@ export default function BlogForm() {
     getUserData();
   }, []);
 
+  const removeTag = (selected: AutoCompleteResponse) => {
+    const index = placeTags.findIndex(tag => tag.text.primary === selected.text.primary);
+    if (index !== -1) {
+      const newPlaceTags = [...placeTags];
+      newPlaceTags.splice(index, 1);
+      setPlaceTags(newPlaceTags);
+    }
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-8 max-lg:pb-28 pt-5'>
@@ -137,6 +150,27 @@ export default function BlogForm() {
         </div>
         {/* user */}
         { userData && <UserBadge userData={userData} /> }
+        {/* place tags */}
+        <div className='w-full flex flex-wrap gap-2'>
+          {
+            placeTags.length > 0 &&
+            placeTags.map((place, index) => (
+              <div 
+                onClick={() => {removeTag(place)}}
+                key={index} 
+                className='text-xs flex gap-1 items-center font-semibold px-4 py-2 rounded-full text-customBlack-300 border border-customBlack-300 cursor-pointer'
+              >
+                <p>{place.text.primary}</p> 
+                <Image 
+                  src={'/root/close.svg'}
+                  alt='remove tag'
+                  width={14} height={14}
+                />
+              </div>
+            ))
+          }
+          <AddPlaceTag placeTags={placeTags} setPlaceTags={setPlaceTags} />
+        </div>
         {/* article */}
         <CustomInput 
           control={form.control}

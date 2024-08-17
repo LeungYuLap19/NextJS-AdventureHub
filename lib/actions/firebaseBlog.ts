@@ -1,11 +1,11 @@
 'use server'
-import { addDoc, collection, DocumentData, DocumentReference, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, DocumentData, DocumentReference, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { db, storage } from '../firebase';
 import { getFromCookies } from './cookies.action';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { getUserByUID } from './firebaseAuth';
 
-export async function createBlog({ bid, publishTime, cover, article, title }: CreateBlogParams): Promise<boolean> {
+export async function createBlog({ bid, publishTime, cover, article, title, tags }: CreateBlogParams): Promise<boolean> {
   const userData = await getFromCookies<UserData>('userData');
   if (!userData) {
     return false;
@@ -19,6 +19,7 @@ export async function createBlog({ bid, publishTime, cover, article, title }: Cr
       article: article,
       title: title,
       titleLower: title.toLowerCase(),
+      tags: tags,
     });
     const done = await createBlogInteraction(bid, userData.uid);
     if (done) {
@@ -82,6 +83,7 @@ export async function getBlogByBid(bid: string): Promise<Blog | null> {
           cover: data.cover,
           publishTime: publishTime,
           userData: userData,
+          tags: data.tags,
         };
       }
     }
@@ -201,6 +203,7 @@ export async function searchBlogs(input: string): Promise<Blog[]> {
             cover: data.cover ,
             publishTime: publishTime,
             userData: userData,
+            tags: data.tags,
           });
         }
       }

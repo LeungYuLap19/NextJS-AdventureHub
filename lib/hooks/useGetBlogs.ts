@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { getFromCookies } from "../actions/cookies.action";
-import { collection, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, getDoc, getDocs, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import { getBlogByBid, searchBlogs } from "../actions/firebaseBlog";
+import { useGetPlanners } from "./useGetPlanners";
+import { getUserByUID } from "../actions/firebaseAuth";
 
 export function useGetBlogs() {
   const [myBlogs, setMyBlogs] = useState<Blog[]>([]);
   const [popularBlogs, setPopularBlogs] = useState<Blog[]>([]);
+  const [recommendedBlogs, setRecommendedBlogs] = useState<Blog[]>([]);
   const [blogsResults, setBlogsResults] = useState<Blog[]>([]);
+  const { planners } = useGetPlanners();
 
   const getMyBlogs = async () => {
     const userData = await getFromCookies<UserData>('userData');
@@ -24,6 +28,7 @@ export function useGetBlogs() {
             cover: data.cover,
             publishTime: data.publishTime,
             userData: userData, 
+            tags: data.tags,
           });
         });
         // console.log(blogsList);
@@ -37,27 +42,102 @@ export function useGetBlogs() {
   const getPopularBlogs = async () => {
     const userData = await getFromCookies<UserData>('userData');
     if (userData?.uid) {
-      const q = query(collection(db, 'blogsInteractions'), where('uid', '!=', userData.uid), orderBy('score', 'desc'), limit(18));
+      // Fetch recommended blog IDs
+      const recommendedBlogIds = new Set(recommendedBlogs.map(blog => blog.bid));
+      console.log(recommendedBlogIds);
+      
+      // Fetch more blogs than needed to handle exclusions
+      const q = query(
+        collection(db, 'blogsInteractions'),
+        where('uid', '!=', userData.uid),
+        orderBy('score', 'desc'),
+        limit(18) // Fetch more than needed to handle exclusions
+      );
+  
       const unsubscribe = onSnapshot(q, async (QuerySnapshot) => {
-          const blogsList: Blog[] = [];
-          for (const doc of QuerySnapshot.docs) {
-              const data = doc.data();
-              const blog = await getBlogByBid(data.bid);
-              if (blog) {
-                blogsList.push(blog);
-              }
+        const blogsList: Blog[] = [];
+        const fetchedBlogIds = new Set<string>();
+  
+        for (const doc of QuerySnapshot.docs) {
+          const data = doc.data();
+          const blog = await getBlogByBid(data.bid);
+          if (blog && !recommendedBlogIds.has(blog.bid) && !fetchedBlogIds.has(blog.bid)) {
+            blogsList.push(blog);
+            fetchedBlogIds.add(blog.bid);
           }
-          // console.log(blogsList);
-          setPopularBlogs(blogsList);
+          if (blogsList.length >= 12) {
+            break;
+          }
+        }
+        setPopularBlogs(blogsList);
       });
+  
       return () => unsubscribe();
+    }
+  };
+  
+
+  const getRecommendedBlogs = async () => {
+    const userData = await getFromCookies<UserData>('userData');
+    if (userData?.uid) {
+      const places = planners.map((planner) => planner.country.text.primary);
+      console.log(places);
+      if (places.length > 0) {
+        const q = query(
+          collection(db, 'blogs'),
+          where('uid', '!=', userData.uid),
+          where('tags', 'array-contains-any', places),
+          limit(6)
+        );
+        const unsubscribe = onSnapshot(q, async (QuerySnapshot) => {
+          const blogsList: Blog[] = [];
+          const cacheUserDataList: Record<string, UserData> = {};
+  
+          for (const doc of QuerySnapshot.docs) {
+            const data = doc.data();
+            let cacheUserData: UserData | null = cacheUserDataList[data.uid];
+  
+            if (!cacheUserData) {
+              cacheUserData = await getUserByUID(data.uid);
+              if (cacheUserData) {
+                cacheUserDataList[data.uid] = cacheUserData;
+              }
+            }
+  
+            if (cacheUserData) {
+              blogsList.push({
+                bid: data.bid,
+                title: data.title,
+                article: data.article,
+                cover: data.cover,
+                publishTime: data.publishTime,
+                userData: cacheUserData,
+                tags: data.tags,
+              });
+            }
+          }
+  
+          setRecommendedBlogs(blogsList);
+        });
+  
+        return () => unsubscribe();
+      } else {
+        setRecommendedBlogs([]);
+      }
     }
   };
 
   useEffect(() => {
     getMyBlogs();
-    getPopularBlogs();
   }, []);
+
+  useEffect(() => {
+    getRecommendedBlogs();
+  }, [planners]);
+
+  useEffect(() => {
+    getPopularBlogs(); 
+  }, [recommendedBlogs]);
 
   useEffect(() => {
     const handleBlogsSearch = async (event: CustomEvent<string>) => {
@@ -78,5 +158,5 @@ export function useGetBlogs() {
     }
   }, []);
 
-  return { myBlogs, popularBlogs, blogsResults };
+  return { myBlogs, recommendedBlogs, popularBlogs, blogsResults };
 }

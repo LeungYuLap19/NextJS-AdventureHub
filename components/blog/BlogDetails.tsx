@@ -104,7 +104,22 @@ const BlogDetailsPage = () => {
               publishTime={blog.publishTime} 
               views={details ? details.views : undefined} 
             />
-
+            {/* place tags */}
+            {
+              blog.tags.length > 0 &&
+              <div className='w-full flex flex-wrap gap-2'>
+                {
+                  blog.tags.map((place, index) => (
+                    <div 
+                      key={index} 
+                      className='text-xs flex gap-1 items-center font-semibold px-4 py-2 rounded-full text-customBlack-100 border border-customBlack-100'
+                    >
+                      <p>{place}</p>
+                    </div>
+                  ))
+                }
+              </div>
+            }
             {/* article */}
             <p dangerouslySetInnerHTML={{ __html: blog.article }} />
           </div>

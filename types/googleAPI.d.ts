@@ -35,6 +35,7 @@ declare interface CreateBlogParams {
   cover: string | null; 
   article: string;
   title: string;
+  tags: string[];
 }
 
 declare interface UploadImageParams {
@@ -80,6 +81,7 @@ declare interface Blog {
   cover: string;
   publishTime: Date;
   userData: UserData;
+  tags: string[];
 }
 
 declare interface BlogDetails {

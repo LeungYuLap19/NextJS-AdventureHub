@@ -5,7 +5,7 @@ import ResultsItem from './ResultsItem'
 import { useGetBlogs } from '@/lib/hooks/useGetBlogs';
 
 export default function Results() {
-  const { myBlogs, popularBlogs, blogsResults } = useGetBlogs();
+  const { myBlogs, recommendedBlogs, popularBlogs, blogsResults } = useGetBlogs();
 
   return (
     <div className='flex flex-col w-full gap-7'>
@@ -15,44 +15,38 @@ export default function Results() {
           <Subtitle title={'Search Results'} />
           <div className='w-full grid grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2 gap-4 3xl:grid-cols-6'>
             {
-              blogsResults.map((blog, index) => {
-                if (index < 6) {
-                  return <ResultsItem key={blog.bid} type='popular' blog={blog} />
-                }
-              })
+              blogsResults.map((blog) => (
+                <ResultsItem key={blog.bid} type='popular' blog={blog} />
+              ))
             }
           </div>
         </>
       }
 
       {
-        popularBlogs.length > 0 && blogsResults.length == 0 &&
+        recommendedBlogs.length > 0 && blogsResults.length == 0 &&
         <>
           <Subtitle title={'Recommendation'} />
           <div className='w-full grid grid-cols-3 max-lg:grid-cols-2 gap-4
           max-sm:grid-cols-none max-sm:h-[80vw] max-sm:flex max-sm:overflow-auto'>
             {
-              popularBlogs.map((blog, index) => {
-                if (index < 6) {
-                  return <ResultsItem key={blog.bid} type='recommend' blog={blog} />
-                }
-              })
+              recommendedBlogs.map((blog) => (
+                <ResultsItem key={blog.bid} type='recommend' blog={blog} />
+              ))
             }
           </div>
         </>
       }
       
       {
-        popularBlogs.length > 6 && blogsResults.length == 0 &&
+        popularBlogs.length > 0 && blogsResults.length == 0 &&
         <>
           <Subtitle title={'Popular Blogs'} />
           <div className='w-full grid grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2 gap-4 3xl:grid-cols-6'>
             {
-              popularBlogs.map((blog, index) => {
-                if (index >= 6) {
-                  return <ResultsItem key={blog.bid} type='popular' blog={blog} />
-                }
-              })
+              popularBlogs.map((blog) => (
+                <ResultsItem key={blog.bid} type='popular' blog={blog} />
+              ))
             }
           </div>
         </>
