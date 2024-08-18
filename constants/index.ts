@@ -13,10 +13,10 @@ export const navLinks: NavigationTabProps[] = [
     label: 'Blog',
     route: '/blog'
   },
-  {
-    label: 'Bookings',
-    route: '/bookings'
-  }
+  // {
+  //   label: 'Bookings',
+  //   route: '/bookings'
+  // }
 ];
 
 export const searchTabs: SearchTabParams[] = [

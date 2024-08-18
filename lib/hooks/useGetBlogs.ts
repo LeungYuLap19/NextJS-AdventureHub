@@ -81,7 +81,6 @@ export function useGetBlogs() {
     const userData = await getFromCookies<UserData>('userData');
     if (userData?.uid) {
       const places = planners.map((planner) => planner.country.text.primary);
-      console.log(places);
       if (places.length > 0) {
         const q = query(
           collection(db, 'blogs'),
